@@ -1,0 +1,19 @@
+PROJECT READABLE
+
+OK-Set GitHub project
+OK-create-react-app
+-Try REST operations
+-Design Views
+	-Create Login Page, keep Auth user
+-Create folders
+	app
+	login
+	post
+	comment
+	common
+-Implement REST API
+-Implement Views
+-Create Actions with Object.freeze({CONSTANT: value})
+-Create Thunk
+-Create Reducers
+-Create Middleware
