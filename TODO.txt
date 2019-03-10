@@ -2,7 +2,7 @@ PROJECT READABLE
 
 OK-Set GitHub project
 OK-create-react-app
-	npm install --save react-thunk react-redux react-icons react-redux-loading react-router-dom
+	npm install --save react-thunk redux react-redux redux-thunk react-icons react-redux-loading react-router-dom
 	npm install --save prop-types @material-ui/core
 -Try REST operations
 -Design Views
