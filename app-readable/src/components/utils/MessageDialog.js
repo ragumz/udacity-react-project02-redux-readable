@@ -6,7 +6,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import PropTypes from "prop-types";
-import * as Commons from './Commons';
+import * as Commons from '../../utils/Commons';
 
 /**
  * @description An utility class to display modal dialogs with messages and buttons.
@@ -18,7 +18,8 @@ class MessageDialog extends Component {
   static propTypes = {
     title: PropTypes.string.isRequired,
     message: PropTypes.string,
-    buttons: PropTypes.array
+    buttons: PropTypes.array,
+    error: PropTypes.any
   };
 
   /**
@@ -80,6 +81,11 @@ class MessageDialog extends Component {
               <DialogContentText id="alert-dialog-description">
                 {this.props.message}
               </DialogContentText>
+              { this.props.error &&
+                <DialogContentText id="alert-dialog-description-error" className="dialog-error-text">
+                  {this.props.error.stack}
+                </DialogContentText>
+              }
             </DialogContent>
             <DialogActions>
               {//if no custom array buttons are received, show the default OK one

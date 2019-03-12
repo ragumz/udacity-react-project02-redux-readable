@@ -15,6 +15,11 @@ export default function Nav() {
             New Post
           </NavLink>
         </li>
+        <li>
+          <NavLink to="/user" activeClassName="active">
+            Change User
+          </NavLink>
+        </li>
       </ul>
     </nav>
   );

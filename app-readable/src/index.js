@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './components/App';
 import { BrowserRouter } from 'react-router-dom';
-import ErrorBoundary from './utils/ErrorBoundary';
+import ErrorBoundary from './components/utils/ErrorBoundary';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import reducer from './reducers';
