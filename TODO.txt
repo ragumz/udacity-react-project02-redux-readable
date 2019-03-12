@@ -4,17 +4,21 @@ OK-Set GitHub project
 OK-create-react-app
 	npm install --save react-thunk redux react-redux redux-thunk react-icons react-redux-loading react-router-dom
 	npm install --save prop-types @material-ui/core
--Try REST operations
+OK-Try REST operations
 -Design Views
-	-Create Login Page, keep Auth user
+	-N/A Create Login Page, keep Auth user
+	-On Home screen show categories on Left and Posts on Right
 -Create folders
 	app
 	login
 	post
 	comment
 	common
--Implement REST API
+-OK Implement REST API
 -Implement Views
+	-Category View
+	-Dashboard View
+		Filters
 -Create Actions with Object.freeze({CONSTANT: value})
 -Create Thunk
 -Create Reducers

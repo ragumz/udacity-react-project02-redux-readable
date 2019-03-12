@@ -1,8 +1,7 @@
 import React, { Component, Fragment } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router/*, Route */ } from 'react-router-dom';
 import LoadingBar from 'react-redux-loading';
 import Menu from './Menu';
-import Login from './Login';
 import { connect } from 'react-redux';
 import * as CommonActions from '../actions/common';
 import MessageDialog from './utils/MessageDialog';
@@ -30,7 +29,6 @@ class App extends Component {
             <Menu />
             {this.props.loading === true ? null : (
               <div>
-                <Route path="/user" component={Login} />
                 {/*<Route path='/' exact component={Dashboard} />
                 <Route path='/tweet/:id' component={TweetPage} />
                 <Route path='/new' component={NewTweet} />*/}
@@ -51,9 +49,8 @@ class App extends Component {
   }
 }
 
-function mapStateToProps({ authedUser, common }) {
+function mapStateToProps({ common }) {
   return {
-    loading: authedUser === null,
     userMessage: common.userMessage
   };
 }
