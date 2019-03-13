@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from 'react';
-import { BrowserRouter as Router/*, Route */ } from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import LoadingBar from 'react-redux-loading';
 import Menu from './Menu';
+import Dashboard from './Dashboard';
 import { connect } from 'react-redux';
 import * as CommonActions from '../actions/common';
 import MessageDialog from './utils/MessageDialog';
@@ -29,8 +30,8 @@ class App extends Component {
             <Menu />
             {this.props.loading === true ? null : (
               <div>
-                {/*<Route path='/' exact component={Dashboard} />
-                <Route path='/tweet/:id' component={TweetPage} />
+                {<Route path='/' exact component={Dashboard} />
+                /*<Route path='/tweet/:id' component={TweetPage} />
                 <Route path='/new' component={NewTweet} />*/}
               </div>
             )}

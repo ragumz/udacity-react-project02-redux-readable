@@ -1,6 +1,7 @@
-import { getInitialData } from '../utils/ReadableAPI';
+import { getInitialData, getAllComments } from '../utils/ReadableAPI';
 import { receiveCategories } from './categories';
 import { receivePosts } from './posts';
+import { receiveComments } from './comments';
 import { showLoading, hideLoading } from 'react-redux-loading';
 
 export const COMMON_ACTIONS = Object.freeze({
@@ -30,6 +31,10 @@ export function handleInitialData() {
       .then(({ categories, posts }) => {
         dispatch(receiveCategories(categories));
         dispatch(receivePosts(posts));
+        return getAllComments(posts);
+      })
+      .then((comments) => {
+        dispatch(receiveComments(comments))
         dispatch(hideLoading());
       })
       .catch(error => {

@@ -8,17 +8,21 @@ OK-Try REST operations
 -Design Views
 	-N/A Create Login Page, keep Auth user
 	-On Home screen show categories on Left and Posts on Right
--Create folders
+-OK Create folders
 	app
-	login
 	post
 	comment
 	common
 -OK Implement REST API
 -Implement Views
+	-Post View
 	-Category View
 	-Dashboard View
-		Filters
+		Post Filters
+	-CategoryPosts View
+	-Comment View
+	-New Post View
+	-New Comment View
 -Create Actions with Object.freeze({CONSTANT: value})
 -Create Thunk
 -Create Reducers

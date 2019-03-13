@@ -53,7 +53,7 @@ export const addNewPost = post =>
     body: JSON.stringify(post)
   })
     .then(res => res.json())
-    .then(data => data.post);
+    .then(data => data);
 
 /**
  * @description Get one Posts data
@@ -62,7 +62,7 @@ export const addNewPost = post =>
 export const getPost = postId =>
   fetch(`${api}/posts/${postId}`, { headers })
     .then(res => res.json())
-    .then(data => data.post);
+    .then(data => data);
 
 /**
  * @description Place a vote to one Post
@@ -79,7 +79,7 @@ export const placePostVote = (postId, option) =>
     body: JSON.stringify({ option })
   })
     .then(res => res.json())
-    .then(data => data.post);
+    .then(data => data);
 
 /**
  * @description Update some Post fields
@@ -97,7 +97,7 @@ export const updatePost = (postId, title, body, deleted = false) =>
     body: JSON.stringify({ title, body, deleted })
   })
     .then(res => res.json())
-    .then(data => data.post);
+    .then(data => data);
 
 /**
  * @description Mark the "deleted" flag field as true for the Post and all ists Comments' objects.
@@ -112,7 +112,7 @@ export const deletePost = postId =>
     }
   })
     .then(res => res.json())
-    .then(data => data.post);
+    .then(data => data);
 
 /**
  * @description Get all Posts from all Categories
@@ -137,7 +137,7 @@ export const addNewComment = comment =>
     body: JSON.stringify(comment)
   })
     .then(res => res.json())
-    .then(data => data.post);
+    .then(data => data);
 
 /**
  * @description Place a vote to one Comment
@@ -154,7 +154,7 @@ export const placeCommentVote = (commentId, option) =>
     body: JSON.stringify({ option })
   })
     .then(res => res.json())
-    .then(data => data.comment);
+    .then(data => data);
 
 /**
  * @description Update some Comment fields
@@ -177,7 +177,7 @@ export const updateComment = (
     body: JSON.stringify({ timestamp, body, deleted })
   })
     .then(res => res.json())
-    .then(data => data.comment);
+    .then(data => data);
 
 /**
  * @description Mark the "deleted" flag field as true for the Comment object.
@@ -192,4 +192,4 @@ export const deleteComment = commentId =>
     }
   })
     .then(res => res.json())
-    .then(data => data.comment);
+    .then(data => data);

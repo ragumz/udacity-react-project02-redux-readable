@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { formatDate } from '../utils/Commons';
-import { TiArrowUpThick, TiArrowDownOutline } from 'react-icons/ti';
+import * as Constants from '../utils/Constants';
+import Vote from './Vote';
 
 class Post extends Component {
   render() {
@@ -11,10 +12,10 @@ class Post extends Component {
       return <p>This Post doesn't exist</p>;
     }
     const {
+      id,
       title,
       timestamp,
       body,
-      voteScore,
       author,
       category,
       postComments
@@ -29,11 +30,11 @@ class Post extends Component {
           <div>{formatDate(timestamp)}</div>
           <p>{body}</p>
         </div>
-        <div className="post-icons">
-          <span>Vote Score {voteScore}</span>
-          <TiArrowUpThick className="post-icon" />
-          <TiArrowDownOutline className="post-icon" />
-        </div>
+        <Vote
+          id={id}
+          entityName={Constants.VOTE_OBJECT.POST}
+          actionHandle={null}
+        />
         <span>Comments {postComments ? postComments.length : 0}</span>
       </div>
     );
@@ -45,9 +46,7 @@ function mapStateToProps({ categories, posts, comments, common }, { id }) {
   const category = post ? categories[post.category] : null;
   const postComments = post
     ? Object.values(comments)
-        .map(comment => {
-          comment.parentId === id;
-        })
+        .filter(comment => comment.parentId === id)
         .sort((a, b) => a.voteScore < b.voteScore)
     : null;
   return {
@@ -58,4 +57,4 @@ function mapStateToProps({ categories, posts, comments, common }, { id }) {
   };
 }
 
-export default withRouter(connect(mapStateToProps)(Post));
+export default connect(mapStateToProps)(Post);

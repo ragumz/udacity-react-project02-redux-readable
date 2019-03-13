@@ -11,3 +11,9 @@ export const VOTE_OPTIONS = Object.freeze({
    */
   DOWN: 'downVote'
 })
+
+
+export const VOTE_OBJECT = Object.freeze({
+  COMMENT: 'comment',
+  POST: 'post'
+})
