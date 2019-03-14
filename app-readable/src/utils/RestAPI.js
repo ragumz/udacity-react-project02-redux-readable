@@ -66,11 +66,11 @@ export const getPost = postId =>
 
 /**
  * @description Place a vote to one Post
- * @param {string} postId The Post unique identifier
+ * @param {string} id The Post unique identifier
  * @param {VOTE_OPTIONS} option A constant from Constants.VOTE_OPTIONS
  */
-export const placePostVote = (postId, option) =>
-  fetch(`${api}/posts/${postId}`, {
+export const placePostVote = ({id, option}) =>
+  fetch(`${api}/posts/${id}`, {
     method: 'POST',
     headers: {
       ...headers,
@@ -87,7 +87,7 @@ export const placePostVote = (postId, option) =>
  * @param {string} title The new Post title
  * @param {string} body The new Post body
  */
-export const updatePost = (postId, title, body, deleted = false) =>
+export const updatePost = ({postId, title, body, deleted = false}) =>
   fetch(`${api}/posts/${postId}`, {
     method: 'PUT',
     headers: {
@@ -141,11 +141,11 @@ export const addNewComment = comment =>
 
 /**
  * @description Place a vote to one Comment
- * @param {string} commentId The Comment unique identifier
+ * @param {string} id The Comment unique identifier
  * @param {VOTE_OPTIONS} option A constant from Constants.VOTE_OPTIONS
  */
-export const placeCommentVote = (commentId, option) =>
-  fetch(`${api}/comments/${commentId}`, {
+export const placeCommentVote = ({id, option}) =>
+  fetch(`${api}/comments/${id}`, {
     method: 'POST',
     headers: {
       ...headers,
@@ -162,12 +162,12 @@ export const placeCommentVote = (commentId, option) =>
  * @param {long} timestamp The Unix Epoch time stamp
  * @param {string} body The new Comment body
  */
-export const updateComment = (
+export const updateComment = ({
   commentId,
   timestamp = Date.now(),
   body,
   deleted = false
-) =>
+}) =>
   fetch(`${api}/comments/${commentId}`, {
     method: 'PUT',
     headers: {

@@ -5,8 +5,9 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import Typography from '@material-ui/core/Typography';
 import PropTypes from "prop-types";
-import * as Commons from '../../utils/Commons';
+import * as Common from '../../utils/Common';
 
 /**
  * @description An utility class to display modal dialogs with messages and buttons.
@@ -16,10 +17,12 @@ class MessageDialog extends Component {
    * @description Define props' arguments' types
    */
   static propTypes = {
-    title: PropTypes.string.isRequired,
-    message: PropTypes.string,
+    userMessage: PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      message: PropTypes.string,
+      error: PropTypes.any
+    }),
     buttons: PropTypes.array,
-    error: PropTypes.any
   };
 
   /**
@@ -59,8 +62,8 @@ class MessageDialog extends Component {
    */
   componentWillReceiveProps(nextProps) {
     //shows the dialog if there is any message text.
-    if (!Commons.isEmpty(nextProps.message)
-        && nextProps.message !== this.props.message) {
+    if (!Common.isEmpty(nextProps.userMessage)
+        && nextProps.userMessage !== this.props.userMessage) {
       this.handleOpen();
     }
   };
@@ -69,27 +72,38 @@ class MessageDialog extends Component {
    * @description Creates the component UI
    */
   render() {
+    if (Common.isNull(this.props.userMessage)) {
+      return <div></div>;
+    }
+
+    const { title, message, error, buttons } = this.props.userMessage
+
+    if (this.state.open && error) {
+      console.error(message, error);
+    }
+
     return (
       <div>
         <Dialog
             open={this.state.open}
             onClose={this.handleClose}
+            scroll="paper"
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description">
-            <DialogTitle id="alert-dialog-title">{this.props.title}</DialogTitle>
+            <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
             <DialogContent>
               <DialogContentText id="alert-dialog-description">
-                {this.props.message}
+                {message}
               </DialogContentText>
-              { this.props.error &&
-                <DialogContentText id="alert-dialog-description-error" className="dialog-error-text">
-                  {this.props.error.stack}
-                </DialogContentText>
+              { error &&
+                <Typography id="alert-dialog-description-error" className="dialog-error-text" gutterBottom>
+                  {error.stack}
+                </Typography>
               }
             </DialogContent>
             <DialogActions>
               {//if no custom array buttons are received, show the default OK one
-                (!this.props.buttons || this.props.buttons.length === 0) && (
+                (!buttons || buttons.length === 0) && (
                 <Button
                   autoFocus
                   onClick={this.handleClose}
@@ -98,9 +112,9 @@ class MessageDialog extends Component {
                 </Button>
               )}
               {//if custom array buttons are received, mount all of them
-                this.props.buttons &&
-                this.props.buttons.length > 0 &&
-                this.props.buttons.map(button => {
+                buttons &&
+                buttons.length > 0 &&
+                buttons.map(button => {
                   return (
                     <Button
                       key={button.text}

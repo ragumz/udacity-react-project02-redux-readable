@@ -1,5 +1,5 @@
 import * as Api from './RestAPI';
-import * as Commons from './Commons';
+import * as Commons from './Common';
 
 export function getInitialData() {
   return Promise.all([
@@ -32,4 +32,8 @@ export function getAllComments(posts) {
       }
       return new Promise((res, rej) => res(comments));
     });
+}
+
+export function placePostVote(vote) {
+  return Api.placePostVote(vote)
 }
