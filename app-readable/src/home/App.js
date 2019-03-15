@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import LoadingBar from 'react-redux-loading';
 import Menu from './Menu';
 import Home from './Home';
+import CategoryItem from '../category/CategoyItem';
 import { connect } from 'react-redux';
 import * as commonActions from '../common/commonActions';
 import * as commonOperations from '../common/commonOperations';
@@ -31,8 +32,9 @@ class App extends Component {
             <Menu />
             {this.props.loading === true ? null : (
               <div>
-                {<Route path='/' exact component={Home} />
-                /*<Route path='/tweet/:id' component={TweetPage} />
+                <Route path="/" exact component={Home} />
+                <Route path='/category/:id' component={CategoryItem} />
+                {/*<Route path='/tweet/:id' component={TweetPage} />
                 <Route path='/new' component={NewTweet} />*/}
               </div>
             )}

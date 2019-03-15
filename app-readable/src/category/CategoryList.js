@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 class CategoryList extends Component {
 
@@ -12,8 +13,10 @@ class CategoryList extends Component {
     return (
       <div className="category">
         <ul className='dashboard-list'>
-          {sortedCateg.map((name) => (
-            <span key={name} className="category-name">{name}</span>
+          {sortedCateg.map((id) => (
+            <Link key={id} to={`/category/${id}`}>
+              <span key={id} className="category-name">{categories[id].name}</span>
+            </Link>
           ))}
         </ul>
       </div>

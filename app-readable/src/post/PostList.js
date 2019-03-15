@@ -30,9 +30,9 @@ class PostList extends Component {
   }
 }
 
-function mapStateToProps ({ posts }) {
+function mapStateToProps ({ posts },{ postsFilter }) {
   return {
-    posts
+    posts: postsFilter ? postsFilter : posts
   }
 }
 

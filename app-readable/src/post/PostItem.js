@@ -1,19 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { formatDate } from '../utils/common';
+import * as common from '../utils/common';
 import * as constants from '../utils/constants';
 import Vote from '../common/Vote';
 import { handlePostVoteScore } from './postOperations'
 
 class PostItem extends Component {
   render() {
-    const { post, category, dispatch } = this.props;
+    const { id, post, category, dispatch } = this.props;
 
-    if (post === null) {
-      return <p>This Post doesn't exist</p>;
+    if (common.isNull(post)) {
+      return <p>Post with {id} doesn't exist</p>;
     }
     const {
-      id,
       title,
       timestamp,
       body,
@@ -24,10 +23,10 @@ class PostItem extends Component {
     return (
       <div className="post">
         <div className="post-info">
-          <div className="post-info-right">Category {category.name}</div>
+          <div className="post-info-right">{category.name}</div>
           <span className="post-info-title">{title}</span>
           <span>{author}</span>
-          <div className="post-info-date">{formatDate(timestamp)}</div>
+          <div className="post-info-date">{common.formatDate(timestamp)}</div>
           <p>{body}</p>
           <Vote
             key={id}
@@ -48,6 +47,7 @@ function mapStateToProps({ categories, posts, common }, { id }) {
   const post = posts[id];
   const category = post ? categories[post.category] : null;
   return {
+    id,
     category,
     post,
     common
