@@ -9,7 +9,6 @@ class Home extends Component {
       <div>
         <h3 className='center'>CATEGORIES</h3>
         <CategoryList />
-        <h3 className='center'>POSTS</h3>
         <PostList />
       </div>
     )

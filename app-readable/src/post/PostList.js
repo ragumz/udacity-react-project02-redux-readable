@@ -1,24 +1,33 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PostItem from './PostItem'
+import SortListMenu from '../common/SortListMenu'
+import { ENTITY_NAME } from '../utils/constants'
+import { getSortedEntityId, sortEntityMap } from '../common/commonOperations'
+
+export const POST_SORT_MENU = [
+  {title: 'Author', fieldName: 'author'},
+  {title: 'Comment Count', fieldName: 'commentCount'},
+  {title: 'Creation Time', fieldName: 'timestamp'},
+  {title: 'Title', fieldName: 'title'},
+  {title: 'Vote Score', fieldName: 'voteScore'},
+]
 
 class PostList extends Component {
 
-  state = {
-    sortField: 'voteScore',
-    sortType: 'asc',
-  }
-
   render() {
-    const { posts } = this.props;
-    const { sortField/*, sortType*/ } = this.state;
+    const { posts, sortingSetup } = this.props;
 
-    const sortedPosts = Object.keys(posts)
-                      .sort((a,b) => posts[b][sortField] > posts[a][sortField])
+    let sortedPosts = sortEntityMap(posts, sortingSetup);
 
     return (
       <div>
-        <ul className='dashboard-list'>
+        <div className="center">
+          <h3 className="side-by-side">POSTS</h3>
+          <SortListMenu entityName={ENTITY_NAME.POST} sortMenuOptions={POST_SORT_MENU}  />
+        </div>
+
+        <ul className="dashboard-list">
           {sortedPosts.map((id) => (
             <li key={id}>
               <PostItem id={id}/>
@@ -30,9 +39,10 @@ class PostList extends Component {
   }
 }
 
-function mapStateToProps ({ posts },{ postsFilter }) {
+function mapStateToProps ({ posts, common },{ postsFilter }) {
   return {
-    posts: postsFilter ? postsFilter : posts
+    posts: postsFilter ? postsFilter : posts,
+    sortingSetup: common[getSortedEntityId(ENTITY_NAME.POST)]
   }
 }
 

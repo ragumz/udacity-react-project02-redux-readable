@@ -3,6 +3,8 @@ import { receiveCategories } from '../category/categoryActions';
 import { receivePosts } from '../post/postActions';
 import { showLoading, hideLoading } from 'react-redux-loading';
 import { showMessage } from '../common/commonActions'
+import * as constants from '../utils/constants'
+import * as common from '../utils/common'
 
 export function handleInitialData() {
   return dispatch => {
@@ -25,3 +27,23 @@ export function handleInitialData() {
   };
 }
 
+export function getSortedEntityId(entityName) {
+  return `sorted_${entityName}`
+}
+
+export function sortEntityMap(entityMap, sortingSetup) {
+  let sortedEntities = [];
+  if (sortingSetup) {
+    const { fieldName, order } = sortingSetup;
+    if (!common.isEmpty(fieldName) && !common.isEmpty(order)) {
+      if (order === constants.SORT_ORDER.DESCENDING) {
+        sortedEntities = Object.keys(entityMap)
+                            .sort((a,b) => entityMap[b][fieldName] > entityMap[a][fieldName])
+      } else {
+        sortedEntities = Object.keys(entityMap)
+                            .sort((a,b) => entityMap[b][fieldName] < entityMap[a][fieldName])
+      }
+    }
+  }
+  return sortedEntities;
+}

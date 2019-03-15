@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import * as commonActions from '../common/commonActions';
 import * as commonOperations from '../common/commonOperations';
 import MessageDialog from '../common/MessageDialog';
+import { ENTITY_NAME, SORT_ORDER } from '../utils/constants'
 
 class App extends Component {
   /**
@@ -18,6 +19,10 @@ class App extends Component {
   };
 
   componentDidMount() {
+    //setup default sorting
+    this.props.dispatch(commonActions.sortedListData(ENTITY_NAME.CATEGORY, 'name', SORT_ORDER.ASCENDING))
+    this.props.dispatch(commonActions.sortedListData(ENTITY_NAME.POST, 'voteScore', SORT_ORDER.DESCENDING))
+    this.props.dispatch(commonActions.sortedListData(ENTITY_NAME.COMMENT, 'voteScore', SORT_ORDER.DESCENDING))
     this.props.dispatch(commonOperations.handleInitialData());
   }
 

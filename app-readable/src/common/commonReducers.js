@@ -1,4 +1,5 @@
 import { COMMON_ACTIONS } from './commonActions';
+import { getSortedEntityId } from './commonOperations'
 
 export default function common(state = {}, action) {
   switch (action.type) {
@@ -12,7 +13,11 @@ export default function common(state = {}, action) {
         ...state,
         userMessage: null
       };
-
+    case COMMON_ACTIONS.SORTED_ENTITY:
+      return {
+        ...state,
+        [getSortedEntityId(action.entityName)]: {fieldName: action.fieldName, order: action.order}
+      };
     default:
       return state;
   }

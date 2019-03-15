@@ -3,23 +3,24 @@ PROJECT READABLE
 OK-Set GitHub project
 OK-create-react-app
 	npm install --save react-thunk redux react-redux redux-thunk react-icons react-redux-loading react-router-dom
-	npm install --save prop-types @material-ui/core
+	npm install --save prop-types @material-ui/core @material-ui/icons
 OK-Try REST operations
--Design Views
+OK-Design Views
 	-N/A Create Login Page, keep Auth user
 	-On Home screen show categories on Left and Posts on Right
--OK Create folders
+OK-Create folders
 	app
 	post
 	comment
 	common
--OK Implement REST API
+OK-Implement REST API
+
 -Implement Views
-	-Post View
-	-Category View
-	-Dashboard View
-		Post Filters
-	-CategoryPosts View
+	OK-Post View
+	OK-Category View
+	OK-Home View
+	OK-Category View
+	-Post Filters	==> Problema com método de sort	
 	-Comment View
 	-New Post View
 	-New Comment View
@@ -27,3 +28,5 @@ OK-Try REST operations
 -Create Thunk
 -Create Reducers
 -Create Middleware
+
+-Problema em commit Git de /utils/constants com C maiúsculo
