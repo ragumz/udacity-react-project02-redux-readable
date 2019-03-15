@@ -28,7 +28,7 @@ export function handleInitialData() {
 }
 
 export function getSortedEntityId(entityName) {
-  return `sorted_${entityName}`
+  return `sortSetup_${entityName}`
 }
 
 export function sortEntityMap(entityMap, sortingSetup) {
@@ -36,13 +36,15 @@ export function sortEntityMap(entityMap, sortingSetup) {
   if (sortingSetup) {
     const { fieldName, order } = sortingSetup;
     if (!common.isEmpty(fieldName) && !common.isEmpty(order)) {
-      if (order === constants.SORT_ORDER.DESCENDING) {
-        sortedEntities = Object.keys(entityMap)
-                            .sort((a,b) => entityMap[b][fieldName] > entityMap[a][fieldName])
-      } else {
-        sortedEntities = Object.keys(entityMap)
-                            .sort((a,b) => entityMap[b][fieldName] < entityMap[a][fieldName])
-      }
+      const asc = order === constants.SORT_ORDER.ASCENDING;
+      sortedEntities = Object.keys(entityMap)
+                          .sort((a,b) => {
+                            const valA = entityMap[a][fieldName];
+                            const valB = entityMap[b][fieldName];
+                            if (valA > valB) return asc ? 1 : -1;
+                            if (valA < valB) return asc ? -1 : 1;
+                            return 0;
+                          });
     }
   }
   return sortedEntities;

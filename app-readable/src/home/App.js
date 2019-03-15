@@ -23,6 +23,7 @@ class App extends Component {
     this.props.dispatch(commonActions.sortedListData(ENTITY_NAME.CATEGORY, 'name', SORT_ORDER.ASCENDING))
     this.props.dispatch(commonActions.sortedListData(ENTITY_NAME.POST, 'voteScore', SORT_ORDER.DESCENDING))
     this.props.dispatch(commonActions.sortedListData(ENTITY_NAME.COMMENT, 'voteScore', SORT_ORDER.DESCENDING))
+    //load data from backend REST web service
     this.props.dispatch(commonOperations.handleInitialData());
   }
 

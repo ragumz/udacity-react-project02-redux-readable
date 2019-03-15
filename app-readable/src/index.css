@@ -211,3 +211,13 @@ li {
 .side-by-side {
   display: inline-block
 }
+
+.sort-icon {
+  color: #2023c0;
+}
+.sort-icon-unselected:hover {
+  color: #00b5d6;
+}
+.sort-icon-unselected {
+  color: dark-grey;
+}

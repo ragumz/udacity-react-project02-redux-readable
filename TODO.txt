@@ -20,7 +20,7 @@ OK-Implement REST API
 	OK-Category View
 	OK-Home View
 	OK-Category View
-	-Post Filters	==> Problema com método de sort	
+	-Post Filters	==> Problema com método de sort	, tratar clique fora do menu
 	-Comment View
 	-New Post View
 	-New Comment View
