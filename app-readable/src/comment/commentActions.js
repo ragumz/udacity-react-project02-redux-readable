@@ -1,4 +1,4 @@
-import { arrayToIndexedObject } from '../utils/Common'
+import { arrayToIndexedObject } from '../utils/common'
 
 export const COMMENT_ACTIONS = Object.freeze({
   RECEIVE: 'RECEIVE_COMMENTS'
@@ -10,3 +10,4 @@ export function receiveComments(comments) {
     comments: arrayToIndexedObject(comments)
   };
 }
+

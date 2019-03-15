@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { formatDate } from '../../utils/Common';
-import * as Constants from '../../utils/Constants';
-import Vote from '../Vote';
-import { handlePostVoteScore } from '../../actions/posts'
+import { formatDate } from '../utils/common';
+import * as constants from '../utils/constants';
+import Vote from '../common/Vote';
+import { handlePostVoteScore } from './postOperations'
 
-class Post extends Component {
+class PostItem extends Component {
   render() {
-    const { post, /*postComments,*/ category, dispatch } = this.props;
+    const { post, category, dispatch } = this.props;
 
     if (post === null) {
       return <p>This Post doesn't exist</p>;
@@ -33,31 +33,25 @@ class Post extends Component {
             key={id}
             id={id}
             object={post}
-            entityName={Constants.VOTE_OBJECT.POST}
+            entityName={constants.VOTE_OBJECT.POST}
             dispatch={dispatch}
             actionHandle={handlePostVoteScore}
           />
-          <span className="post-info-right">Comments {commentCount/*postComments ? postComments.length : 0*/}</span>
+          <span className="post-info-right">Comments {commentCount}</span>
         </div>
       </div>
     );
   }
 }
 
-function mapStateToProps({ categories, posts, /*comments,*/ common }, { id }) {
+function mapStateToProps({ categories, posts, common }, { id }) {
   const post = posts[id];
   const category = post ? categories[post.category] : null;
-  /*const postComments = post
-    ? Object.values(comments)
-        .filter(comment => comment.parentId === id)
-        .sort((a, b) => a.voteScore < b.voteScore)
-    : null;*/
   return {
     category,
     post,
-    //postComments,
     common
   };
 }
 
-export default connect(mapStateToProps)(Post);
+export default connect(mapStateToProps)(PostItem);

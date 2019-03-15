@@ -1,4 +1,4 @@
-import { COMMON_ACTIONS } from '../actions/common';
+import { COMMON_ACTIONS } from './commonActions';
 
 export default function common(state = {}, action) {
   switch (action.type) {

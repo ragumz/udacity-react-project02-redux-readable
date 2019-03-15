@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import Post from './Post'
+import PostItem from './PostItem'
 
 class PostList extends Component {
 
@@ -21,7 +21,7 @@ class PostList extends Component {
         <ul className='dashboard-list'>
           {sortedPosts.map((id) => (
             <li key={id}>
-              <Post id={id}/>
+              <PostItem id={id}/>
             </li>
           ))}
         </ul>

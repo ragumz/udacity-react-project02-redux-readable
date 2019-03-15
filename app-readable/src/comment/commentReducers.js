@@ -1,4 +1,4 @@
-import { COMMENT_ACTIONS } from '../actions/comments';
+import { COMMENT_ACTIONS } from './commentActions';
 
 export default function comments(state = {}, action) {
   switch (action.type) {

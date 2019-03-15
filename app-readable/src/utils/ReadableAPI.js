@@ -1,10 +1,10 @@
-import * as Api from './RestAPI';
-import * as Commons from './Common';
+import * as api from './restAPI';
+import * as commons from './common';
 
 export function getInitialData() {
   return Promise.all([
-      Api.getAllCategories(),
-      Api.getAllPosts()
+      api.getAllCategories(),
+      api.getAllPosts()
     ]).then(([categories, posts]) => ({
       categories,
       posts,
@@ -13,10 +13,10 @@ export function getInitialData() {
 }
 
 export function getAllComments(posts) {
-  if (Commons.isEmpty(posts)) {
+  if (commons.isEmpty(posts)) {
     return new Promise();
   }
-  const tasks = posts.map(post => Api.getAllCommentsFromPost(post.id));
+  const tasks = posts.map(post => api.getAllCommentsFromPost(post.id));
   return tasks
     .reduce((promiseChain, currentTask) => {
       return promiseChain.then(chainResults =>
@@ -26,7 +26,7 @@ export function getAllComments(posts) {
     .then(arrayOfResults => {
       let comments = [];
       for (let arrComment of arrayOfResults) {
-        if (!Commons.isEmpty(arrComment)) {
+        if (!commons.isEmpty(arrComment)) {
           comments = comments.concat(arrComment);
         }
       }
@@ -35,5 +35,5 @@ export function getAllComments(posts) {
 }
 
 export function placePostVote(vote) {
-  return Api.placePostVote(vote)
+  return api.placePostVote(vote)
 }

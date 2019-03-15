@@ -7,7 +7,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Typography from '@material-ui/core/Typography';
 import PropTypes from "prop-types";
-import * as Common from '../../utils/Common';
+import * as common from '../utils/common';
 
 /**
  * @description An utility class to display modal dialogs with messages and buttons.
@@ -62,7 +62,7 @@ class MessageDialog extends Component {
    */
   componentWillReceiveProps(nextProps) {
     //shows the dialog if there is any message text.
-    if (!Common.isEmpty(nextProps.userMessage)
+    if (!common.isEmpty(nextProps.userMessage)
         && nextProps.userMessage !== this.props.userMessage) {
       this.handleOpen();
     }
@@ -72,7 +72,7 @@ class MessageDialog extends Component {
    * @description Creates the component UI
    */
   render() {
-    if (Common.isNull(this.props.userMessage)) {
+    if (common.isNull(this.props.userMessage)) {
       return <div></div>;
     }
 

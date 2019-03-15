@@ -1,28 +1,8 @@
-import { getInitialData/*, getAllComments */} from '../utils/ReadableAPI';
-import { receiveCategories } from './categories';
-import { receivePosts } from './posts';
-//import { receiveComments } from './comments';
+import { getInitialData } from '../utils/readableAPI';
+import { receiveCategories } from '../category/categoryActions';
+import { receivePosts } from '../post/postActions';
 import { showLoading, hideLoading } from 'react-redux-loading';
-
-export const COMMON_ACTIONS = Object.freeze({
-  SHOW_MESSAGE: 'SHOW_MESSAGE',
-  HIDE_MESSAGE: 'HIDE_MESSAGE',
-});
-
-export function showMessage(title='INFORMATION', message, error) {
-  return {
-    type: COMMON_ACTIONS.SHOW_MESSAGE,
-    title,
-    message,
-    error
-  };
-}
-
-export function hideMessage() {
-  return {
-    type: COMMON_ACTIONS.HIDE_MESSAGE
-  };
-}
+import { showMessage } from '../common/commonActions'
 
 export function handleInitialData() {
   return dispatch => {

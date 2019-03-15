@@ -2,21 +2,22 @@ import React, { Component, Fragment } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import LoadingBar from 'react-redux-loading';
 import Menu from './Menu';
-import Dashboard from './Dashboard';
+import Home from './Home';
 import { connect } from 'react-redux';
-import * as CommonActions from '../actions/common';
-import MessageDialog from './utils/MessageDialog';
+import * as commonActions from '../common/commonActions';
+import * as commonOperations from '../common/commonOperations';
+import MessageDialog from '../common/MessageDialog';
 
 class App extends Component {
   /**
    * @description Clear the text message of the modal dialog.
    */
   handleClearMessage = () => {
-    this.props.dispatch(CommonActions.hideMessage());
+    this.props.dispatch(commonActions.hideMessage());
   };
 
   componentDidMount() {
-    this.props.dispatch(CommonActions.handleInitialData());
+    this.props.dispatch(commonOperations.handleInitialData());
   }
 
   render() {
@@ -30,7 +31,7 @@ class App extends Component {
             <Menu />
             {this.props.loading === true ? null : (
               <div>
-                {<Route path='/' exact component={Dashboard} />
+                {<Route path='/' exact component={Home} />
                 /*<Route path='/tweet/:id' component={TweetPage} />
                 <Route path='/new' component={NewTweet} />*/}
               </div>

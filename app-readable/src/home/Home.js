@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import CategoryList from './category/CategoryList';
-import PostList from './post/PostList';
+import CategoryList from '../category/CategoryList';
+import PostList from '../post/PostList';
 
-class Dashboard extends Component {
+class Home extends Component {
   render() {
     return (
       <div>
@@ -16,11 +16,11 @@ class Dashboard extends Component {
   }
 }
 
-function mapStateToProps ({ categories, posts, common }) {
+function mapStateToProps ({ categories, posts }) {
   return {
     categories,
     posts,
   }
 }
 
-export default connect(mapStateToProps)(Dashboard)
+export default connect(mapStateToProps)(Home)

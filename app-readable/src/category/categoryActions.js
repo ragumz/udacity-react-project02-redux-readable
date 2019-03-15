@@ -1,4 +1,4 @@
-import { arrayToIndexedObject } from '../utils/Common'
+import { arrayToIndexedObject } from '../utils/common'
 
 export const CATEGORY_ACTIONS = Object.freeze({
   RECEIVE: 'RECEIVE_CATEGORIES'

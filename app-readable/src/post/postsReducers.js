@@ -1,5 +1,5 @@
-import { POST_ACTIONS } from '../actions/posts';
-import { VOTE_OPTIONS } from '../utils/Constants';
+import { POST_ACTIONS } from './postActions';
+import { VOTE_OPTIONS } from '../utils/constants';
 
 export default function posts(state = {}, action) {
   switch (action.type) {
