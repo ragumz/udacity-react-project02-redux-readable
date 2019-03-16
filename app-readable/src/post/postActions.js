@@ -2,7 +2,8 @@ import { arrayToIndexedObject } from '../utils/common';
 
 export const POST_ACTIONS = Object.freeze({
   RECEIVE: 'RECEIVE_POSTS',
-  VOTE: 'VOTE_POST'
+  VOTE: 'VOTE_POST',
+  NEW: 'NEW_POST',
 });
 
 export function receivePosts(posts) {
@@ -18,4 +19,11 @@ export function postVoteScore({id, option}) {
     id,
     option
   };
+}
+
+export function addNewPost(post) {
+  return {
+    type: POST_ACTIONS.NEW,
+    post
+  }
 }

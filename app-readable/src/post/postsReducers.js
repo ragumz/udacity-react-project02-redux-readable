@@ -19,6 +19,13 @@ export default function posts(state = {}, action) {
             : state[action.id].voteScore-1
           }
       };
+
+    case POST_ACTIONS.NEW:
+      return {
+        ...state,
+        [action.post.id]: action.post
+      };
+
     default:
       return state;
   }
