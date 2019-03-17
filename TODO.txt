@@ -14,19 +14,28 @@ OK-Create folders
 	comment
 	common
 OK-Implement REST API
+OK-Create Actions with Object.freeze({CONSTANT: value})
+OK-Create Thunk
+OK-Create Reducers
+OK-Create Middleware
 
 -Implement Views
 	OK-Post View
 	OK-Category View
 	OK-Home View
 	OK-Category View
-	-Post Filters	==> Problema com método de sort	, tratar clique fora do menu
-	-Comment View
+	OK-Post Filters
 	-New Post View
+		OK-Create Form fields to input data and validations
+		-Make category selection readonly if from Category view
+		-Check Category* InputLabel layout problem
+		-Check <Enter> key event error on Body TextField
+		-Better buttons layout
+		-New Post menu from Category View pass category as props
+	-Comment View
+	-Comment List
+	-Post View with Comment List
 	-New Comment View
--Create Actions with Object.freeze({CONSTANT: value})
--Create Thunk
--Create Reducers
--Create Middleware
+	-Drawer or contextual menu
 
 -Problema em commit Git de /utils/constants com C maiúsculo

@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import LoadingBar from 'react-redux-loading';
 import Menu from './Menu';
 import Home from './Home';
+import PostCreate from '../post/PostCreate';
 import CategoryItem from '../category/CategoyItem';
 import { connect } from 'react-redux';
 import * as commonActions from '../common/commonActions';
@@ -40,8 +41,8 @@ class App extends Component {
               <div>
                 <Route path="/" exact component={Home} />
                 <Route path='/category/:id' component={CategoryItem} />
-                {/*<Route path='/tweet/:id' component={TweetPage} />
-                <Route path='/new' component={NewTweet} />*/}
+                <Route path='/new' component={PostCreate} />
+                {/*<Route path='/tweet/:id' component={TweetPage} />*/}
               </div>
             )}
           </div>

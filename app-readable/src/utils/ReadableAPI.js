@@ -39,5 +39,5 @@ export function placePostVote(vote) {
 }
 
 export function addNewPost(post) {
-  return addNewPost.addNewPost(post);
+  return api.addNewPost(post);
 }
