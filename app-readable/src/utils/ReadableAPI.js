@@ -41,3 +41,8 @@ export function placePostVote(vote) {
 export function addNewPost(post) {
   return api.addNewPost(post);
 }
+
+
+export function placeCommentVote(vote) {
+  return api.placeCommentVote(vote)
+}

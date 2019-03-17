@@ -1,15 +1,15 @@
 import React, { Component, Fragment } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-import LoadingBar from 'react-redux-loading';
-import Menu from './Menu';
-import Home from './Home';
-import PostCreate from '../post/PostCreate';
-import CategoryItem from '../category/CategoyItem';
 import { connect } from 'react-redux';
+import LoadingBar from 'react-redux-loading';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import CategoryItem from '../category/CategoyItem';
 import * as commonActions from '../common/commonActions';
 import * as commonOperations from '../common/commonOperations';
 import MessageDialog from '../common/MessageDialog';
-import { ENTITY_NAME, SORT_ORDER } from '../utils/constants'
+import PostEdit from '../post/PostEdit';
+import { ENTITY_NAME, SORT_ORDER } from '../utils/constants';
+import Home from './Home';
+import Menu from './Menu';
 
 class App extends Component {
   /**
@@ -41,7 +41,8 @@ class App extends Component {
               <div>
                 <Route path="/" exact component={Home} />
                 <Route path='/category/:id' component={CategoryItem} />
-                <Route path='/new' component={PostCreate} />
+                <Route path='/post/new/' component={PostEdit} />
+                <Route path='/post/edit/:id' component={PostEdit} />
                 {/*<Route path='/tweet/:id' component={TweetPage} />*/}
               </div>
             )}

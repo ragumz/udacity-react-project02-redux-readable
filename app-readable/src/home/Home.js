@@ -7,7 +7,6 @@ class Home extends Component {
   render() {
     return (
       <div>
-        <h3 className='center'>CATEGORIES</h3>
         <CategoryList />
         <PostList />
       </div>

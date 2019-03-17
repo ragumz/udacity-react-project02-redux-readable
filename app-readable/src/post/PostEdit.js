@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import * as common from '../utils/common';
 import { handleAddNewPost } from './postOperations';
 import { withRouter } from 'react-router-dom';
+import VoteScore from '../common/VoteScore';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
@@ -16,13 +17,15 @@ const NEW_POST = {
   category: '',
   title: '',
   body: '',
-  author: ''
+  author: '',
+  commnetCount: 0,
+  voteCount: 0,
 };
 
 /**
  * @description Component to create new Posts.
  */
-class PostCreate extends Component {
+class PostEdit extends Component {
   state = {
     ...NEW_POST,
     goBack: false,
@@ -67,8 +70,9 @@ class PostCreate extends Component {
   }
 
   render() {
-    const { categoryRequired, category, title, body, author, goBack } = this.state;
-    const { fixedCategory, categories } = this.props;
+    const { categoryRequired, category, title, body, author, commentCount, goBack } = this.state;
+    const { post, fixedCategory, categories } = this.props;
+    const { id, timestamp } = post
 
     if (goBack === true) {
       //return <Redirect to={common.isEmpty(sourceLocation) ? '/' : sourceLocation} />
@@ -120,6 +124,19 @@ class PostCreate extends Component {
             onChange={this.handleChange}
           />
           <TextField
+            id="author"
+            name="author"
+            label="Author"
+            className="inputField"
+            variant="outlined"
+            margin="normal"
+            fullWidth={true}
+            maxLength={200}
+            value={author}
+            required={true}
+            onChange={this.handleChange}
+          />
+          <TextField
             id="body"
             name="body"
             label="Body"
@@ -137,23 +154,18 @@ class PostCreate extends Component {
             onChange={this.handleChange}
           />
           {bodyLeft <= 100 && <div className="post-length">{bodyLeft}</div>}
-          <TextField
-            id="author"
-            name="author"
-            label="Author"
-            className="inputField"
-            variant="outlined"
-            margin="normal"
-            fullWidth={true}
-            maxLength={200}
-            value={author}
-            required={true}
-            onChange={this.handleChange}
+          <div className="label-info-timestamp">{common.formatDate(timestamp)}</div>
+          <VoteScore
+            key={id}
+            id={id}
+            object={post}
+            disabled={true}
           />
-          <Button type="submit" variant="contained" color="primary" onSubmit={this.handleSubmit}>
+          <span className="panel-info-right">Comments {commentCount}</span>
+          <Button type="submit" variant="text" color="primary" onSubmit={this.handleSubmit}>
             Save
           </Button>
-          <Button type="button" variant="contained" color="secondary">
+          <Button type="button" variant="text" color="secondary">
             Clear Values
           </Button>
         </form>
@@ -162,12 +174,20 @@ class PostCreate extends Component {
   }
 }
 
-function mapStateToProps({ categories }, { category }) {
+function mapStateToProps({ posts, categories }, { match, id, post, category }) {
+  const { locationId } = match.params;
+  if (common.isEmpty(id)) {
+    id = locationId;
+  }
+  if (!common.isEmpty(id) && common.isNull(post)) {
+    post = posts[id];
+  }
   return {
     categories,
     category,
+    post: post ? post : {},
     fixedCategory: !common.isEmpty(category),
   };
 }
 
-export default withRouter(connect(mapStateToProps)(PostCreate));
+export default withRouter(connect(mapStateToProps)(PostEdit));

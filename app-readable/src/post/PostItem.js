@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as common from '../utils/common';
 import * as constants from '../utils/constants';
-import Vote from '../common/Vote';
+import VoteScore from '../common/VoteScore';
 import { handlePostVoteScore } from './postOperations'
+import EntityButtons from '../common/EntityButtons'
 
 class PostItem extends Component {
   render() {
@@ -22,21 +23,25 @@ class PostItem extends Component {
 
     return (
       <div className="post">
-        <div className="post-info">
-          <div className="post-info-right">{category.name}</div>
-          <span className="post-info-title">{title}</span>
+        <div className="panel-info">
+          <div>
+            <div className="panel-info-right">{category.name}</div>
+            <div className="panel-info-left">
+              <EntityButtons />
+            </div>
+          </div>
+          <span className="panel-info-title">{title}</span>
           <span>{author}</span>
-          <div className="post-info-date">{common.formatDate(timestamp)}</div>
+          <div className="label-info-timestamp">{common.formatDate(timestamp)}</div>
           <p>{body}</p>
-          <Vote
-            key={id}
+          <VoteScore
             id={id}
             object={post}
             entityName={constants.VOTE_OBJECT.POST}
             dispatch={dispatch}
             actionHandle={handlePostVoteScore}
           />
-          <span className="post-info-right">Comments {commentCount}</span>
+          <span className="panel-info-right">Comments {commentCount}</span>
         </div>
       </div>
     );
