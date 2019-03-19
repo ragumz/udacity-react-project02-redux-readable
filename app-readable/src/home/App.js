@@ -49,8 +49,7 @@ class App extends Component {
           </div>
           <MessageDialog
             userMessage={userMessage}
-            buttons={[{ text: 'OK', handleClick: this.handleClearMessage }]}
-          />
+            buttons={[{ text: 'OK', handleClick: this.handleClearMessage }]}/>
         </Fragment>
       </Router>
     );

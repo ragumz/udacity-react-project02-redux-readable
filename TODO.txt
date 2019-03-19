@@ -32,6 +32,10 @@ OK-Create Middleware
 		-Check <Enter> key event error on Body TextField
 		-Better buttons layout
 		-New Post menu from Category View pass category as props
+	-Vote Actions
+		-Set invisible vote buttons when disabled
+	-Delete Post
+		-Delete post fails due to Promise return error, probably commentOperations problem
 	-Comment View
 	-Comment List
 	-Post View with Comment List

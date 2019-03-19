@@ -44,8 +44,9 @@ class ErrorBoundary extends Component {
    */
   render() {
     if (this.state.hasError) {
+      const userMessage = {title: 'ERROR', message: 'An unknown error was captured.', error: this.state.error};
       //if contains an error state, show modal dialog with its stack trace
-      return <MessageDialog title="ERROR" message={this.state.error.stack} />;
+      return <MessageDialog userMessage={userMessage} />
     }
     return this.props.children;
   };

@@ -42,7 +42,18 @@ export function addNewPost(post) {
   return api.addNewPost(post);
 }
 
+export function deletePost(postId) {
+  return api.deletePost(postId)
+}
 
 export function placeCommentVote(vote) {
-  return api.placeCommentVote(vote)
+  return api.placeCommentVote(vote);
+}
+
+export function deleteComment(commentId) {
+  return api.deleteComment(commentId);
+}
+
+export function updateComment(comment) {
+  return api.updateComment(comment);
 }

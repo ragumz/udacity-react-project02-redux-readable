@@ -4,6 +4,7 @@ export const POST_ACTIONS = Object.freeze({
   RECEIVE: 'RECEIVE_POSTS',
   VOTE: 'VOTE_POST',
   NEW: 'NEW_POST',
+  DELETE: 'DELETE_POST',
 });
 
 export function receivePosts(posts) {
@@ -25,5 +26,12 @@ export function addNewPost(post) {
   return {
     type: POST_ACTIONS.NEW,
     post
+  }
+}
+
+export function deletePost(postId) {
+  return {
+    type: POST_ACTIONS.DELETE,
+    postId
   }
 }

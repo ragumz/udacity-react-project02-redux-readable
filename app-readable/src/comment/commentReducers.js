@@ -20,6 +20,22 @@ export default function comments(state = {}, action) {
           }
       };
 
+    case COMMENT_ACTIONS.DELETE:
+      return {
+        ...state,
+        [action.commentId]: {
+          ...state[action.commentId],
+          deleted: true
+        }
+      }
+
+    case COMMENT_ACTIONS.DELETED_PARENT:
+      let comments = {...state};
+      Object.values(comments)
+              .filter(comment => comment.parentId === action.parentId)
+              .forEach(comment => comment.parentDeleted = true);
+      return comments;
+
     default:
       return state;
   }

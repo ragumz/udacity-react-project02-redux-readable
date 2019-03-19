@@ -3,11 +3,36 @@ import { connect } from 'react-redux';
 import * as common from '../utils/common';
 import * as constants from '../utils/constants';
 import VoteScore from '../common/VoteScore';
-import { handlePostVoteScore } from './postOperations'
+import { handlePostVoteScore, handleDeletePost } from './postOperations'
 import EntityButtons from '../common/EntityButtons'
+import MessageDialog from '../common/MessageDialog'
 
 class PostItem extends Component {
+
+  state = {
+    showDeleteDialog: false,
+  }
+
+  handleEdit = (event) => {
+    console.log('edit button click!');
+  }
+
+  handleShowDeleteDialog = (event) => {
+    this.setState({ showDeleteDialog: true });
+  }
+
+  handleDeleteYes = (event) => {
+    const { dispatch, id } = this.props
+    this.setState({ showDeleteDialog: false },
+                  dispatch(handleDeletePost(id)));
+  }
+
+  handleDeleteNo = (event) => {
+    this.setState({ showDeleteDialog: false });
+  }
+
   render() {
+    const { showDeleteDialog } = this.state;
     const { id, post, category, dispatch } = this.props;
 
     if (common.isNull(post)) {
@@ -21,13 +46,23 @@ class PostItem extends Component {
       commentCount
     } = post;
 
+    let userMessage;
+    if (showDeleteDialog) {
+      userMessage = {title: "QUESTION", message: "Are you sure you want to delete this Post? It cannot be recovered."};
+    } else {
+      userMessage = null;
+    }
+
     return (
       <div className="post">
         <div className="panel-info">
           <div>
             <div className="panel-info-right">{category.name}</div>
             <div className="panel-info-left">
-              <EntityButtons />
+              <EntityButtons
+                entityName={constants.ENTITY_NAME.POST}
+                handleDelete={this.handleShowDeleteDialog}
+                handleEdit={this.handleEdit}/>
             </div>
           </div>
           <span className="panel-info-title">{title}</span>
@@ -39,10 +74,13 @@ class PostItem extends Component {
             object={post}
             entityName={constants.VOTE_OBJECT.POST}
             dispatch={dispatch}
-            actionHandle={handlePostVoteScore}
-          />
+            actionHandle={handlePostVoteScore}/>
           <span className="panel-info-right">Comments {commentCount}</span>
         </div>
+        <MessageDialog
+            userMessage={userMessage}
+            buttons={[{ text: 'Yes', handleClick: this.handleDeleteYes },
+                      { text: 'No',  handleClick: this.handleDeleteNo }]}/>
       </div>
     );
   }

@@ -18,7 +18,8 @@ class PostList extends Component {
   render() {
     const { posts, sortingSetup } = this.props;
 
-    let sortedPosts = sortEntityMap(posts, sortingSetup);
+    let sortedPosts = sortEntityMap(posts, sortingSetup)
+                        .filter(post => post.deleted !== false);
 
     return (
       <div>

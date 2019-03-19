@@ -1,4 +1,5 @@
 import * as actions from './postActions'
+import * as commentOperations from '../comment/commentOperations'
 import * as api from '../utils/readableAPI';
 import * as constants from '../utils/constants';
 import * as common from '../utils/common';
@@ -48,5 +49,16 @@ export function handleAddNewPost(category, title, body, author) {
       .then((post) => dispatch(actions.addNewPost(post)))
       .then(() => dispatch(hideLoading()))
       .catch(error => dispatch(showMessage('ERROR', 'There was an error adding the new post. Try again.', error)))
+  }
+}
+
+export function handleDeletePost(postId) {
+  return (dispatch) => {
+    dispatch(showLoading())
+    return api.deletePost(postId)
+      .then(post => dispatch(actions.deletePost(postId)))
+      .then(() => dispatch(commentOperations.handleDeletedParent(postId)))
+      .then(() => dispatch(hideLoading()))
+      .catch(error => dispatch(showMessage('ERROR', 'There was an error deleting the post. Try again.', error)))
   }
 }

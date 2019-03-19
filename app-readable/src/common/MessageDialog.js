@@ -19,7 +19,7 @@ class MessageDialog extends Component {
   static propTypes = {
     userMessage: PropTypes.shape({
       title: PropTypes.string.isRequired,
-      message: PropTypes.string,
+      message: PropTypes.string.isRequired,
       error: PropTypes.any
     }),
     buttons: PropTypes.array,
@@ -76,7 +76,8 @@ class MessageDialog extends Component {
       return <div></div>;
     }
 
-    const { title, message, error, buttons } = this.props.userMessage
+    const { buttons } = this.props;
+    const { title, message, error } = this.props.userMessage;
 
     if (this.state.open && error) {
       console.error(message, error);

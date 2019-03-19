@@ -164,9 +164,10 @@ export const placeCommentVote = ({id, option}) =>
  */
 export const updateComment = ({
   commentId,
-  timestamp = Date.now(),
+  timestamp,
   body,
-  deleted = false
+  deleted = false,
+  parendDeleted = false
 }) =>
   fetch(`${api}/comments/${commentId}`, {
     method: 'PUT',
@@ -174,7 +175,7 @@ export const updateComment = ({
       ...headers,
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ timestamp, body, deleted })
+    body: JSON.stringify({ timestamp, body, deleted, parendDeleted })
   })
     .then(res => res.json())
     .then(data => data);

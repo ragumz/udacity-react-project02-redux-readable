@@ -31,7 +31,7 @@ class VoteScore extends Component {
           data-option={constants.VOTE_OPTIONS.UP}
           onClick={(event) => {this.handleVote(event, constants.VOTE_OPTIONS.UP)}}
         >
-          <TiThumbsUp key={'up-img-'.concat(id)} className="view-icon" data-option={'upVote'} />
+          <TiThumbsUp visibility={disabled ? "hidden" : "display"} key={'up-img-'.concat(id)} className="view-icon" data-option={'upVote'} />
         </button>
         <button
           disabled={disabled}
@@ -40,7 +40,7 @@ class VoteScore extends Component {
           data-option={constants.VOTE_OPTIONS.DOWN}
           onClick={(event) => {this.handleVote(event, constants.VOTE_OPTIONS.DOWN)}}
         >
-          <TiThumbsDown key={'down-img-'.concat(id)} className="view-icon" data-option={'downVote'}/>
+          <TiThumbsDown visibility={disabled ? "hidden" : "display"} key={'down-img-'.concat(id)} className="view-icon" data-option={'downVote'}/>
         </button>
       </div>
     );

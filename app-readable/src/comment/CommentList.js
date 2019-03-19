@@ -13,9 +13,12 @@ export const COMMENT_SORT_MENU = [
 
 class CommentList extends Component {
   render() {
-    const { posts: comments, sortingSetup } = this.props;
+    const { /*posts,*/ comments, sortingSetup } = this.props;
 
-    let sortedComments = sortEntityMap(comments, sortingSetup);
+    let sortedComments = sortEntityMap(comments, sortingSetup)
+                          .filter(comment => comment.deleted !== false
+                                              && comment.parentDeleted !== false
+                                              /*&& posts[comment.parentId].deleted !== false*/);
 
     return (
       <div>
@@ -36,8 +39,9 @@ class CommentList extends Component {
   }
 }
 
-function mapStateToProps({ comments, common }, { commentsFilter }) {
+function mapStateToProps({ /*posts,*/ comments, common }, { commentsFilter }) {
   return {
+    //posts,
     comments: commentsFilter ? commentsFilter : comments,
     sortingSetup: common[getSortedEntityId(ENTITY_NAME.COMMENT)]
   };

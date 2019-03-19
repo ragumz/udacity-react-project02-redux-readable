@@ -1,7 +1,7 @@
 export const ENTITY_NAME = Object.freeze({
-  CATEGORY: 'category',
-  POST: 'post',
-  COMMENT: 'comment'
+  CATEGORY: 'Category',
+  POST: 'Post',
+  COMMENT: 'Comment'
 })
 
 /**

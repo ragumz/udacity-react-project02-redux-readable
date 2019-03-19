@@ -26,6 +26,15 @@ export default function posts(state = {}, action) {
         [action.post.id]: action.post
       };
 
+    case POST_ACTIONS.DELETE:
+    return {
+      ...state,
+      [action.post.id]: {
+        ...state[action.id],
+        deleted: true
+      }
+    };
+
     default:
       return state;
   }
