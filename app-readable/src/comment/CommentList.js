@@ -16,9 +16,9 @@ class CommentList extends Component {
     const { /*posts,*/ comments, sortingSetup } = this.props;
 
     let sortedComments = sortEntityMap(comments, sortingSetup)
-                          .filter(comment => comment.deleted !== false
-                                              && comment.parentDeleted !== false
-                                              /*&& posts[comment.parentId].deleted !== false*/);
+                          .filter(key => comment[key].deleted !== true
+                                              && comment[key].parentDeleted !== true
+                                              /*&& posts[comment.parentId].deleted !== true*/);
 
     return (
       <div>

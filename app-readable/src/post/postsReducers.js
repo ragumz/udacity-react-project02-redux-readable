@@ -29,8 +29,8 @@ export default function posts(state = {}, action) {
     case POST_ACTIONS.DELETE:
     return {
       ...state,
-      [action.post.id]: {
-        ...state[action.id],
+      [action.postId]: {
+        ...state[action.postId],
         deleted: true
       }
     };

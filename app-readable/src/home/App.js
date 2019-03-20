@@ -43,7 +43,6 @@ class App extends Component {
                 <Route path='/category/:id' component={CategoryItem} />
                 <Route path='/post/new/' component={PostEdit} />
                 <Route path='/post/edit/:id' component={PostEdit} />
-                {/*<Route path='/tweet/:id' component={TweetPage} />*/}
               </div>
             )}
           </div>

@@ -33,16 +33,20 @@ export function handleDeletedParent(parentId) {
     var promises = [];
     const { comments } = getState();
     Object.values(comments)
-            .filter(comment => comment.parentId === parentId)
-            .forEach(comment => {
-              const updComment = {...comment, parentDeleted: true};
-              promises.push(
-                api.updateComment(updComment)
-                .then(() => dispatch(actions.deletedParentComment(parentId)))
-              )
-            });
-    return Promise.all(promises)
-                  .then()
-                  .catch(error => dispatch(showMessage('ERROR', 'There was an error marking one Comment after its Post deletion. Try again.', error)));
+      .filter(comment => comment.parentId === parentId)
+      .forEach(comment => {
+        const updComment = {...comment, parentDeleted: true};
+        promises.push(
+          api.updateComment(updComment)
+          .then(() => dispatch(actions.deletedParentComment(parentId)))
+        )
+      });
+    if (promises.length > 0) {
+      return Promise.all(promises)
+                    .then(([...result]) => {console.log(Array.toString(result))})
+                    .catch(error => dispatch(showMessage('ERROR', 'There was an error marking one Comment after its Post deletion. Try again.', error)));
+    } else  {
+      return Promise.resolve();
+    }
   }
 }

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as common from '../utils/common';
-import { handleAddNewPost } from './postOperations';
+import * as constants from '../utils/constants';
+import { handleAddNewPost, handlePostVoteScore } from './postOperations';
 import { withRouter } from 'react-router-dom';
 import VoteScore from '../common/VoteScore';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -13,45 +14,64 @@ import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 
-const NEW_POST = {
+export const EMTPY_POST = {
+  id: '',
   category: '',
   title: '',
   body: '',
   author: '',
-  commnetCount: 0,
-  voteCount: 0,
-};
+  timestamp: 0,
+  voteScore: 0,
+  commentCount: 0,
+  deleted: false,
+}
 
 /**
  * @description Component to create new Posts.
  */
 class PostEdit extends Component {
   state = {
-    ...NEW_POST,
+    editPost: EMTPY_POST,
     goBack: false,
     categoryRequired: false,
   };
 
   handleChange = event => {
-    this.setState({ [event.target.name]: event.target.value });
-  };
+    this.setState((currState) => {
+      currState.editPost[event.target.name] = event.target.value;
+      return currState;
+    });
+  }
 
   handleSubmit = event => {
     event.preventDefault();
-    const { category, title, body, author } = this.state;
-    if (common.isEmpty(category)) {
+    if (common.isNull(this.props.post)) {
+      this.handleCreatePost();
+    } else {
+      this.handleUpdatePost();
+    }
+  };
+
+  handleCreatePost = () => {
+    const { editPost } = this.state;
+    //force category selection
+    if (common.isEmpty(editPost.category)) {
       this.setState({categoryRequired: true});
       return;
     } else {
       this.setState({categoryRequired: false});
     }
-
     const { dispatch } = this.props;
-    dispatch(handleAddNewPost(category, title, body, author));
-    this.setState(() => ({
-      ...NEW_POST,
-      goBack: true
-    }));
+    dispatch(handleAddNewPost(editPost))
+      .then(() => {
+        this.setState(() => ({
+          goBack: true,
+        }))
+    });
+  };
+
+  handleUpdatePost = () => {
+
   };
 
   /**
@@ -60,22 +80,31 @@ class PostEdit extends Component {
    * @param {object} nextProps The new props that will replace this.props
    */
   componentWillReceiveProps(nextProps) {
+    //TODO: Check when update editPost state with this.props.post!!
     //shows the dialog if there is any message text.
-    if (!common.isEmpty(nextProps.category) && nextProps.category !== this.props.category) {
+    if ((!common.isEmpty(nextProps.category)
+          && nextProps.category !== this.props.category)
+        || (!common.isNull(nextProps.post))) {
       this.setState(currProps => ({
         ...currProps,
-        category: nextProps.category
+        category: nextProps.category,
+        editPost: nextProps.post
       }));
     }
   }
 
   render() {
-    const { categoryRequired, category, title, body, author, commentCount, goBack } = this.state;
-    const { post, fixedCategory, categories } = this.props;
-    const { id, timestamp } = post
+    const { editPost, goBack, categoryRequired } = this.state;
+
+    let pageTitle = 'Edit Post', flagCreate = false;
+    if (common.isNull(this.props.post)) {
+      pageTitle = 'Create a new Post';
+      flagCreate = true;
+    }
+    const { id, timestamp, category, title, body, author, commentCount } = editPost;
+    const { fixedCategory, categories, dispatch } = this.props;
 
     if (goBack === true) {
-      //return <Redirect to={common.isEmpty(sourceLocation) ? '/' : sourceLocation} />
       this.props.history.goBack();
       return <div />;
     }
@@ -85,7 +114,7 @@ class PostEdit extends Component {
 
     return (
       <div>
-        <h3 className="center">Create a new Post</h3>
+        <h3 className="center">{pageTitle}</h3>
         <form className="new-post" onSubmit={this.handleSubmit}>
           <FormControl error={categoryRequired}>
             <InputLabel htmlFor="categories" className="inputField">Category*</InputLabel>
@@ -156,18 +185,19 @@ class PostEdit extends Component {
           {bodyLeft <= 100 && <div className="post-length">{bodyLeft}</div>}
           <div className="label-info-timestamp">{common.formatDate(timestamp)}</div>
           <VoteScore
-            key={id}
             id={id}
-            object={post}
-            disabled={true}
-          />
+            object={editPost}
+            entityName={constants.VOTE_OBJECT.POST}
+            dispatch={dispatch}
+            actionHandle={handlePostVoteScore}
+            disabled={flagCreate}/>
           <span className="panel-info-right">Comments {commentCount}</span>
           <Button type="submit" variant="text" color="primary" onSubmit={this.handleSubmit}>
             Save
           </Button>
-          <Button type="button" variant="text" color="secondary">
+          {flagCreate && <Button type="button" variant="text" color="secondary">
             Clear Values
-          </Button>
+          </Button>}
         </form>
       </div>
     );
@@ -175,9 +205,8 @@ class PostEdit extends Component {
 }
 
 function mapStateToProps({ posts, categories }, { match, id, post, category }) {
-  const { locationId } = match.params;
-  if (common.isEmpty(id)) {
-    id = locationId;
+  if (!common.isEmpty(match.params.id)) {
+    id = match.params.id;
   }
   if (!common.isEmpty(id) && common.isNull(post)) {
     post = posts[id];
@@ -185,7 +214,7 @@ function mapStateToProps({ posts, categories }, { match, id, post, category }) {
   return {
     categories,
     category,
-    post: post ? post : {},
+    post: post ? post : null,
     fixedCategory: !common.isEmpty(category),
   };
 }

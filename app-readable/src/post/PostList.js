@@ -19,7 +19,7 @@ class PostList extends Component {
     const { posts, sortingSetup } = this.props;
 
     let sortedPosts = sortEntityMap(posts, sortingSetup)
-                        .filter(post => post.deleted !== false);
+                        .filter(key => posts[key].deleted !== true);
 
     return (
       <div>

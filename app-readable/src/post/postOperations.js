@@ -31,18 +31,9 @@ function revertPostVoteScore(dispatch, vote, error) {
   dispatch(showMessage('ERROR', 'There was an error voting on the post. Try again.', error));
 }
 
-function getNewEmptyPost() {
-  return {
-    id: common.generateUID(),
-    timestamp: Date.now(),
-    voteScore: 0,
-    commentCount: 0,
-    deleted: false,
-  }
-}
-
-export function handleAddNewPost(category, title, body, author) {
-  const newPost = Object.assign(getNewEmptyPost(), { category, title, body, author });
+export function handleAddNewPost(newPost) {
+  newPost.id = common.generateUID();
+  newPost.timestamp = Date.now();
   return (dispatch/*, getState*/) => {
     dispatch(showLoading())
     return api.addNewPost(newPost)

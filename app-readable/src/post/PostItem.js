@@ -6,6 +6,7 @@ import VoteScore from '../common/VoteScore';
 import { handlePostVoteScore, handleDeletePost } from './postOperations'
 import EntityButtons from '../common/EntityButtons'
 import MessageDialog from '../common/MessageDialog'
+import { withRouter } from 'react-router-dom'
 
 class PostItem extends Component {
 
@@ -14,7 +15,7 @@ class PostItem extends Component {
   }
 
   handleEdit = (event) => {
-    console.log('edit button click!');
+    this.props.history.push(`/post/edit/${this.props.id}`)
   }
 
   handleShowDeleteDialog = (event) => {
@@ -23,8 +24,8 @@ class PostItem extends Component {
 
   handleDeleteYes = (event) => {
     const { dispatch, id } = this.props
-    this.setState({ showDeleteDialog: false },
-                  dispatch(handleDeletePost(id)));
+    this.setState({ showDeleteDialog: false });
+    dispatch(handleDeletePost(id));
   }
 
   handleDeleteNo = (event) => {
@@ -36,7 +37,7 @@ class PostItem extends Component {
     const { id, post, category, dispatch } = this.props;
 
     if (common.isNull(post)) {
-      return <p>Post with {id} doesn't exist</p>;
+      return <p>Post with {id} does not exist</p>;
     }
     const {
       title,
@@ -46,11 +47,11 @@ class PostItem extends Component {
       commentCount
     } = post;
 
-    let userMessage;
+    let userMessage = null, messageButtons = null;
     if (showDeleteDialog) {
       userMessage = {title: "QUESTION", message: "Are you sure you want to delete this Post? It cannot be recovered."};
-    } else {
-      userMessage = null;
+      messageButtons = [{ text: 'Yes', handleClick: this.handleDeleteYes },
+                        { text: 'No',  handleClick: this.handleDeleteNo }];
     }
 
     return (
@@ -79,8 +80,7 @@ class PostItem extends Component {
         </div>
         <MessageDialog
             userMessage={userMessage}
-            buttons={[{ text: 'Yes', handleClick: this.handleDeleteYes },
-                      { text: 'No',  handleClick: this.handleDeleteNo }]}/>
+            buttons={messageButtons}/>
       </div>
     );
   }
@@ -97,4 +97,4 @@ function mapStateToProps({ categories, posts, common }, { id }) {
   };
 }
 
-export default connect(mapStateToProps)(PostItem);
+export default withRouter(connect(mapStateToProps)(PostItem));

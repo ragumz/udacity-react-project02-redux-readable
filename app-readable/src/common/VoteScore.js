@@ -14,10 +14,9 @@ class VoteScore extends Component {
   render() {
     let { object, disabled } = this.props;
 
-    if (common.isNull(object)) {
+    if (common.isNull(object) || !object.hasOwnProperty('id')) {
       //objeto não existe ainda, quando criado nova entidade
       object = { id: common.generateUID(), voteScore: 0};
-//      return <p>This ${this.props.entityName} doesn't exist</p>;
     }
     const { id, voteScore } = object;
 
