@@ -18,6 +18,7 @@ OK-Create Actions with Object.freeze({CONSTANT: value})
 OK-Create Thunk
 OK-Create Reducers
 OK-Create Middleware
+OK-Problema em commit Git de /utils/constants com C maiúsculo
 
 -Implement Views
 	OK-Post View
@@ -32,14 +33,17 @@ OK-Create Middleware
 		-Check <Enter> key event error on Body TextField
 		-Better buttons layout
 		-New Post menu from Category View pass category as props
-	-Vote Actions
-		-Set invisible vote buttons when disabled
-	-Delete Post
-		-Delete post fails due to Promise return error, probably commentOperations problem
+	OK-Vote Actions
+		OK-Set invisible vote buttons when disabled
+	OK-Delete Post
+		OK-Delete post fails due to Promise return error, probably commentOperations problem
 	-Comment View
 	-Comment List
 	-Post View with Comment List
-	-New Comment View
+	-Edit Comment View
 	-Drawer or contextual menu
+	-CSS general review
 
--Problema em commit Git de /utils/constants com C maiúsculo
+-Add documentation and comments
+
+-Update README

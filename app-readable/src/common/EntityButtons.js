@@ -9,8 +9,8 @@ class EntityButtons extends Component {
    */
   static propTypes = {
     entityName: PropTypes.string.isRequired,
-    handleEdit: PropTypes.func.isRequired,
-    handleDelete: PropTypes.func.isRequired
+    handleEdit: PropTypes.func,
+    handleDelete: PropTypes.func
   };
 
   render() {
@@ -18,20 +18,24 @@ class EntityButtons extends Component {
 
     return (
       <div>
-        <Button
-          variant="text"
-          mini={true}
-          title={`Edit ${entityName}`}
-          onClick={event => handleEdit(event)}>
-          <FaRegEdit />
-        </Button>
-        <Button
-          variant="text"
-          mini={true}
-          title={`Remove ${entityName}`}
-          onClick={event => handleDelete(event)}>
-          <FaTrashAlt />
-        </Button>
+        {handleEdit &&
+          <Button
+            variant="text"
+            mini={true}
+            title={`Edit ${entityName}`}
+            onClick={event => handleEdit(event)}>
+            <FaRegEdit />
+          </Button>
+        }
+        { handleDelete &&
+          <Button
+            variant="text"
+            mini={true}
+            title={`Remove ${entityName}`}
+            onClick={event => handleDelete(event)}>
+            <FaTrashAlt />
+          </Button>
+        }
       </div>
     );
   }

@@ -84,3 +84,10 @@ export function formatDate (timestamp) {
 export function generateUID() {
   return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
 }
+
+export function createDeleteMessage(entityName, handleDeleteYes, handleDeleteNo) {
+  let userMessage = {title: "QUESTION", message: `Are you sure you want to delete this ${entityName}? It cannot be recovered.`};
+  let messageButtons = [{ text: 'Yes', handleClick: handleDeleteYes },
+                        { text: 'No',  handleClick: handleDeleteNo }];
+  return { userMessage, messageButtons};
+}

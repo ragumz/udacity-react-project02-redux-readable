@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as common from '../utils/common';
+import * as commons from '../utils/common';
 import * as constants from '../utils/constants';
 import VoteScore from '../common/VoteScore';
 import { handlePostVoteScore, handleDeletePost } from './postOperations'
@@ -36,7 +36,7 @@ class PostItem extends Component {
     const { showDeleteDialog } = this.state;
     const { id, post, category, dispatch } = this.props;
 
-    if (common.isNull(post)) {
+    if (commons.isNull(post)) {
       return <p>Post with {id} does not exist</p>;
     }
     const {
@@ -47,11 +47,10 @@ class PostItem extends Component {
       commentCount
     } = post;
 
-    let userMessage = null, messageButtons = null;
+    //deletion behavior
+    let deleteDialog = {};
     if (showDeleteDialog) {
-      userMessage = {title: "QUESTION", message: "Are you sure you want to delete this Post? It cannot be recovered."};
-      messageButtons = [{ text: 'Yes', handleClick: this.handleDeleteYes },
-                        { text: 'No',  handleClick: this.handleDeleteNo }];
+      deleteDialog = commons.createDeleteMessage(constants.ENTITY_NAME.POST,  this.handleDeleteYes, this.handleDeleteNo);
     }
 
     return (
@@ -68,8 +67,8 @@ class PostItem extends Component {
           </div>
           <span className="panel-info-title">{title}</span>
           <span>{author}</span>
-          <div className="label-info-timestamp">{common.formatDate(timestamp)}</div>
-          <p>{body}</p>
+          <div className="label-info-timestamp">{commons.formatDate(timestamp)}</div>
+          <span className="panel-info-body">{body}</span>
           <VoteScore
             id={id}
             object={post}
@@ -79,15 +78,22 @@ class PostItem extends Component {
           <span className="panel-info-right">Comments {commentCount}</span>
         </div>
         <MessageDialog
-            userMessage={userMessage}
-            buttons={messageButtons}/>
+            userMessage={deleteDialog.userMessage}
+            buttons={deleteDialog.messageButtons}/>
       </div>
     );
   }
 }
 
 function mapStateToProps({ categories, posts, common }, { id }) {
-  const post = posts[id];
+  let post;
+  //test to prevent refreshing on this page without loading app content
+  if (!commons.isEmpty(posts)
+        && posts.hasOwnProperty(id)) {
+    post = posts[id];
+  } else {
+    post = Object.assign({}, constants.EMTPY_POST);
+  }
   const category = post ? categories[post.category] : null;
   return {
     id,

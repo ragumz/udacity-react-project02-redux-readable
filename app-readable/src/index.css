@@ -81,6 +81,12 @@ li {
   margin-top: 3px;
   margin-right: 5px;
 }
+.panel-info-body {
+  white-space: pre-line;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  margin-right: 5px;
+}
 .panel-info-right {
   font-style: italic;
   float: right;

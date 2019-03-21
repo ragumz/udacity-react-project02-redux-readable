@@ -87,14 +87,14 @@ export const placePostVote = ({id, option}) =>
  * @param {string} title The new Post title
  * @param {string} body The new Post body
  */
-export const updatePost = ({postId, title, body, deleted = false}) =>
-  fetch(`${api}/posts/${postId}`, {
+export const updatePost = ({id, category, title, author, body, deleted = false}) =>
+  fetch(`${api}/posts/${id}`, {
     method: 'PUT',
     headers: {
       ...headers,
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ title, body, deleted })
+    body: JSON.stringify({ category, title, author, body, deleted })
   })
     .then(res => res.json())
     .then(data => data);

@@ -42,6 +42,10 @@ export function addNewPost(post) {
   return api.addNewPost(post);
 }
 
+export function updatePost(post) {
+  return api.updatePost(post)
+}
+
 export function deletePost(postId) {
   return api.deletePost(postId)
 }

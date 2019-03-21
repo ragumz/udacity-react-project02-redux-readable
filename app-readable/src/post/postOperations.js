@@ -50,6 +50,18 @@ export function handleDeletePost(postId) {
       .then(post => dispatch(actions.deletePost(postId)))
       .then(() => dispatch(commentOperations.handleDeletedParent(postId)))
       .then(() => dispatch(hideLoading()))
+      .then(() => dispatch(showMessage('INFORMATION', 'The post was successfully deleted.')))
       .catch(error => dispatch(showMessage('ERROR', 'There was an error deleting the post. Try again.', error)))
+  }
+}
+
+export function handleUpdatePost(post) {
+  return (dispatch) => {
+    dispatch(showLoading())
+    return api.updatePost(post)
+      .then(post => dispatch(actions.updatePost(post)))
+      .then(() => dispatch(hideLoading()))
+      .then(() => dispatch(showMessage('INFORMATION', 'The post was successfully updated.')))
+      .catch(error => dispatch(showMessage('ERROR', 'There was an error updating the post. Try again.', error)))
   }
 }

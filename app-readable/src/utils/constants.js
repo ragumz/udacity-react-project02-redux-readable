@@ -28,3 +28,15 @@ export const SORT_ORDER = Object.freeze({
   ASCENDING: 'Ascending',
   DESCENDING: 'Descending'
 })
+
+export const EMTPY_POST = Object.freeze({
+  id: '',
+  category: '',
+  title: '',
+  body: '',
+  author: '',
+  timestamp: 0,
+  voteScore: 0,
+  commentCount: 0,
+  deleted: false,
+})

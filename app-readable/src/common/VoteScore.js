@@ -5,6 +5,7 @@ import * as common from '../utils/common'
 
 class VoteScore extends Component {
   handleVote = (event, option) => {
+    event.preventDefault();
     const { dispatch, id, actionHandle } = this.props;
     if (id && actionHandle) {
       dispatch(actionHandle({ id, option }));
