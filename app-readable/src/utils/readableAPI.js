@@ -50,6 +50,10 @@ export function deletePost(postId) {
   return api.deletePost(postId)
 }
 
+export function loadCommentsFromPost(postId) {
+  return api.getAllCommentsFromPost(postId);
+}
+
 export function placeCommentVote(vote) {
   return api.placeCommentVote(vote);
 }

@@ -1,5 +1,6 @@
 import * as actions from './postActions'
 import * as commentOperations from '../comment/commentOperations'
+import * as commentActions from '../comment/commentActions'
 import * as api from '../utils/readableAPI';
 import * as constants from '../utils/constants';
 import * as common from '../utils/common';
@@ -63,5 +64,15 @@ export function handleUpdatePost(post) {
       .then(() => dispatch(hideLoading()))
       .then(() => dispatch(showMessage('INFORMATION', 'The post was successfully updated.')))
       .catch(error => dispatch(showMessage('ERROR', 'There was an error updating the post. Try again.', error)))
+  }
+}
+
+export function handleLoadPostComments(postId) {
+  return (dispatch) => {
+    dispatch(showLoading())
+    return api.loadCommentsFromPost(postId)
+      .then(comments => dispatch(commentActions.receiveComments(comments)))
+      .then(() => dispatch(hideLoading()))
+      .catch(error => dispatch(showMessage('ERROR', 'There was an error loading this post\'s comments. Try again.', error)))
   }
 }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as common from '../utils/common';
+import { withRouter } from 'react-router-dom';
+import * as commons from '../utils/common';
 import * as constants from '../utils/constants';
 import {
   handleAddNewPost,
@@ -8,14 +9,14 @@ import {
   handlePostVoteScore,
   handleDeletePost
 } from './postOperations';
-import { withRouter } from 'react-router-dom';
 import VoteScore from '../common/VoteScore';
 import MessageDialog from '../common/MessageDialog'
+import CommentList from '../comment/CommentList'
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
+import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
@@ -29,6 +30,7 @@ class PostEdit extends Component {
     goBack: false,
     categoryRequired: false,
     showDeleteDialog: false,
+    readOnly: false,
   };
 
   handleChangeValue = event => {
@@ -41,7 +43,7 @@ class PostEdit extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    if (common.isNull(this.props.post)) {
+    if (commons.isNull(this.props.post)) {
       this.handleClickCreatePost();
     } else {
       this.handleClickUpdatePost();
@@ -51,7 +53,7 @@ class PostEdit extends Component {
   handleClickCreatePost = () => {
     const { editPost } = this.state;
     //force category selection
-    if (common.isEmpty(editPost.category)) {
+    if (commons.isEmpty(editPost.category)) {
       this.setState({ categoryRequired: true });
       return;
     } else {
@@ -73,7 +75,7 @@ class PostEdit extends Component {
 
   handleClickCancel = () => {
     let { post } = this.props;
-    if (common.isNull(post)) {
+    if (commons.isNull(post)) {
       post = Object.assign({}, constants.EMTPY_POST);
     } else {
       post = Object.assign({}, post);
@@ -100,12 +102,11 @@ class PostEdit extends Component {
   };
 
   componentDidMount() {
-    console.log('componentDidMount');
     let { editPost } = this.state;
     const { post, category } = this.props;
-    if (!common.isNull(post)) {
+    if (!commons.isNull(post)) {
       editPost = Object.assign({}, post);
-    } else if (common.isEmpty(editPost.category) && !common.isEmpty(category)) {
+    } else if (commons.isEmpty(editPost.category) && !commons.isEmpty(category)) {
       editPost.category = category;
     }
     this.setState({ editPost });
@@ -118,9 +119,11 @@ class PostEdit extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.post && this.props.post
         && nextProps.post.voteScore !== this.props.post.voteScore) {
+      const { post, readOnly } = nextProps;
       //update voteScore from redux state
       this.setState(currState => {
-        currState['editPost']['voteScore'] = nextProps.post.voteScore;
+        currState['editPost']['voteScore'] = post.voteScore;
+        currState['readOnly'] = readOnly;
         return currState;
       })
     }
@@ -134,11 +137,11 @@ class PostEdit extends Component {
 
     const { editPost, categoryRequired, showDeleteDialog } = this.state;
     const { id, timestamp, category, title, body, author, commentCount } = editPost;
-    const { fixedCategory, categories, dispatch } = this.props;
+    const { readOnly, fixedCategory, categories, postComments, dispatch } = this.props;
 
     let pageTitle = 'Edit Post',
       flagCreate = false;
-    if (common.isNull(this.props.post)) {
+    if (commons.isNull(this.props.post)) {
       pageTitle = 'Create a new Post';
       flagCreate = true;
     }
@@ -149,7 +152,7 @@ class PostEdit extends Component {
     //deletion behavior
     let deleteDialog = {};
     if (showDeleteDialog) {
-      deleteDialog = common.createDeleteMessage(constants.ENTITY_NAME.POST,  this.handleDeleteYes, this.handleDeleteNo);
+      deleteDialog = commons.createDeleteMessage(constants.ENTITY_NAME.POST,  this.handleDeleteYes, this.handleDeleteNo);
     }
 
     return (
@@ -161,12 +164,12 @@ class PostEdit extends Component {
               Category*
             </InputLabel>
             <Select
-              className="inputField"
-              readOnly={fixedCategory}
+              className="selectField"
+              readOnly={fixedCategory || readOnly}
               value={category}
               onChange={event => this.handleChangeValue(event)}
               required={true}
-              input={<OutlinedInput labelWidth={60} name="category" id="outlined-category" />}>
+              input={<Input name="category" id="input-category" />}>
               {Object.keys(categories).map(key => (
                 <MenuItem key={categories[key].name} value={categories[key].name}>
                   {categories[key].name}
@@ -180,12 +183,13 @@ class PostEdit extends Component {
             name="title"
             label="Title"
             className="inputField"
-            variant="outlined"
+            variant="standard"
             margin="normal"
             fullWidth={true}
             maxLength={200}
             value={title}
             required={true}
+            readOnly={readOnly}
             onChange={event => this.handleChangeValue(event)}
           />
           <TextField
@@ -193,12 +197,13 @@ class PostEdit extends Component {
             name="author"
             label="Author"
             className="inputField"
-            variant="outlined"
+            variant="standard"
             margin="normal"
             fullWidth={true}
             maxLength={200}
             value={author}
             required={true}
+            readOnly={readOnly}
             onChange={event => this.handleChangeValue(event)}
           />
           <TextField
@@ -206,77 +211,97 @@ class PostEdit extends Component {
             name="body"
             label="Body"
             className="textarea"
-            variant="outlined"
+            variant="standard"
             margin="normal"
             fullWidth={true}
             maxLength={500}
-            rows={5}
-            rowsMax={10}
+            rows={2}
+            rowsMax={4}
             value={body}
             type="input"
             multiline={true}
             required={true}
+            readOnly={readOnly}
             onChange={event => this.handleChangeValue(event)}
           />
           {bodyLeft <= 100 && <div className="post-length">{bodyLeft}</div>}
-          <div className="label-info-timestamp">{common.formatDate(timestamp)}</div>
-          <VoteScore
-            id={id}
-            object={editPost}
-            entityName={constants.VOTE_OBJECT.POST}
-            dispatch={dispatch}
-            actionHandle={handlePostVoteScore}
-            disabled={flagCreate}
-          />
-          <span className="panel-info-right">Comments {commentCount}</span>
-          <Button
-            type="submit"
-            variant="text"
-            color="primary"
-            onSubmit={this.handleSubmit}>
-            Save
-          </Button>
-          <Button
-            type="button"
-            variant="text"
-            color="secondary"
-            onClick={this.handleClickCancel}>
-            Cancel
-          </Button>
-          {!flagCreate && (
+          {!flagCreate &&
+            <div>
+              <div className="label-info-timestamp">{commons.formatDate(timestamp)}</div>
+              <VoteScore
+                id={id}
+                object={editPost}
+                entityName={constants.VOTE_OBJECT.POST}
+                dispatch={dispatch}
+                actionHandle={handlePostVoteScore}
+                disabled={flagCreate}
+              />
+              <span className="panel-info-right">Comments {commentCount}</span>
+            </div>
+          }
+          <div>
             <Button
-              type="button"
-              variant="text"
-              color="secondary"
-              onClick={this.handleShowDeleteDialog}>
-              Delete
+              className="edit-button"
+              type="submit"
+              variant="contained"
+              color="primary"
+              onSubmit={this.handleSubmit}>
+              Save
             </Button>
-          )}
+            <Button
+              className="edit-button"
+              type="button"
+              variant="contained"
+              color="secondary"
+              onClick={this.handleClickCancel}>
+              Cancel
+            </Button>
+            {!flagCreate && (
+              <Button
+                className="edit-button"
+                type="button"
+                variant="contained"
+                color="secondary"
+                onClick={this.handleShowDeleteDialog}>
+                Delete
+              </Button>
+            )}
+          </div>
         </form>
+        {(!flagCreate && !commons.isEmpty(id)) &&
+          <div>
+            <CommentList commentsFilter={postComments} parentPost={editPost} />
+          </div>
+        }
         <MessageDialog
-            userMessage={deleteDialog.userMessage}
-            buttons={deleteDialog.messageButtons}/>
+          userMessage={deleteDialog.userMessage}
+          buttons={deleteDialog.messageButtons}
+        />
       </div>
     );
   }
 }
 
-function mapStateToProps({ posts, categories }, { match, id, post, category }) {
-  if (!common.isEmpty(match.params.id)) {
+function mapStateToProps({ posts, comments, categories }, { match, id, post, category, readOnly=false }) {
+  if (!commons.isEmpty(match.params.id)) {
     id = match.params.id;
   }
-  if (!common.isEmpty(id) && common.isNull(post)) {
+  let postComments = null;
+  if (!commons.isEmpty(id) && commons.isNull(post)) {
     //test to prevent refreshing on this page without loading app content
-    if (!common.isEmpty(posts) && posts.hasOwnProperty(id)) {
+    if (!commons.isEmpty(posts) && posts.hasOwnProperty(id)) {
+      postComments = commons.arrayToIndexedObject(Object.values(comments).filter(comment => comment.parentId === id));
       //freezing the object to avoid its change
       post = Object.freeze(posts[id]);
     }
   }
   return {
+    readOnly,
     categories,
     category,
     post: post ? post : null,
-    fixedCategory: !common.isEmpty(category)
+    postComments,
+    fixedCategory: !commons.isEmpty(category)
   };
 }
 
