@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FaTrashAlt, FaRegEdit } from 'react-icons/fa';
+import { FaTrashAlt, FaRegEdit, FaComments } from 'react-icons/fa';
 import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 
@@ -9,15 +9,25 @@ class EntityButtons extends Component {
    */
   static propTypes = {
     entityName: PropTypes.string.isRequired,
+    handleView: PropTypes.func,
     handleEdit: PropTypes.func,
     handleDelete: PropTypes.func
   };
 
   render() {
-    const { entityName, handleEdit, handleDelete } = this.props;
+    const { entityName, handleView, handleEdit, handleDelete } = this.props;
 
     return (
       <div>
+        {handleView &&
+          <Button
+            variant="text"
+            mini={true}
+            title={`Comment ${entityName}`}
+            onClick={event => handleView(event)}>
+            <FaComments />
+          </Button>
+        }
         {handleEdit &&
           <Button
             variant="text"

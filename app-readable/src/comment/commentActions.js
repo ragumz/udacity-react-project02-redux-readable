@@ -3,8 +3,10 @@ import { arrayToIndexedObject } from '../utils/common'
 export const COMMENT_ACTIONS = Object.freeze({
   RECEIVE: 'RECEIVE_COMMENTS',
   VOTE: 'VOTE_COMMENT',
+  NEW: 'NEW_COMMENT',
+  UPDATE: 'UPDATE_COMMENT',  
   DELETE:  'DELETE_COMMENT',
-  DELETED_PARENT:  'DELETED_PARENT_COMMENT',
+  DELETED_PARENT:  'DELETED_PARENT_COMMENT',  //TODO check if use!
 });
 
 export function receiveComments(comments) {
@@ -22,10 +24,18 @@ export function commentVoteScore({id, option}) {
   };
 }
 
-export function deleteComment(commentId) {
+export function addNewComment(comment) {
+  return {
+    type: COMMENT_ACTIONS.NEW,
+    comment
+  }
+}
+
+
+export function deleteComment(id) {
   return {
     type: COMMENT_ACTIONS.DELETE,
-    commentId
+    id
   };
 }
 
@@ -34,4 +44,11 @@ export function deletedParentComment(parentId) {
     type: COMMENT_ACTIONS.DELETED_PARENT,
     parentId
   };
+}
+
+export function updateComment(comment) {
+  return {
+    type: COMMENT_ACTIONS.UPDATE,
+    comment
+  }
 }

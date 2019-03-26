@@ -23,8 +23,8 @@ export default function comments(state = {}, action) {
     case COMMENT_ACTIONS.DELETE:
       return {
         ...state,
-        [action.commentId]: {
-          ...state[action.commentId],
+        [action.id]: {
+          ...state[action.id],
           deleted: true
         }
       }
@@ -35,6 +35,23 @@ export default function comments(state = {}, action) {
               .filter(comment => comment.parentId === action.parentId)
               .forEach(comment => comment.parentDeleted = true);
       return comments;
+
+    case COMMENT_ACTIONS.NEW:
+      return {
+        ...state,
+        [action.comment.id]: {
+          ...action.comment
+        } 
+      };
+
+    case COMMENT_ACTIONS.UPDATE:
+      return {
+        ...state,
+        [action.comment.id]: {
+          ...state[action.comment.id],
+          ...action.comment
+        }
+      };
 
     default:
       return state;

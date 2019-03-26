@@ -23,7 +23,9 @@ export default function posts(state = {}, action) {
     case POST_ACTIONS.NEW:
       return {
         ...state,
-        [action.post.id]: action.post
+        [action.post.id]: {
+          ...action.post
+        }
       };
 
     case POST_ACTIONS.DELETE:

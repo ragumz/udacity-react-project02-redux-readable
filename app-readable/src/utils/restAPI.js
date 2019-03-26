@@ -158,18 +158,18 @@ export const placeCommentVote = ({id, option}) =>
 
 /**
  * @description Update some Comment fields
- * @param {string} commentId The Comment unique identifier
+ * @param {string} id The Comment unique identifier
  * @param {long} timestamp The Unix Epoch time stamp
  * @param {string} body The new Comment body
  */
 export const updateComment = ({
-  commentId,
+  id,
   timestamp,
   body,
   deleted = false,
   parendDeleted = false
 }) =>
-  fetch(`${api}/comments/${commentId}`, {
+  fetch(`${api}/comments/${id}`, {
     method: 'PUT',
     headers: {
       ...headers,

@@ -240,22 +240,26 @@ class PostEdit extends Component {
             </div>
           }
           <div>
-            <Button
-              className="edit-button"
-              type="submit"
-              variant="contained"
-              color="primary"
-              onSubmit={this.handleSubmit}>
-              Save
-            </Button>
-            <Button
-              className="edit-button"
-              type="button"
-              variant="contained"
-              color="secondary"
-              onClick={this.handleClickCancel}>
-              Cancel
-            </Button>
+            {!readOnly && 
+              <div>
+                <Button
+                  className="edit-button"
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  onSubmit={this.handleSubmit}>
+                  Save
+                </Button>
+                <Button
+                  className="edit-button"
+                  type="button"
+                  variant="contained"
+                  color="secondary"
+                  onClick={this.handleClickCancel}>
+                  Cancel
+                </Button>
+              </div>
+            }
             {!flagCreate && (
               <Button
                 className="edit-button"
@@ -282,9 +286,12 @@ class PostEdit extends Component {
   }
 }
 
-function mapStateToProps({ posts, comments, categories }, { match, id, post, category, readOnly=false }) {
+function mapStateToProps({ posts, comments, categories }, { location, match, id, post, category, readOnly=false }) {
   if (!commons.isEmpty(match.params.id)) {
     id = match.params.id;
+  }
+  if (!readOnly && location.includes('/view/')) {
+    readOnly = true;
   }
   let postComments = null;
   if (!commons.isEmpty(id) && commons.isNull(post)) {

@@ -62,6 +62,10 @@ export function deleteComment(commentId) {
   return api.deleteComment(commentId);
 }
 
+export function addNewComment(comment) {
+  return api.addNewComment(comment);
+}
+
 export function updateComment(comment) {
   return api.updateComment(comment);
 }
