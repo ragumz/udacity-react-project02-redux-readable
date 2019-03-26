@@ -118,11 +118,13 @@ class PostEdit extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.post && this.props.post
-        && nextProps.post.voteScore !== this.props.post.voteScore) {
+        && (nextProps.post.voteScore !== this.props.post.voteScore
+            || nextProps.post.commentCount !== this.props.post.commentCount)) {
       const { post, readOnly } = nextProps;
       //update voteScore from redux state
       this.setState(currState => {
         currState['editPost']['voteScore'] = post.voteScore;
+        currState['editPost']['commentCount'] = post.commentCount;
         currState['readOnly'] = readOnly;
         return currState;
       })
@@ -139,8 +141,8 @@ class PostEdit extends Component {
     const { id, timestamp, category, title, body, author, commentCount } = editPost;
     const { readOnly, fixedCategory, categories, postComments, dispatch } = this.props;
 
-    let pageTitle = 'Edit Post',
-      flagCreate = false;
+    let pageTitle = (readOnly ? 'View' : 'Edit').concat(' Post');
+    let flagCreate = false;
     if (commons.isNull(this.props.post)) {
       pageTitle = 'Create a new Post';
       flagCreate = true;
@@ -189,7 +191,7 @@ class PostEdit extends Component {
             maxLength={200}
             value={title}
             required={true}
-            readOnly={readOnly}
+            disabled={readOnly}
             onChange={event => this.handleChangeValue(event)}
           />
           <TextField
@@ -203,7 +205,7 @@ class PostEdit extends Component {
             maxLength={200}
             value={author}
             required={true}
-            readOnly={readOnly}
+            disabled={readOnly}
             onChange={event => this.handleChangeValue(event)}
           />
           <TextField
@@ -221,7 +223,7 @@ class PostEdit extends Component {
             type="input"
             multiline={true}
             required={true}
-            readOnly={readOnly}
+            disabled={readOnly}
             onChange={event => this.handleChangeValue(event)}
           />
           {bodyLeft <= 100 && <div className="post-length">{bodyLeft}</div>}
@@ -240,7 +242,7 @@ class PostEdit extends Component {
             </div>
           }
           <div>
-            {!readOnly && 
+            {!readOnly &&
               <div>
                 <Button
                   className="edit-button"
@@ -290,7 +292,7 @@ function mapStateToProps({ posts, comments, categories }, { location, match, id,
   if (!commons.isEmpty(match.params.id)) {
     id = match.params.id;
   }
-  if (!readOnly && location.includes('/view/')) {
+  if (!readOnly && location.pathname.includes('/view/')) {
     readOnly = true;
   }
   let postComments = null;

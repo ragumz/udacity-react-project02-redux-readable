@@ -6,6 +6,7 @@ export const POST_ACTIONS = Object.freeze({
   NEW: 'NEW_POST',
   DELETE: 'DELETE_POST',
   UPDATE: 'UPDATE_POST',
+  DELETE_COMMENT: 'DELETE_POST_COMMENT',
 });
 
 export function receivePosts(posts) {
@@ -37,6 +38,12 @@ export function deletePost(postId) {
   }
 }
 
+export function deletePostComment(postId) {
+  return {
+    type: POST_ACTIONS.DELETE_COMMENT,
+    postId
+  }
+}
 
 export function updatePost(post) {
   return {

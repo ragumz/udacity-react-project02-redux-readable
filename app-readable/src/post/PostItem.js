@@ -14,6 +14,10 @@ class PostItem extends Component {
     showDeleteDialog: false,
   }
 
+  handleView = (event) => {
+    this.props.history.push(`/post/view/${this.props.id}`)
+  }
+
   handleEdit = (event) => {
     this.props.history.push(`/post/edit/${this.props.id}`)
   }
@@ -48,9 +52,9 @@ class PostItem extends Component {
     } = post;
 
     //deletion behavior
-    let deleteDialog = {};
+    let dialogDetails = {};
     if (showDeleteDialog) {
-      deleteDialog = commons.createDeleteMessage(constants.ENTITY_NAME.POST,  this.handleDeleteYes, this.handleDeleteNo);
+      dialogDetails = commons.createDeleteMessage(constants.ENTITY_NAME.POST,  this.handleDeleteYes, this.handleDeleteNo);
     }
 
     return (
@@ -61,8 +65,9 @@ class PostItem extends Component {
             <div className="panel-info-left">
               <EntityButtons
                 entityName={constants.ENTITY_NAME.POST}
-                handleDelete={this.handleShowDeleteDialog}
-                handleEdit={this.handleEdit}/>
+                handleView={this.handleView}
+                handleEdit={this.handleEdit}
+                handleDelete={this.handleShowDeleteDialog}/>
             </div>
           </div>
           <span className="panel-info-title">{title}</span>
@@ -78,8 +83,8 @@ class PostItem extends Component {
           <span className="panel-info-right">Comments {commentCount}</span>
         </div>
         <MessageDialog
-            userMessage={deleteDialog.userMessage}
-            buttons={deleteDialog.messageButtons}/>
+            userMessage={dialogDetails.userMessage}
+            buttons={dialogDetails.messageButtons}/>
       </div>
     );
   }

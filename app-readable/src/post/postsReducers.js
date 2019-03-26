@@ -28,6 +28,15 @@ export default function posts(state = {}, action) {
         }
       };
 
+    case POST_ACTIONS.UPDATE:
+      return {
+        ...state,
+        [action.post.id]: {
+          ...action.post
+        }
+      };
+
+
     case POST_ACTIONS.DELETE:
       return {
         ...state,
@@ -37,11 +46,12 @@ export default function posts(state = {}, action) {
         }
       };
 
-    case POST_ACTIONS.UPDATE:
+    case POST_ACTIONS.DELETE_COMMENT:
       return {
         ...state,
-        [action.post.id]: {
-          ...action.post
+        [action.postId]: {
+          ...state[action.postId],
+          commentCount: state[action.postId].commentCount > 0 ? state[action.postId].commentCount-1 : 0
         }
       };
 

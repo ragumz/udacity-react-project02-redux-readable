@@ -23,7 +23,7 @@ class EntityButtons extends Component {
           <Button
             variant="text"
             mini={true}
-            title={`Comment ${entityName}`}
+            title={`${entityName}'s Comments`}
             onClick={event => handleView(event)}>
             <FaComments />
           </Button>

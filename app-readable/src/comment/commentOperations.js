@@ -2,6 +2,7 @@ import * as actions from './commentActions'
 import * as api from '../utils/readableAPI';
 import * as constants from '../utils/constants';
 import * as commons from '../utils/common';
+import * as postActions from '../post/postActions';
 import { showLoading, hideLoading } from 'react-redux-loading';
 import { showMessage } from '../common/commonActions';
 
@@ -54,11 +55,12 @@ export function handleUpdateComment(comment) {
   }
 }
 
-export function handleDeleteComment(commentId) {
+export function handleDeleteComment(commentId, parentId) {
   return (dispatch) => {
     dispatch(showLoading())
     return api.deleteComment(commentId)
       .then(comment => dispatch(actions.deleteComment(commentId)))
+      .then(() => dispatch(postActions.deletePostComment(parentId)))  //update post's comment count
       .then(() => dispatch(hideLoading()))
       .then(() => dispatch(showMessage('INFORMATION', 'The comment was successfully deleted.')))
       .catch(error => dispatch(showMessage('ERROR', 'There was an error deleting the comment. Try again.', error)))
