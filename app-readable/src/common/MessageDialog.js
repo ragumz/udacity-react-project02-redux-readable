@@ -7,7 +7,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Typography from '@material-ui/core/Typography';
 import PropTypes from "prop-types";
-import * as common from '../utils/common';
+import * as common from '../utils/commons';
 
 /**
  * @description An utility class to display modal dialogs with messages and buttons.

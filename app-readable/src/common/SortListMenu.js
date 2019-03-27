@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import { getSortedEntityId } from '../common/commonOperations';
 import { SORT_ORDER } from '../utils/constants';
 import { connect } from 'react-redux';
-import * as common from '../utils/common';
+import * as common from '../utils/commons';
 import ListItemText from '@material-ui/core/ListItemText';
 import { sortedListData } from '../common/commonActions';
 import { FaSortAlphaUp, FaSortAlphaDown } from 'react-icons/fa';

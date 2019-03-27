@@ -88,15 +88,16 @@ li {
   margin-right: 5px;
 }
 .panel-info-right {
-  font-style: italic;
+  font-style: bold;
   float: right;
   font-size: 14px;
 }
-.panel-info-right {
-  font-style: italic;
+.panel-info-left {
+  font-style: bold;
   float: left;
   font-size: 14px;
 }
+
 .panel-info-detail {
   color: #969696;
   font-size: 16px;
@@ -147,11 +148,8 @@ li {
 }
 
 .category-item {
-  width: 100%;
-  max-width: 600px;
   padding: 10px;
-  display: flex;
-  margin: 0 auto;
+  display: inline-block;
   cursor: pointer;
 }
 
@@ -196,7 +194,7 @@ li {
   visibility: visible;
 }
 
-.new-post {
+.new-form {
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
@@ -233,7 +231,8 @@ li {
 }
 
 .side-by-side {
-  display: inline-block
+  display: inline-block;
+  margin: 5px;
 }
 
 .sort-icon {
@@ -253,5 +252,6 @@ li {
 }
 
 .create-fab {
-  margin-left: 5px;
+  display: inline-block;
+  margin: 5px;
 }

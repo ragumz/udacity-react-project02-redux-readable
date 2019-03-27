@@ -4,7 +4,7 @@ import { receivePosts } from '../post/postActions';
 import { showLoading, hideLoading } from 'react-redux-loading';
 import { showMessage } from '../common/commonActions'
 import * as constants from '../utils/constants'
-import * as common from '../utils/common'
+import * as common from '../utils/commons'
 
 export function handleInitialData() {
   return dispatch => {

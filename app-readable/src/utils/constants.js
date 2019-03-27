@@ -31,12 +31,23 @@ export const SORT_ORDER = Object.freeze({
 
 export const EMTPY_POST = Object.freeze({
   id: '',
-  category: '',
+  timestamp: 0,
   title: '',
   body: '',
   author: '',
-  timestamp: 0,
+  category: '',
   voteScore: 0,
   commentCount: 0,
   deleted: false,
+})
+
+export const EMTPY_COMMENT = Object.freeze({
+  id: '',
+  parentId: '',
+  timestamp: 0,
+  body: '',
+  author: '',
+  voteScore: 0,
+  deleted: false,
+  parentDeleted: false
 })

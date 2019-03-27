@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import VoteScore from '../common/VoteScore';
-import * as commons from '../utils/common';
+import * as commons from '../utils/commons';
 import * as constants from '../utils/constants';
 import { handleCommentVoteScore, handleDeleteComment } from './commentOperations';
 import PropTypes from "prop-types";
@@ -18,29 +18,29 @@ class CommentItem extends Component {
   };
 
   state = {
-    showDeleteDialog: false,
+    showConfirmDialog: false,
   }
 
   handleEdit = (event) => {
     this.props.history.push(`/comment/edit/${this.props.id}`)
   }
 
-  handleShowDeleteDialog = (event) => {
-    this.setState({ showDeleteDialog: true });
+  handleShowDialog = (event) => {
+    this.setState({ showConfirmDialog: true });
   }
 
-  handleDeleteYes = (event) => {
+  handleDialogYesAnswer = (event) => {
     const { dispatch, id, post } = this.props
-    this.setState({ showDeleteDialog: false });
+    this.setState({ showConfirmDialog: false });
     dispatch(handleDeleteComment(id, post.id));
   }
 
-  handleDeleteNo = (event) => {
-    this.setState({ showDeleteDialog: false });
+  handleDialogNoAnswer = (event) => {
+    this.setState({ showConfirmDialog: false });
   }
 
   render() {
-    const { showDeleteDialog } = this.state;
+    const { showConfirmDialog } = this.state;
     const { id, comment, dispatch } = this.props;
 
     if (commons.isNull(comment)) {
@@ -53,9 +53,9 @@ class CommentItem extends Component {
     } = comment;
 
     //deletion behavior
-    let dialogDetails = {};
-    if (showDeleteDialog) {
-      dialogDetails = commons.createDeleteMessage(constants.ENTITY_NAME.COMMENT,  this.handleDeleteYes, this.handleDeleteNo);
+    let dialogSetup = {};
+    if (showConfirmDialog) {
+      dialogSetup = commons.createDeleteMessage(constants.ENTITY_NAME.COMMENT,  this.handleDialogYesAnswer, this.handleDialogNoAnswer);
     }
 
     return (
@@ -65,7 +65,7 @@ class CommentItem extends Component {
             <EntityButtons
               entityName={constants.ENTITY_NAME.COMMENT}
               handleEdit={this.handleEdit}
-              handleDelete={this.handleShowDeleteDialog} />
+              handleDelete={this.handleShowDialog} />
           </div>
           <span>{author}</span>
           <div className="label-info-timestamp">{commons.formatDate(timestamp)}</div>
@@ -80,8 +80,8 @@ class CommentItem extends Component {
           />
         </div>
         <MessageDialog
-            userMessage={dialogDetails.userMessage}
-            buttons={dialogDetails.messageButtons}/>
+            userMessage={dialogSetup.userMessage}
+            buttons={dialogSetup.messageButtons}/>
       </div>
     );
   }

@@ -85,8 +85,8 @@ export function generateUID() {
   return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
 }
 
-export function createDeleteMessage(entityName, handleDeleteYes, handleDeleteNo) {
-  let userMessage = {title: "QUESTION", message: `Are you sure you want to delete this ${entityName}? It cannot be recovered.`};
+export function createDeleteMessage(entityName, handleDeleteYes, handleDeleteNo, toAppendText='') {
+  let userMessage = {title: "QUESTION", message: `Do you confirm to permanently delete this ${entityName}${toAppendText}? No recover is available.`};
   let messageButtons = [{ text: 'Yes', handleClick: handleDeleteYes },
                         { text: 'No',  handleClick: handleDeleteNo }];
   return { userMessage, messageButtons};

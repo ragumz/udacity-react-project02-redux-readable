@@ -1,20 +1,35 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PostList from '../post/PostList'
-import * as common from '../utils/common'
-
+import * as commons from '../utils/commons'
+import Fab from '@material-ui/core/Fab';
+import IconAdd from '@material-ui/icons/Add';
+import { withRouter } from 'react-router-dom'
 class CategoryItem extends Component {
+
+  handleNewPost = (event) => {
+    event.preventDefault();
+    const { id, history } = this.props;
+    history.push(`/post/new/${id}`)
+  }
+
   render() {
     const { id, category, posts/*, dispatch*/ } = this.props;
 
-    if (common.isNull(category)) {
+    if (commons.isNull(category)) {
       return <p>Category {id} doesn't exist</p>;
     }
     const { name } = category;
 
     return (
       <div>
-        <h2 className="category-item">{common.capitalize(name)} Category's Posts</h2>
+        <div className="center">
+        <h2 className="side-by-side">{commons.capitalize(name)} Category's Posts</h2>
+          <Fab color="primary" aria-label="Add New Post" size="small" placeholder="Add New Post" className="create-fab"
+            onClick={this.handleNewPost}>
+              <IconAdd placeholder="Add New Post"/>
+          </Fab>
+        </div>
         <PostList postsFilter={posts} />
       </div>
     );
@@ -41,4 +56,4 @@ function mapStateToProps({ categories, posts, common }, props) {
   };
 }
 
-export default connect(mapStateToProps)(CategoryItem);
+export default withRouter(connect(mapStateToProps)(CategoryItem));

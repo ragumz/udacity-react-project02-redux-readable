@@ -1,4 +1,4 @@
-import { arrayToIndexedObject } from '../utils/common';
+import { arrayToIndexedObject } from '../utils/commons';
 
 export const POST_ACTIONS = Object.freeze({
   RECEIVE: 'RECEIVE_POSTS',

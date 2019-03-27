@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { TiThumbsUp, TiThumbsDown } from 'react-icons/ti';
 import * as constants from '../utils/constants';
-import * as common from '../utils/common'
+import * as common from '../utils/commons'
 
 class VoteScore extends Component {
   handleVote = (event, option) => {

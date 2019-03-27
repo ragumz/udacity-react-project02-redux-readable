@@ -3,7 +3,7 @@ import * as commentOperations from '../comment/commentOperations'
 import * as commentActions from '../comment/commentActions'
 import * as api from '../utils/readableAPI';
 import * as constants from '../utils/constants';
-import * as common from '../utils/common';
+import * as common from '../utils/commons';
 import { showLoading, hideLoading } from 'react-redux-loading';
 import { showMessage } from '../common/commonActions';
 

@@ -1,5 +1,5 @@
 import * as api from './restAPI';
-import * as common from './common';
+import * as common from './commons';
 
 export function getInitialData() {
   return Promise.all([

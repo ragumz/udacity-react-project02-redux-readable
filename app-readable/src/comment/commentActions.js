@@ -1,10 +1,10 @@
-import { arrayToIndexedObject } from '../utils/common'
+import { arrayToIndexedObject } from '../utils/commons'
 
 export const COMMENT_ACTIONS = Object.freeze({
   RECEIVE: 'RECEIVE_COMMENTS',
   VOTE: 'VOTE_COMMENT',
   NEW: 'NEW_COMMENT',
-  UPDATE: 'UPDATE_COMMENT',  
+  UPDATE: 'UPDATE_COMMENT',
   DELETE:  'DELETE_COMMENT',
   DELETED_PARENT:  'DELETED_PARENT_COMMENT',  //TODO check if use!
 });

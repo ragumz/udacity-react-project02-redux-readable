@@ -41,7 +41,7 @@ class App extends Component {
               <div>
                 <Route path="/" exact component={Home} />
                 <Route path='/category/:id' component={CategoryItem} />
-                <Route path='/post/new/' component={PostEdit} />
+                <Route path='/post/new/:category' component={PostEdit} />
                 <Route path='/post/edit/:id' component={PostEdit} />
                 <Route path='/post/view/:id' component={PostEdit} />
               </div>

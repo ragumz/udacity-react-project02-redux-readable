@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as commons from '../utils/common';
+import * as commons from '../utils/commons';
 import CommentItem from './CommentItem';
 import SortListMenu from '../common/SortListMenu';
 import { ENTITY_NAME } from '../utils/constants';
 import { getSortedEntityId, sortEntityMap } from '../common/commonOperations';
 import { handleLoadPostComments } from '../post/postOperations';
 import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
+import IconAdd from '@material-ui/icons/Add';
 
 export const COMMENT_SORT_MENU = [
   { title: 'Author', fieldName: 'author' },
@@ -42,7 +42,7 @@ class CommentList extends Component {
           <h3 className="side-by-side">The Post's Comments</h3>
           <SortListMenu entityName={ENTITY_NAME.COMMENT} sortMenuOptions={COMMENT_SORT_MENU} />
           <Fab color="primary" aria-label="Add New Comment" size="small" placeholder="Add New Comment" className="create-fab">
-            <AddIcon placeholder="Add New Comment"/>
+            <IconAdd placeholder="Add New Comment"/>
           </Fab>
         </div>
 

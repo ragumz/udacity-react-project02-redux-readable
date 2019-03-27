@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import * as commons from '../utils/common';
+import * as commons from '../utils/commons';
 import * as constants from '../utils/constants';
 import {
   handleAddNewPost,
@@ -17,7 +17,10 @@ import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import Input from '@material-ui/core/Input';
-import Button from '@material-ui/core/Button';
+import IconDelete from '@material-ui/icons/Delete';
+import IconSave from '@material-ui/icons/Save';
+import IconUndo from '@material-ui/icons/Undo';
+import Fab from '@material-ui/core/Fab';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 
@@ -29,7 +32,7 @@ class PostEdit extends Component {
     editPost: Object.assign({}, constants.EMTPY_POST),
     goBack: false,
     categoryRequired: false,
-    showDeleteDialog: false,
+    showConfirmDialog: false,
     readOnly: false,
   };
 
@@ -74,31 +77,34 @@ class PostEdit extends Component {
   };
 
   handleClickCancel = () => {
-    let { post } = this.props;
+    let { post, category } = this.props;
     if (commons.isNull(post)) {
       post = Object.assign({}, constants.EMTPY_POST);
     } else {
       post = Object.assign({}, post);
+    }
+    if (!commons.isNull(category)) {
+      post.category = category.name;
     }
     this.setState({
       editPost: post
     })
   };
 
-  handleShowDeleteDialog = (event) => {
-    this.setState({ showDeleteDialog: true });
+  handleShowDialog = (event) => {
+    this.setState({ showConfirmDialog: true });
   };
 
-  handleDeleteYes = (event) => {
+  handleDialogYesAnswer = (event) => {
     const { dispatch } = this.props;
     const { editPost } = this.state;
-    this.setState({ showDeleteDialog: false });
+    this.setState({ showConfirmDialog: false });
     dispatch(handleDeletePost(editPost.id))
       .then(() => this.setState({goBack: true}));
   };
 
-  handleDeleteNo = (event) => {
-    this.setState({ showDeleteDialog: false });
+  handleDialogNoAnswer = (event) => {
+    this.setState({ showConfirmDialog: false });
   };
 
   componentDidMount() {
@@ -107,7 +113,7 @@ class PostEdit extends Component {
     if (!commons.isNull(post)) {
       editPost = Object.assign({}, post);
     } else if (commons.isEmpty(editPost.category) && !commons.isEmpty(category)) {
-      editPost.category = category;
+      editPost.category = category.name;
     }
     this.setState({ editPost });
   }
@@ -137,7 +143,7 @@ class PostEdit extends Component {
       return <div />;
     }
 
-    const { editPost, categoryRequired, showDeleteDialog } = this.state;
+    const { editPost, categoryRequired, showConfirmDialog } = this.state;
     const { id, timestamp, category, title, body, author, commentCount } = editPost;
     const { readOnly, fixedCategory, categories, postComments, dispatch } = this.props;
 
@@ -152,15 +158,35 @@ class PostEdit extends Component {
     const bodyLeft = 500 - body.length;
 
     //deletion behavior
-    let deleteDialog = {};
-    if (showDeleteDialog) {
-      deleteDialog = commons.createDeleteMessage(constants.ENTITY_NAME.POST,  this.handleDeleteYes, this.handleDeleteNo);
+    let dialogSetup = {};
+    if (showConfirmDialog) {
+      dialogSetup = commons.createDeleteMessage(constants.ENTITY_NAME.POST,  this.handleDialogYesAnswer, this.handleDialogNoAnswer, ' and all its Comments');
     }
 
     return (
       <div>
-        <h3 className="center">{pageTitle}</h3>
-        <form className="new-post" onSubmit={this.handleSubmit}>
+        <form className="new-form" onSubmit={this.handleSubmit}>
+          <div className="center">
+            <h3 className="side-by-side">{pageTitle}</h3>
+            {!readOnly && (
+              <div className="side-by-side">
+                <Fab color="primary" aria-label="Save Post" size="small" placeholder="Save Post" className="create-fab"
+                  type="submit" onSubmit={this.handleSubmit}>
+                  <IconSave placeholder="Save Post" />
+                </Fab>
+                <Fab color="secondary" aria-label="Cancel Changes" size="small" placeholder="Cancel Changes" className="create-fab"
+                  type="button" onClick={this.handleClickCancel}>
+                  <IconUndo placeholder="Cancel Changes" />
+                </Fab>
+              </div>
+            )}
+            {!flagCreate && (
+              <Fab color="secondary" aria-label="Delete Post" size="small" placeholder="Delete Post" className="create-fab"
+                type="button" onClick={this.handleShowDialog}>
+                <IconDelete placeholder="Delete Post" />
+              </Fab>
+            )}
+          </div>
           <FormControl error={categoryRequired}>
             <InputLabel htmlFor="categories" className="inputField">
               Category*
@@ -241,38 +267,6 @@ class PostEdit extends Component {
               <span className="panel-info-right">Comments {commentCount}</span>
             </div>
           }
-          <div>
-            {!readOnly &&
-              <div>
-                <Button
-                  className="edit-button"
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  onSubmit={this.handleSubmit}>
-                  Save
-                </Button>
-                <Button
-                  className="edit-button"
-                  type="button"
-                  variant="contained"
-                  color="secondary"
-                  onClick={this.handleClickCancel}>
-                  Cancel
-                </Button>
-              </div>
-            }
-            {!flagCreate && (
-              <Button
-                className="edit-button"
-                type="button"
-                variant="contained"
-                color="secondary"
-                onClick={this.handleShowDeleteDialog}>
-                Delete
-              </Button>
-            )}
-          </div>
         </form>
         {(!flagCreate && !commons.isEmpty(id)) &&
           <div>
@@ -280,8 +274,8 @@ class PostEdit extends Component {
           </div>
         }
         <MessageDialog
-          userMessage={deleteDialog.userMessage}
-          buttons={deleteDialog.messageButtons}
+          userMessage={dialogSetup.userMessage}
+          buttons={dialogSetup.messageButtons}
         />
       </div>
     );
@@ -294,6 +288,10 @@ function mapStateToProps({ posts, comments, categories }, { location, match, id,
   }
   if (!readOnly && location.pathname.includes('/view/')) {
     readOnly = true;
+  }
+  if (!commons.isEmpty(match.params.category)
+      && match.params.category !== '?') {
+    category = categories[match.params.category];
   }
   let postComments = null;
   if (!commons.isEmpty(id) && commons.isNull(post)) {

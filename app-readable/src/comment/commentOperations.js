@@ -1,7 +1,7 @@
 import * as actions from './commentActions'
 import * as api from '../utils/readableAPI';
 import * as constants from '../utils/constants';
-import * as commons from '../utils/common';
+import * as commons from '../utils/commons';
 import * as postActions from '../post/postActions';
 import { showLoading, hideLoading } from 'react-redux-loading';
 import { showMessage } from '../common/commonActions';
