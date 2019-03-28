@@ -31,13 +31,15 @@ function revertCommentVoteScore(dispatch, vote, error) {
   dispatch(showMessage('ERROR', 'There was an error voting on the comment. Try again.', error));
 }
 
-export function handleAddNewComment(newComment) {
+export function handleAddNewComment(newComment, parentId) {
   newComment.id = commons.generateUID();
+  newComment.parentId = parentId;
   newComment.timestamp = Date.now();
   return (dispatch/*, getState*/) => {
     dispatch(showLoading())
     return api.addNewComment(newComment)
       .then((comment) => dispatch(actions.addNewComment(comment)))
+      .then(() => dispatch(postActions.addPostComment(parentId)))  //update post's comment count
       .then(() => dispatch(hideLoading()))
       .catch(error => dispatch(showMessage('ERROR', 'There was an error adding the new comment. Try again.', error)))
   }

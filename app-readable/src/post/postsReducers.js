@@ -55,6 +55,15 @@ export default function posts(state = {}, action) {
         }
       };
 
+    case POST_ACTIONS.ADD_COMMENT:
+      return {
+        ...state,
+        [action.postId]: {
+          ...state[action.postId],
+          commentCount: state[action.postId].commentCount+1
+        }
+      };
+
     default:
       return state;
   }

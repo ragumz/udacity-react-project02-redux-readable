@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import VoteScore from '../common/VoteScore';
+import { withRouter } from 'react-router-dom'
 import * as commons from '../utils/commons';
 import * as constants from '../utils/constants';
 import { handleCommentVoteScore, handleDeleteComment } from './commentOperations';
 import PropTypes from "prop-types";
+import CommentEdit from "./CommentEdit"
+import VoteScore from '../common/VoteScore';
 import EntityButtons from '../common/EntityButtons'
 import MessageDialog from '../common/MessageDialog'
-import { withRouter } from 'react-router-dom'
+
 
 class CommentItem extends Component {
   /**
@@ -18,11 +20,17 @@ class CommentItem extends Component {
   };
 
   state = {
+    isEditing: false,
     showConfirmDialog: false,
   }
 
   handleEdit = (event) => {
-    this.props.history.push(`/comment/edit/${this.props.id}`)
+//    this.props.history.push(`/comment/edit/${this.props.id}`)
+    this.setState({isEditing: true});
+  }
+
+  handleFinishEdit = () => {
+    this.setState({isEditing: false});
   }
 
   handleShowDialog = (event) => {
@@ -40,12 +48,17 @@ class CommentItem extends Component {
   }
 
   render() {
-    const { showConfirmDialog } = this.state;
+    const { isEditing, showConfirmDialog } = this.state;
     const { id, comment, dispatch } = this.props;
+    if (isEditing) {
+      //inline comment editing
+      return <CommentEdit id={id} handleFinishEdit={this.handleFinishEdit} />
+    }
 
     if (commons.isNull(comment)) {
       return <p>Comment with {id} doesn't exist</p>;
     }
+
     const {
       timestamp,
       body,
@@ -88,11 +101,11 @@ class CommentItem extends Component {
 }
 
 function mapStateToProps({ posts, comments, common }, { id }) {
-  const currComment = comments[id];
-  const post = currComment ? posts[currComment.parentId] : null;
+  const comment = Object.freeze(comments[id]);
+  const post = comment ? posts[comment.parentId] : null;
   return {
     id,
-    comment: currComment,
+    comment,
     post,
     common
   };

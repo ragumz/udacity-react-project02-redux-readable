@@ -169,22 +169,22 @@ class PostEdit extends Component {
           <div className="center">
             <h3 className="side-by-side">{pageTitle}</h3>
             {!readOnly && (
-              <div className="side-by-side">
                 <Fab color="primary" aria-label="Save Post" size="small" placeholder="Save Post" className="create-fab"
                   type="submit" onSubmit={this.handleSubmit}>
                   <IconSave placeholder="Save Post" />
                 </Fab>
-                <Fab color="secondary" aria-label="Cancel Changes" size="small" placeholder="Cancel Changes" className="create-fab"
-                  type="button" onClick={this.handleClickCancel}>
-                  <IconUndo placeholder="Cancel Changes" />
-                </Fab>
-              </div>
             )}
             {!flagCreate && (
-              <Fab color="secondary" aria-label="Delete Post" size="small" placeholder="Delete Post" className="create-fab"
-                type="button" onClick={this.handleShowDialog}>
-                <IconDelete placeholder="Delete Post" />
-              </Fab>
+                <Fab color="secondary" aria-label="Delete Post" size="small" placeholder="Delete Post" className="create-fab"
+                  type="button" onClick={this.handleShowDialog}>
+                  <IconDelete placeholder="Delete Post" />
+                </Fab>
+            )}
+            {!readOnly && (
+                <Fab color="secondary" aria-label="Cancel" size="small" placeholder="Cancel" className="create-fab"
+                  type="button" onClick={this.handleClickCancel}>
+                  <IconUndo placeholder="Cancel" />
+                </Fab>
             )}
           </div>
           <FormControl error={categoryRequired}>
@@ -252,7 +252,7 @@ class PostEdit extends Component {
             disabled={readOnly}
             onChange={event => this.handleChangeValue(event)}
           />
-          {bodyLeft <= 100 && <div className="post-length">{bodyLeft}</div>}
+          {bodyLeft <= 100 && <div className="textarea-length">{bodyLeft}</div>}
           {!flagCreate &&
             <div>
               <div className="label-info-timestamp">{commons.formatDate(timestamp)}</div>
@@ -262,7 +262,6 @@ class PostEdit extends Component {
                 entityName={constants.VOTE_OBJECT.POST}
                 dispatch={dispatch}
                 actionHandle={handlePostVoteScore}
-                disabled={flagCreate}
               />
               <span className="panel-info-right">Comments {commentCount}</span>
             </div>

@@ -7,6 +7,7 @@ import * as commonActions from '../common/commonActions';
 import * as commonOperations from '../common/commonOperations';
 import MessageDialog from '../common/MessageDialog';
 import PostEdit from '../post/PostEdit';
+import CommentEdit from '../comment/CommentEdit';
 import { ENTITY_NAME, SORT_ORDER } from '../utils/constants';
 import Home from './Home';
 import Menu from './Menu';
@@ -44,6 +45,8 @@ class App extends Component {
                 <Route path='/post/new/:category' component={PostEdit} />
                 <Route path='/post/edit/:id' component={PostEdit} />
                 <Route path='/post/view/:id' component={PostEdit} />
+                <Route path='/comment/new/:parentId' component={CommentEdit} />
+                <Route path='/comment/edit/:id' component={CommentEdit} />
               </div>
             )}
           </div>

@@ -166,6 +166,7 @@ export const updateComment = ({
   id,
   timestamp,
   body,
+  author,
   deleted = false,
   parendDeleted = false
 }) =>
@@ -175,7 +176,7 @@ export const updateComment = ({
       ...headers,
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ timestamp, body, deleted, parendDeleted })
+    body: JSON.stringify({ timestamp, body, author, deleted, parendDeleted })
   })
     .then(res => res.json())
     .then(data => data);
