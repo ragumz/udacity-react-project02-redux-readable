@@ -9,6 +9,10 @@ import {
   handlePostVoteScore,
   handleDeletePost
 } from './postOperations';
+import {
+  addContextMenuItem,
+  deleteContextMenuItem
+} from '../common/commonActions';
 import VoteScore from '../common/VoteScore';
 import MessageDialog from '../common/MessageDialog'
 import CommentList from '../comment/CommentList'
@@ -20,6 +24,7 @@ import Input from '@material-ui/core/Input';
 import IconDelete from '@material-ui/icons/Delete';
 import IconSave from '@material-ui/icons/Save';
 import IconUndo from '@material-ui/icons/Undo';
+import IconExit from '@material-ui/icons/ExitToApp';
 import Fab from '@material-ui/core/Fab';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
@@ -34,12 +39,14 @@ class PostEdit extends Component {
     categoryRequired: false,
     showConfirmDialog: false,
     readOnly: false,
+    canUndo: false,
   };
 
   handleChangeValue = event => {
     const { name, value } = event.target;
     this.setState(currState => {
       currState['editPost'][name] = value;
+      currState['canUndo'] = true;
       return currState;
     });
   };
@@ -62,11 +69,14 @@ class PostEdit extends Component {
     } else {
       this.setState({ categoryRequired: false });
     }
-    const { dispatch } = this.props;
+    const { dispatch, history } = this.props;
     dispatch(handleAddNewPost(editPost)).then(() => {
-      this.setState(() => ({
-        goBack: true
-      }));
+      console.log('history', history);
+      if (!history.location.pathname.includes('/post/view/')) {
+        this.setState({
+          goBack: true
+        }, this.handleGoBack);
+      }
     });
   };
 
@@ -76,7 +86,13 @@ class PostEdit extends Component {
     dispatch(handleUpdatePost(editPost));
   };
 
-  handleClickCancel = () => {
+  handleClickExit = () => {
+    this.setState({
+      goBack: true
+    }, this.handleGoBack);
+  }
+
+  handleClickUndo = () => {
     let { post, category } = this.props;
     if (commons.isNull(post)) {
       post = Object.assign({}, constants.EMTPY_POST);
@@ -87,7 +103,8 @@ class PostEdit extends Component {
       post.category = category.name;
     }
     this.setState({
-      editPost: post
+      editPost: post,
+      canUndo: false,
     })
   };
 
@@ -100,17 +117,34 @@ class PostEdit extends Component {
     const { editPost } = this.state;
     this.setState({ showConfirmDialog: false });
     dispatch(handleDeletePost(editPost.id))
-      .then(() => this.setState({goBack: true}));
+      .then(() => this.setState({
+        goBack: true
+      }, this.handleGoBack));
   };
 
   handleDialogNoAnswer = (event) => {
     this.setState({ showConfirmDialog: false });
   };
 
+  /**
+   * @description Try to discover the right path to return after delete
+   */
+  handleGoBack = () => {
+    const { category, history } = this.props;
+    if (!commons.isNull(category)) {
+      history.push('/category/'.concat(category.name));
+    } else if (history.location.pathname.includes('/post/')) {
+      history.push('/');
+    } else {
+      history.goBack();
+    }
+  }
+
   componentDidMount() {
     let { editPost } = this.state;
-    const { post, category } = this.props;
+    const { post, category, dispatch } = this.props;
     if (!commons.isNull(post)) {
+      dispatch(addContextMenuItem({id: 'deletePost', name: 'Delete Post', handleClick: this.handleShowDialog}));
       editPost = Object.assign({}, post);
     } else if (commons.isEmpty(editPost.category) && !commons.isEmpty(category)) {
       editPost.category = category.name;
@@ -122,11 +156,18 @@ class PostEdit extends Component {
     console.log("componentDidUpdate()", prevProps, prevState);
   }*/
 
+  componentWillUnmount() {
+    const { dispatch } = this.props;
+    dispatch(deleteContextMenuItem('deletePost'));
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.post && this.props.post
         && (nextProps.post.voteScore !== this.props.post.voteScore
             || nextProps.post.commentCount !== this.props.post.commentCount)) {
       const { post, readOnly } = nextProps;
+      //se foi salvo
+      this.props.dispatch(addContextMenuItem({id: 'deletePost', name: 'Delete Post', handleClick: this.handleShowDialog}));
       //update voteScore from redux state
       this.setState(currState => {
         currState['editPost']['voteScore'] = post.voteScore;
@@ -139,13 +180,12 @@ class PostEdit extends Component {
 
   render() {
     if (this.state.goBack === true) {
-      this.props.history.goBack();
       return <div />;
     }
 
-    const { editPost, categoryRequired, showConfirmDialog } = this.state;
-    const { id, timestamp, category, title, body, author, commentCount } = editPost;
     const { readOnly, fixedCategory, categories, postComments, dispatch } = this.props;
+    const { editPost, categoryRequired, showConfirmDialog, canUndo } = this.state;
+    const { id, timestamp, category, title, body, author, commentCount } = editPost;
 
     let pageTitle = (readOnly ? 'View' : 'Edit').concat(' Post');
     let flagCreate = false;
@@ -181,11 +221,15 @@ class PostEdit extends Component {
                 </Fab>
             )}
             {!readOnly && (
-                <Fab color="secondary" aria-label="Cancel" size="small" placeholder="Cancel" className="create-fab"
-                  type="button" onClick={this.handleClickCancel}>
-                  <IconUndo placeholder="Cancel" />
+                <Fab color="secondary" aria-label="Undo" size="small" placeholder="Undo" className="create-fab"
+                  type="button" onClick={this.handleClickUndo} disabled={!canUndo}>
+                  <IconUndo placeholder="Undo" />
                 </Fab>
             )}
+            <Fab color="secondary" aria-label="Go Back" size="small" placeholder="Go Back" className="create-fab"
+              type="button" onClick={this.handleClickExit}>
+              <IconExit placeholder="Go Back" />
+            </Fab>
           </div>
           <FormControl error={categoryRequired}>
             <InputLabel htmlFor="categories" className="inputField">
@@ -199,7 +243,7 @@ class PostEdit extends Component {
               required={true}
               input={<Input name="category" id="input-category" />}>
               {Object.keys(categories).map(key => (
-                <MenuItem key={categories[key].name} value={categories[key].name}>
+                <MenuItem key={categories[key].name} value={categories[key].name} >
                   {categories[key].name}
                 </MenuItem>
               ))}
@@ -281,11 +325,11 @@ class PostEdit extends Component {
   }
 }
 
-function mapStateToProps({ posts, comments, categories }, { location, match, id, post, category, readOnly=false }) {
+function mapStateToProps({ posts, comments, categories }, { history, location, match, id, post, category, readOnly=false }) {
   if (!commons.isEmpty(match.params.id)) {
     id = match.params.id;
   }
-  if (!readOnly && location.pathname.includes('/view/')) {
+  if (!readOnly && location.pathname.includes('/post/view/')) {
     readOnly = true;
   }
   if (!commons.isEmpty(match.params.category)
@@ -300,6 +344,12 @@ function mapStateToProps({ posts, comments, categories }, { location, match, id,
       //freezing the object to avoid its change
       post = Object.freeze(posts[id]);
     }
+  }
+  if (commons.isNull(category)
+      && !commons.isNull(post)
+      && match.params.fixedCategory === "true") {
+    //category cannot be changed
+    category = categories[post.category];
   }
   return {
     readOnly,

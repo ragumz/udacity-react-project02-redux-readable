@@ -1,16 +1,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom'
 import PostList from '../post/PostList'
 import * as commons from '../utils/commons'
 import Fab from '@material-ui/core/Fab';
 import IconAdd from '@material-ui/icons/Add';
-import { withRouter } from 'react-router-dom'
+import IconExit from '@material-ui/icons/ExitToApp';
+
 class CategoryItem extends Component {
 
   handleNewPost = (event) => {
     event.preventDefault();
     const { id, history } = this.props;
     history.push(`/post/new/${id}`)
+  }
+
+  handleClickExit = () => {
+    this.props.history.goBack();
   }
 
   render() {
@@ -29,8 +35,12 @@ class CategoryItem extends Component {
             onClick={this.handleNewPost}>
               <IconAdd placeholder="Add New Post"/>
           </Fab>
+          <Fab color="secondary" aria-label="Go Back" size="small" placeholder="Go Back" className="create-fab"
+            type="button" onClick={this.handleClickExit}>
+            <IconExit placeholder="Go Back" />
+          </Fab>
         </div>
-        <PostList postsFilter={posts} />
+        <PostList postsFilter={posts} fixedCategory={true} />
       </div>
     );
   }

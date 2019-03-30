@@ -6,7 +6,14 @@ import CommentEdit from './CommentEdit';
 import CommentItem from './CommentItem';
 import SortListMenu from '../common/SortListMenu';
 import { ENTITY_NAME } from '../utils/constants';
-import { getSortedEntityId, sortEntityMap } from '../common/commonOperations';
+import {
+  getSortedEntityId,
+  sortEntityMap,
+} from '../common/commonOperations';
+import {
+  addContextMenuItem,
+  deleteContextMenuItem
+} from '../common/commonActions';
 import { handleLoadPostComments } from '../post/postOperations';
 import Fab from '@material-ui/core/Fab';
 import IconAdd from '@material-ui/icons/Add';
@@ -36,6 +43,7 @@ class CommentList extends Component {
 
   componentDidMount() {
     const { parentPost, comments, dispatch } = this.props;
+    dispatch(addContextMenuItem({id: 'addComments', name: 'New Comment', handleClick: this.handleNewComment}));
     if ((!commons.isNull(comments)
           && comments.lenght > 0)
           || commons.isNull(parentPost)
@@ -43,6 +51,11 @@ class CommentList extends Component {
       return;
     }
     dispatch(handleLoadPostComments(parentPost.id));
+  }
+
+  componentWillUnmount() {
+    const { dispatch } = this.props;
+    dispatch(deleteContextMenuItem('addComments'));
   }
 
   render() {

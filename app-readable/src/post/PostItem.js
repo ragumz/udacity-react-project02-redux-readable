@@ -15,11 +15,13 @@ class PostItem extends Component {
   }
 
   handleView = (event) => {
-    this.props.history.push(`/post/view/${this.props.id}`)
+    const { history, fixedCategory } = this.props;
+    history.push(`/post/view/${this.props.id}/${fixedCategory}`)
   }
 
   handleEdit = (event) => {
-    this.props.history.push(`/post/edit/${this.props.id}`)
+    const { history, fixedCategory } = this.props;
+    history.push(`/post/edit/${this.props.id}/${fixedCategory}`)
   }
 
   handleShowDialog = (event) => {
@@ -90,7 +92,7 @@ class PostItem extends Component {
   }
 }
 
-function mapStateToProps({ categories, posts, common }, { id }) {
+function mapStateToProps({ categories, posts, common }, { id, fixedCategory=false }) {
   let post;
   //test to prevent refreshing on this page without loading app content
   if (!commons.isEmpty(posts)
@@ -101,6 +103,7 @@ function mapStateToProps({ categories, posts, common }, { id }) {
   }
   const category = post ? categories[post.category] : null;
   return {
+    fixedCategory,
     id,
     category,
     post,

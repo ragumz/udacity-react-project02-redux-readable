@@ -2,7 +2,7 @@ export const ENTITY_NAME = Object.freeze({
   CATEGORY: 'Category',
   POST: 'Post',
   COMMENT: 'Comment'
-})
+});
 
 /**
  * Post voting API options
@@ -16,18 +16,17 @@ export const VOTE_OPTIONS = Object.freeze({
    * Decrement Post vote
    */
   DOWN: 'downVote'
-})
-
+});
 
 export const VOTE_OBJECT = Object.freeze({
   COMMENT: 'comment',
   POST: 'post'
-})
+});
 
 export const SORT_ORDER = Object.freeze({
   ASCENDING: 'Ascending',
   DESCENDING: 'Descending'
-})
+});
 
 export const EMTPY_POST = Object.freeze({
   id: '',
@@ -38,8 +37,8 @@ export const EMTPY_POST = Object.freeze({
   category: '',
   voteScore: 0,
   commentCount: 0,
-  deleted: false,
-})
+  deleted: false
+});
 
 export const EMTPY_COMMENT = Object.freeze({
   id: '',
@@ -50,4 +49,6 @@ export const EMTPY_COMMENT = Object.freeze({
   voteScore: 0,
   deleted: false,
   parentDeleted: false
-})
+});
+
+export const MENU_ITEM_CONTEXT_PREFIX = 'menu_';

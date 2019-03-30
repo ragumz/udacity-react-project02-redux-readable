@@ -16,7 +16,7 @@ export const POST_SORT_MENU = [
 class PostList extends Component {
 
   render() {
-    const { posts, sortingSetup } = this.props;
+    const { posts, sortingSetup, fixedCategory } = this.props;
 
     let sortedPosts = sortEntityMap(posts, sortingSetup)
                         .filter(key => posts[key].deleted !== true);
@@ -27,11 +27,10 @@ class PostList extends Component {
           <h3 className="side-by-side">POSTS</h3>
           <SortListMenu entityName={ENTITY_NAME.POST} sortMenuOptions={POST_SORT_MENU}  />
         </div>
-
         <ul className="dashboard-list">
           {sortedPosts.map((id) => (
             <li key={id}>
-              <PostItem id={id}/>
+              <PostItem id={id} fixedCategory={fixedCategory}/>
             </li>
           ))}
         </ul>
@@ -40,8 +39,9 @@ class PostList extends Component {
   }
 }
 
-function mapStateToProps ({ posts, common },{ postsFilter }) {
+function mapStateToProps ({ posts, common },{ postsFilter, fixedCategory=false }) {
   return {
+    fixedCategory,
     posts: postsFilter ? postsFilter : posts,
     sortingSetup: common[getSortedEntityId(ENTITY_NAME.POST)]
   }

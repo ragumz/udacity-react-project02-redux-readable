@@ -1,16 +1,17 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
-import LoadingBar from 'react-redux-loading';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import CategoryItem from '../category/CategoyItem';
+import LoadingBar from 'react-redux-loading';
 import * as commonActions from '../common/commonActions';
 import * as commonOperations from '../common/commonOperations';
+import CategoryItem from '../category/CategoyItem';
 import MessageDialog from '../common/MessageDialog';
 import PostEdit from '../post/PostEdit';
 import CommentEdit from '../comment/CommentEdit';
 import { ENTITY_NAME, SORT_ORDER } from '../utils/constants';
 import Home from './Home';
 import Menu from './Menu';
+import AppBar from '@material-ui/core/AppBar';
 
 class App extends Component {
   /**
@@ -35,16 +36,18 @@ class App extends Component {
     return (
       <Router>
         <Fragment>
+          <AppBar position="static">
+            <Menu />
+          </AppBar>
           <LoadingBar />
           <div className="container">
-            <Menu />
             {this.props.loading === true ? null : (
               <div>
                 <Route path="/" exact component={Home} />
                 <Route path='/category/:id' component={CategoryItem} />
                 <Route path='/post/new/:category' component={PostEdit} />
-                <Route path='/post/edit/:id' component={PostEdit} />
-                <Route path='/post/view/:id' component={PostEdit} />
+                <Route path='/post/edit/:id/:fixedCategory' component={PostEdit} />
+                <Route path='/post/view/:id/:fixedCategory' component={PostEdit} />
                 <Route path='/comment/new/:parentId' component={CommentEdit} />
                 <Route path='/comment/edit/:id' component={CommentEdit} />
               </div>

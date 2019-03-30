@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom'
 import SortListMenu from '../common/SortListMenu'
 import { ENTITY_NAME } from '../utils/constants'
@@ -43,4 +44,4 @@ function mapStateToProps ({ categories, common }) {
   }
 }
 
-export default connect(mapStateToProps)(CategoryList)
+export default withRouter(connect(mapStateToProps)(CategoryList));

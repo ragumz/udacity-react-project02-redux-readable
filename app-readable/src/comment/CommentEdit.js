@@ -14,7 +14,7 @@ import MessageDialog from '../common/MessageDialog'
 import TextField from '@material-ui/core/TextField';
 import IconDelete from '@material-ui/icons/Delete';
 import IconSave from '@material-ui/icons/Save';
-import IconUndo from '@material-ui/icons/Undo';
+import IconExit from '@material-ui/icons/ExitToApp';
 import Fab from '@material-ui/core/Fab';
 
 class CommentEdit extends Component {
@@ -157,7 +157,7 @@ class CommentEdit extends Component {
                 )}
                 <Fab color="secondary" aria-label="Cancel" size="small" placeholder="Cancel" className="create-fab"
                     type="button" onClick={this.handleFinishedEdit}>
-                    <IconUndo placeholder="Cancel" />
+                    <IconExit placeholder="Cancel" />
                   </Fab>
             </div>
             <TextField
