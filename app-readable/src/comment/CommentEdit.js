@@ -145,19 +145,19 @@ class CommentEdit extends Component {
           <div className="panel-info">
             <div className="center">
               <h3 className="side-by-side">{pageTitle}</h3>
-                  <Fab color="primary" aria-label="Save Comment" size="small" placeholder="Save Comment" className="create-fab"
+                  <Fab color="primary" title="Save Comment" size="small" className="create-fab"
                     type="submit" onSubmit={this.handleSubmit}>
-                    <IconSave placeholder="Save Comment" />
+                    <IconSave />
                   </Fab>
                 {!flagCreate && (
-                  <Fab color="secondary" aria-label="Delete Comment" size="small" placeholder="Delete Comment" className="create-fab"
+                  <Fab color="secondary" title="Delete Comment" size="small" className="create-fab"
                     type="button" onClick={this.handleShowDialog}>
-                    <IconDelete placeholder="Delete Comment" />
+                    <IconDelete />
                   </Fab>
                 )}
-                <Fab color="secondary" aria-label="Cancel" size="small" placeholder="Cancel" className="create-fab"
+                <Fab color="secondary" title="Cancel" size="small" className="create-fab"
                     type="button" onClick={this.handleFinishedEdit}>
-                    <IconExit placeholder="Cancel" />
+                    <IconExit />
                   </Fab>
             </div>
             <TextField

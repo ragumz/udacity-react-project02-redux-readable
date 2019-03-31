@@ -72,7 +72,7 @@ class SortListMenu extends Component {
           onClose={this.handleClose}
           PaperProps={{
             style: {
-              maxHeight: 48 * 4.5,
+              maxHeight: 55 * 4.5,
               width: 280
             }
           }}>

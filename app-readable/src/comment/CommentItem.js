@@ -74,7 +74,7 @@ class CommentItem extends Component {
     return (
       <div className="comment">
         <div className="panel-info">
-          <div className="panel-info-left">
+          <div style={{width: '100%'}} >
             <EntityButtons
               entityName={constants.ENTITY_NAME.COMMENT}
               handleEdit={this.handleEdit}

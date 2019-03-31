@@ -43,6 +43,7 @@ class PostEdit extends Component {
   };
 
   handleChangeValue = event => {
+    event.preventDefault();
     const { name, value } = event.target;
     this.setState(currState => {
       currState['editPost'][name] = value;
@@ -144,7 +145,7 @@ class PostEdit extends Component {
     let { editPost } = this.state;
     const { post, category, dispatch } = this.props;
     if (!commons.isNull(post)) {
-      dispatch(addContextMenuItem({id: 'deletePost', name: 'Delete Post', handleClick: this.handleShowDialog}));
+      dispatch(addContextMenuItem({id: 'deletePost', name: 'Delete Post', handleClick: this.handleShowDialog, iconIndex: 'delete'}));
       editPost = Object.assign({}, post);
     } else if (commons.isEmpty(editPost.category) && !commons.isEmpty(category)) {
       editPost.category = category.name;
@@ -167,7 +168,7 @@ class PostEdit extends Component {
             || nextProps.post.commentCount !== this.props.post.commentCount)) {
       const { post, readOnly } = nextProps;
       //se foi salvo
-      this.props.dispatch(addContextMenuItem({id: 'deletePost', name: 'Delete Post', handleClick: this.handleShowDialog}));
+      this.props.dispatch(addContextMenuItem({id: 'deletePost', name: 'Delete Post', handleClick: this.handleShowDialog, iconIndex: 'delete'}));
       //update voteScore from redux state
       this.setState(currState => {
         currState['editPost']['voteScore'] = post.voteScore;
@@ -209,26 +210,26 @@ class PostEdit extends Component {
           <div className="center">
             <h3 className="side-by-side">{pageTitle}</h3>
             {!readOnly && (
-                <Fab color="primary" aria-label="Save Post" size="small" placeholder="Save Post" className="create-fab"
+                <Fab color="primary" size="small" title="Save Post" className="create-fab"
                   type="submit" onSubmit={this.handleSubmit}>
-                  <IconSave placeholder="Save Post" />
+                  <IconSave />
                 </Fab>
             )}
             {!flagCreate && (
-                <Fab color="secondary" aria-label="Delete Post" size="small" placeholder="Delete Post" className="create-fab"
+                <Fab color="secondary" title="Delete Post" size="small" className="create-fab"
                   type="button" onClick={this.handleShowDialog}>
-                  <IconDelete placeholder="Delete Post" />
+                  <IconDelete />
                 </Fab>
             )}
             {!readOnly && (
-                <Fab color="secondary" aria-label="Undo" size="small" placeholder="Undo" className="create-fab"
+                <Fab color="secondary" title="Undo All Changes" size="small" className="create-fab"
                   type="button" onClick={this.handleClickUndo} disabled={!canUndo}>
-                  <IconUndo placeholder="Undo" />
+                  <IconUndo />
                 </Fab>
             )}
-            <Fab color="secondary" aria-label="Go Back" size="small" placeholder="Go Back" className="create-fab"
+            <Fab color="secondary" title="Go Back" size="small" className="create-fab"
               type="button" onClick={this.handleClickExit}>
-              <IconExit placeholder="Go Back" />
+              <IconExit />
             </Fab>
           </div>
           <FormControl error={categoryRequired}>

@@ -16,7 +16,7 @@ class CategoryItem extends Component {
   }
 
   handleClickExit = () => {
-    this.props.history.goBack();
+    this.props.history.push('/');
   }
 
   render() {
@@ -31,13 +31,13 @@ class CategoryItem extends Component {
       <div>
         <div className="center">
         <h2 className="side-by-side">{commons.capitalize(name)} Category's Posts</h2>
-          <Fab color="primary" aria-label="Add New Post" size="small" placeholder="Add New Post" className="create-fab"
+          <Fab color="primary" title="Add New Post" size="small" className="create-fab"
             onClick={this.handleNewPost}>
-              <IconAdd placeholder="Add New Post"/>
+              <IconAdd />
           </Fab>
-          <Fab color="secondary" aria-label="Go Back" size="small" placeholder="Go Back" className="create-fab"
+          <Fab color="secondary" title="Go Back" size="small" className="create-fab"
             type="button" onClick={this.handleClickExit}>
-            <IconExit placeholder="Go Back" />
+            <IconExit />
           </Fab>
         </div>
         <PostList postsFilter={posts} fixedCategory={true} />

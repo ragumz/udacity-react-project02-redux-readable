@@ -30,10 +30,10 @@ export function sortedListData(entityName, fieldName, order) {
   };
 }
 
-export function addContextMenuItem({id, name, urlLink, handleClick}) {
+export function addContextMenuItem({id, name, urlLink, handleClick, iconIndex}) {
   return {
     type: COMMON_ACTIONS.ADD_MENU_ITEM,
-    menuItem: {id, name, urlLink, handleClick}
+    menuItem: {id, name, iconIndex, urlLink, handleClick}
   }
 }
 

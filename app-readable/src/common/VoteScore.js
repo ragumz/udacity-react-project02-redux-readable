@@ -22,26 +22,28 @@ class VoteScore extends Component {
     const { id, voteScore } = object;
 
     return (
-      <div className="view-icons">
-        <span>Vote Score {voteScore}</span>
-        <button
-          disabled={disabled}
-          key={'up-btn-'.concat(id)}
-          className="up-down-button"
-          data-option={constants.VOTE_OPTIONS.UP}
-          onClick={(event) => {this.handleVote(event, constants.VOTE_OPTIONS.UP)}}
-        >
-          <TiThumbsUp visibility={disabled ? "hidden" : "display"} key={'up-img-'.concat(id)} className="view-icon" data-option={'upVote'} />
-        </button>
-        <button
-          disabled={disabled}
-          key={'down-btn-'.concat(id)}
-          className="up-down-button"
-          data-option={constants.VOTE_OPTIONS.DOWN}
-          onClick={(event) => {this.handleVote(event, constants.VOTE_OPTIONS.DOWN)}}
-        >
-          <TiThumbsDown visibility={disabled ? "hidden" : "display"} key={'down-img-'.concat(id)} className="view-icon" data-option={'downVote'}/>
-        </button>
+      <div  className="panel-info-left">
+        <div className="view-icons">
+          <span>Vote Score {voteScore}</span>
+          <button
+            disabled={disabled}
+            key={'up-btn-'.concat(id)}
+            className="up-down-button"
+            data-option={constants.VOTE_OPTIONS.UP}
+            onClick={(event) => {this.handleVote(event, constants.VOTE_OPTIONS.UP)}}
+          >
+            <TiThumbsUp visibility={disabled ? "hidden" : "display"} key={'up-img-'.concat(id)} className="view-icon" data-option={'upVote'} />
+          </button>
+          <button
+            disabled={disabled}
+            key={'down-btn-'.concat(id)}
+            className="up-down-button"
+            data-option={constants.VOTE_OPTIONS.DOWN}
+            onClick={(event) => {this.handleVote(event, constants.VOTE_OPTIONS.DOWN)}}
+          >
+            <TiThumbsDown visibility={disabled ? "hidden" : "display"} key={'down-img-'.concat(id)} className="view-icon" data-option={'downVote'}/>
+          </button>
+        </div>
       </div>
     );
   }

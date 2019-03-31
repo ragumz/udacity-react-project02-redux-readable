@@ -43,7 +43,7 @@ class CommentList extends Component {
 
   componentDidMount() {
     const { parentPost, comments, dispatch } = this.props;
-    dispatch(addContextMenuItem({id: 'addComments', name: 'New Comment', handleClick: this.handleNewComment}));
+    dispatch(addContextMenuItem({id: 'addComments', name: 'New Comment', handleClick: this.handleNewComment, iconIndex: 'add'}));
     if ((!commons.isNull(comments)
           && comments.lenght > 0)
           || commons.isNull(parentPost)
@@ -72,9 +72,9 @@ class CommentList extends Component {
         <div className="center">
           <h3 className="side-by-side">The Post's Comments</h3>
           <SortListMenu entityName={ENTITY_NAME.COMMENT} sortMenuOptions={COMMENT_SORT_MENU} />
-          <Fab color="primary" aria-label="Add New Comment" size="small" placeholder="Add New Comment" className="create-fab"
+          <Fab color="primary" title="Add New Comment" size="small" className="create-fab"
             onClick={this.handleNewComment}>
-            <IconAdd placeholder="Add New Comment"/>
+            <IconAdd />
           </Fab>
         </div>
 

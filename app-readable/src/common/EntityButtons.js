@@ -18,11 +18,11 @@ class EntityButtons extends Component {
     const { entityName, handleView, handleEdit, handleDelete } = this.props;
 
     return (
-      <div>
+      <div style={{width: '200px'}}>
         {handleView &&
           <Button
             variant="text"
-            mini={true}
+            mini={false}
             title={`${entityName}'s Comments`}
             onClick={event => handleView(event)}>
             <FaComments />

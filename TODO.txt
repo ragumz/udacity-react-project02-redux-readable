@@ -41,11 +41,15 @@ OK-Problema em commit Git de /utils/constants com C maiúsculo
 	OK-Comment List
 	OK-Post View with Comment List
 	OK-Edit Comment View
-	-Unit test exit/back navigation ove Edit and Delete user interaction on PostEdit 
-	-Drawer or contextual menu
+	OK-Unit test exit/back navigation ove Edit and Delete user interaction on PostEdit 
+	OK-Drawer or contextual menu
 	-CSS general review
+		-Fab margin space
+		-Left and Right align divs/components
 
 -Add documentation and comments to source code
+
+-Generate more api-radable fixed data
 
 -Update README
 
