@@ -63,7 +63,9 @@ class PostItem extends Component {
       <div className="post">
         <div className="panel-info">
           <div>
-            <div className="panel-info-left">{category.name}</div>
+            <div className="panel-info-left">
+              <span className="label-category">{category.name}</span>
+            </div>
             <div className="panel-info-right" style={{width: '30%'}}>
               <EntityButtons
                 entityName={constants.ENTITY_NAME.POST}
@@ -73,8 +75,10 @@ class PostItem extends Component {
             </div>
           </div>
           <span className="panel-info-title">{title}</span>
-          <span>{author}</span>
-          <div className="label-info-timestamp">{commons.formatDate(timestamp)}</div>
+          <span className="text-right" >{author}</span>
+          <div className="text-right" style={{width: '100%'}}>
+            <span className="label-info-timestamp">{commons.formatDate(timestamp)}</span>
+          </div>
           <span className="panel-info-body">{body}</span>
           <div>
             <VoteScore
@@ -83,7 +87,7 @@ class PostItem extends Component {
               entityName={constants.VOTE_OBJECT.POST}
               dispatch={dispatch}
               actionHandle={handlePostVoteScore}/>
-            <span className="panel-info-right" style={{textAlign: "right"}}>Comments {commentCount}</span>
+            <span className="panel-info-right" style={{marginTop: "3px", textAlign: "right"}}><i>Comments {commentCount}</i></span>
           </div>
         </div>
         <MessageDialog

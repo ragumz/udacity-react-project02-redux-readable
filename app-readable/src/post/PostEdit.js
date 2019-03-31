@@ -84,7 +84,10 @@ class PostEdit extends Component {
   handleClickUpdatePost = () => {
     const { editPost } = this.state;
     const { dispatch } = this.props;
-    dispatch(handleUpdatePost(editPost));
+    dispatch(handleUpdatePost(editPost))
+      .then(() => {
+        this.setState({canUndo: false});
+      });
   };
 
   handleClickExit = () => {
@@ -262,7 +265,7 @@ class PostEdit extends Component {
             maxLength={200}
             value={title}
             required={true}
-            disabled={readOnly}
+            inputProps={{ readOnly: Boolean(readOnly) }}
             onChange={event => this.handleChangeValue(event)}
           />
           <TextField
@@ -276,9 +279,14 @@ class PostEdit extends Component {
             maxLength={200}
             value={author}
             required={true}
-            disabled={readOnly}
+            inputProps={{ readOnly: Boolean(readOnly) }}
             onChange={event => this.handleChangeValue(event)}
           />
+          {!flagCreate &&
+              <div className="text-right" style={{width: '100%'}}>
+                <span className="label-info-timestamp">{commons.formatDate(timestamp)}</span>
+              </div>
+          }
           <TextField
             id="body"
             name="body"
@@ -294,13 +302,12 @@ class PostEdit extends Component {
             type="input"
             multiline={true}
             required={true}
-            disabled={readOnly}
+            inputProps={{ readOnly: Boolean(readOnly) }}
             onChange={event => this.handleChangeValue(event)}
           />
           {bodyLeft <= 100 && <div className="textarea-length">{bodyLeft}</div>}
           {!flagCreate &&
             <div>
-              <div className="label-info-timestamp">{commons.formatDate(timestamp)}</div>
               <VoteScore
                 id={id}
                 object={editPost}
@@ -308,7 +315,7 @@ class PostEdit extends Component {
                 dispatch={dispatch}
                 actionHandle={handlePostVoteScore}
               />
-              <span className="panel-info-right">Comments {commentCount}</span>
+              <span className="panel-info-right" style={{marginTop: "3px", textAlign: "right"}}><i>Comments {commentCount}</i></span>
             </div>
           }
         </form>

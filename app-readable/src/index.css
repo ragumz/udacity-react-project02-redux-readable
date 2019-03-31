@@ -27,6 +27,7 @@ a {
 
 .center {
   text-align: center;
+  margin-top: 3px;
 }
 
 .active {
@@ -46,6 +47,7 @@ a {
 
 ul {
   padding-left: 0;
+  margin: 0 auto
 }
 
 li {
@@ -62,7 +64,6 @@ li {
   margin: 0 auto;
   border: 1px solid #737ee6;
   border-radius: 3px;
-  cursor: pointer;
 }
 
 .panel-info {
@@ -110,6 +111,11 @@ li {
   font-size: 16px;
 }
 
+.label-category {
+  color: darkred;
+  font-size: 12pt;
+}
+
 .label-info-timestamp {
   color: #969696;
   font-size: 15px;
@@ -149,13 +155,23 @@ li {
   margin: 0 auto;
   border: 1px solid #eb1414;
   border-radius: 3px;
-  cursor: pointer;
+  height: auto;
+  overflow: hidden;
 }
 
 .category-name {
   color: #082c1a;
-  margin: 0 15px 0 5px;
+  margin: 5px 15px 0 5px;
   font-size: 18px !important;
+  display: inline-block;
+}
+
+.category-list {
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  display: table;
+  float: left;
 }
 
 .category-item {
@@ -172,7 +188,6 @@ li {
   margin: 0 auto;
   border: 1px solid #2cbe07;
   border-radius: 3px;
-  cursor: pointer;
 }
 
 .comment-name {
@@ -187,7 +202,6 @@ li {
   padding: 10px;
   display: flex;
   margin: 0 auto;
-  cursor: pointer;
 }
 
 .up-down-button {
@@ -266,7 +280,7 @@ li {
 
 .create-fab {
   display: inline-block;
-  margin: 5px;
+  margin: 2px !important;
 }
 
 .divider {
@@ -284,4 +298,9 @@ li {
 
 .appbar-title {
   margin-right: 15px !important;
+}
+
+.text-right {
+  text-align: right !important;
+  width: 100% !important;
 }

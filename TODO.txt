@@ -44,7 +44,7 @@ OK-Problema em commit Git de /utils/constants com C maiúsculo
 	OK-Unit test exit/back navigation ove Edit and Delete user interaction on PostEdit 
 	OK-Drawer or contextual menu
 	-CSS general review
-		-Fab margin space
+		OK-Fab margin space
 		-Left and Right align divs/components
 
 -Add documentation and comments to source code

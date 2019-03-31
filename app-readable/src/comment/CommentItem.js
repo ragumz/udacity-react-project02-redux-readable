@@ -74,14 +74,16 @@ class CommentItem extends Component {
     return (
       <div className="comment">
         <div className="panel-info">
-          <div style={{width: '100%'}} >
+          <div className="panel-info-right" style={{width: '100% !important'}}>
             <EntityButtons
               entityName={constants.ENTITY_NAME.COMMENT}
               handleEdit={this.handleEdit}
               handleDelete={this.handleShowDialog} />
           </div>
-          <span>{author}</span>
-          <div className="label-info-timestamp">{commons.formatDate(timestamp)}</div>
+          <span className="text-right" >{author}</span>
+          <div className="text-right" style={{width: '100%'}}>
+            <span className="label-info-timestamp">{commons.formatDate(timestamp)}</span>
+          </div>
           <span className="panel-info-body">{body}</span>
           <VoteScore
             key={id}

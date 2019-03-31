@@ -27,7 +27,7 @@ class PostList extends Component {
           <h3 className="side-by-side">POSTS</h3>
           <SortListMenu entityName={ENTITY_NAME.POST} sortMenuOptions={POST_SORT_MENU}  />
         </div>
-        <ul className="dashboard-list">
+        <ul className="unordered-list">
           {sortedPosts.map((id) => (
             <li key={id}>
               <PostItem id={id} fixedCategory={fixedCategory}/>

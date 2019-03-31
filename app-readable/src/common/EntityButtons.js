@@ -23,7 +23,7 @@ class EntityButtons extends Component {
           <Button
             variant="text"
             mini={false}
-            title={`${entityName}'s Comments`}
+            title={`View ${entityName}`}
             onClick={event => handleView(event)}>
             <FaComments />
           </Button>
@@ -41,7 +41,7 @@ class EntityButtons extends Component {
           <Button
             variant="text"
             mini={true}
-            title={`Remove ${entityName}`}
+            title={`Delete ${entityName}`}
             onClick={event => handleDelete(event)}>
             <FaTrashAlt />
           </Button>

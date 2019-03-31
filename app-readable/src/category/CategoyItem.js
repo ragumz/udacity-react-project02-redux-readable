@@ -30,7 +30,7 @@ class CategoryItem extends Component {
     return (
       <div>
         <div className="center">
-        <h2 className="side-by-side">{commons.capitalize(name)} Category's Posts</h2>
+          <h2 className="side-by-side">Category {name} Posts</h2>
           <Fab color="primary" title="Add New Post" size="small" className="create-fab"
             onClick={this.handleNewPost}>
               <IconAdd />
