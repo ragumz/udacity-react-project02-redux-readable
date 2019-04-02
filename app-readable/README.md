@@ -1,68 +1,110 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Readable Project of Rafael Araujo Gumz
 
-## Available Scripts
+This is Readable web application project, developed for the final assessment of Udacity's React+Redux Nanodegree course.
+The project web page contents were built with React, Redux, Thunk, HTML, JSX, JS and CSS. They are dynamic and use own static CSS and design inspired on previous examples and exercises of this course.
+This web application allows the user to manage Posts from a limited set of categories and manage its Comments using React-Redux to share its data and state. It is allowed to add, edit or delete Posts and its Comments, also voting to keep each one's score. There is no authorization or authentication process, as the project's requirements stated.
+The data lives only while the `api-server` application is running, stopping or restarting it causes the data reset. Nothing is permanently persisted.
 
-In the project directory, you can run:
+## Building and Deploying
 
-### `npm start`
+It was developed and manually tested in a NodeJS static server.
+Before entering the web application, first is needed to prepare the backend web services rest server:
+* Enter `..\api-server` directory.
+* Install all dependencies with `npm install`.
+* Run `node server` command.
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+To start navigating on the Readable web application:
+* Enter on `\app-readable` directory.
+* Install all dependencies with `npm install`.
+* Start the development server with `npm start`.
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+## Project Files Structure
+```bash
+├── README.md - This file.
+├── package.json # npm package manager file. Some new dependecies were added.
+└── src
+    ├── category
+    │   ├── categoryActions.js
+    │   ├── CategoryList.js
+    │   ├── categoryReducers.js
+    │   └── CategoyItem.js
+    ├── comment
+    │   ├── commentActions.js
+    │   ├── CommentEdit.js
+    │   ├── CommentItem.js
+    │   ├── CommentList.js
+    │   ├── commentOperations.js
+    │   └── commentReducers.js
+    ├── common
+    │   ├── commonActions.js
+    │   ├── commonOperations.js
+    │   ├── commonReducers.js
+    │   ├── EntityButtons.js
+    │   ├── ErrorBoundary.js
+    │   ├── MessageDialog.js
+    │   ├── SortListMenu.js
+    │   └── VoteScore.js
+    ├── home
+    │   ├── App.js
+    │   ├── Home.js
+    │   ├── homeReducers.js
+    │   └── Menu.js
+    ├── middlewares
+    │   ├── index.js
+    │   └── loggerMiddleware.js
+    ├── post
+    │   ├── postActions.js
+    │   ├── PostEdit.js
+    │   ├── PostItem.js
+    │   ├── PostList.js
+    │   ├── postOperations.js
+    │   └── postsReducers.js
+    ├── utils
+    │   ├── commons.js
+    │   ├── constants.js
+    │   ├── readableAPI.js
+    │   └── restAPI.js
+    ├── index.css # Global styles of the app inspired on all course projects and examples.
+    └── index.js # App component was nested into ErrorBoundary and BrowserRouter components.
 
-### `npm test`
+## Libraries and Dependencies
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+The following libraries where added to this project through [npm install --save](https://docs.npmjs.com/cli/install):
+* [prop-types](https://www.npmjs.com/package/prop-types) - As instructed on the React Fundamentals course.
+* [@material-ui/core](https://www.npmjs.com/package/@material-ui/core) - Used some UI components like TextField, Button, Fab, Dialog etc.
+* [@material-ui/icons](https://www.npmjs.com/package/@material-ui/icons) - Used some selected SVG icons to enrich UI and user UX.
+* [react-dom](https://www.npmjs.com/package/react-dom) - Needed to React manages the DOM state and server renderers.
+* [react-icons](https://www.npmjs.com/package/react-icons) - Used some selected SVG icons to enrich UI and user UX.
+* [react-redux](https://www.npmjs.com/package/react-redux) - Main requirement to manage application state globally with Redux API container.
+* [react-redux-loading](https://www.npmjs.com/package/react-redux-loading) - A React-Redux loading bar API to easy long process wait.
+* [react-router-dom](https://www.npmjs.com/package/react-router-dom) - Needed to route creation as a project requirement and navigation.
+* [react-thunk](https://www.npmjs.com/package/react-thunk) - Enable thunk middleware to React components.
+* [redux](https://www.npmjs.com/package/redux) - Redux API container to manage predictable state.
+* [redux-thunk](https://www.npmjs.com/package/redux-thunk) - Enable thunk middleware to Redux.
 
-### `npm run build`
+## Main Page
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+## Create React App
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
-### `npm run eject`
+## Backend Server
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+To simplify the development process, Udacity provided a backend server to develop against.
+The backend API uses a fixed set of categories, posts and comments data. It is kept on JavaScript files at `..\api-server\**` path.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+To interact with REST web service operations on this backend server the [`restAPI.js`](src\utils\restAPI.js) contains the methods to perform necessary operations on the backend:
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+* [`getAllCategories`](#categories)
+* [`getAllPosts`](#posts)
+* [`getAllPostsFromCategory`](#/${categoryId}/posts)
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Final Notes
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+* This repository contains a particular React project code for Udacity instructors evaluation only.
+* Students are encouraged to try developing this exercise by themselves and "NOT TO COPY" the source codes.
+* All the text, comments and documentation was made in English, to practice and foreseeing future Udacity courses.
+* The Git commit messages were short and clean.
+* It was reused some code and concepts from my [`React Fundamentals My Reads project`](https://github.com/ragumz/udacity-react-project01-myreads).
+* All the source code were produced between 20 and 00:30 hours after a long day of 9 hours of architecture and programming. Also on weekends, when my 1 year old daughter allowed. That is student life!

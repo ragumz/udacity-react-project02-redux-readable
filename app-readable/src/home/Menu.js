@@ -12,9 +12,14 @@ import IconAdd from '@material-ui/icons/Add';
 import IconDelete from '@material-ui/icons/Delete';
 import IconHelp from '@material-ui/icons/LiveHelp';
 
-
+/**
+ * @description Home page main Menu and contextual menu items React component.
+ */
 class Menu extends Component {
 
+  /**
+   * @description Select one Material-UI icon from an index name
+   */
   chooseIconByIndex = (iconIndex) => {
     if (commons.isEmpty(iconIndex)) {
       return <IconHelp />;
@@ -29,6 +34,10 @@ class Menu extends Component {
     }
   }
 
+  /**
+   * @description Find out the current category of the page to guarantee the New Post
+   * behavior creation because Router match.params content was null on some contexts.
+   */
   extractFixeCategoryName = () => {
     const { posts, location } = this.props;
 

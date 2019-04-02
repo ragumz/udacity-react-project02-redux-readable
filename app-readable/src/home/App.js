@@ -13,6 +13,9 @@ import Home from './Home';
 import Menu from './Menu';
 import AppBar from '@material-ui/core/AppBar';
 
+/**
+ * @description Main web application React components and routes setup.
+ */
 class App extends Component {
   /**
    * @description Clear the text message of the modal dialog.
@@ -22,7 +25,7 @@ class App extends Component {
   };
 
   componentDidMount() {
-    //setup default sorting
+    //setup default sorting behavior
     this.props.dispatch(commonActions.sortedListData(ENTITY_NAME.CATEGORY, 'name', SORT_ORDER.ASCENDING))
     this.props.dispatch(commonActions.sortedListData(ENTITY_NAME.POST, 'voteScore', SORT_ORDER.DESCENDING))
     this.props.dispatch(commonActions.sortedListData(ENTITY_NAME.COMMENT, 'voteScore', SORT_ORDER.DESCENDING))
@@ -53,6 +56,7 @@ class App extends Component {
               </div>
             )}
           </div>
+          {/* Centralized Web Application Messages from SHOW_MESSAGE and HIDE_MESSAGE of COMMON_ACTIONS */}
           <MessageDialog
             userMessage={userMessage}
             buttons={[{ text: 'OK', handleClick: this.handleClearMessage }]}/>

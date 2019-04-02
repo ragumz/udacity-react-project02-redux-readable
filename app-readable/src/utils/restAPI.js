@@ -16,6 +16,7 @@ const headers = {
 
 /**
  * @description Get all Categories
+ * @return A new Promise with Category object array
  */
 export const getAllCategories = () =>
   fetch(`${api}/categories`, { headers })
@@ -24,6 +25,7 @@ export const getAllCategories = () =>
 
 /**
  * @description Get all Posts from all Categories
+ * @return A new Promise with Post object array
  */
 export const getAllPosts = () =>
   fetch(`${api}/posts`, { headers })
@@ -33,6 +35,7 @@ export const getAllPosts = () =>
 /**
  * @description Get all Posts from one Category
  * @param {string} categoryId The Category unique identifier
+ * @return A new Promise with all Posts of the Category
  */
 export const getAllPostsFromCategory = categoryId =>
   fetch(`${api}/${categoryId}/posts`, { headers })
@@ -42,6 +45,7 @@ export const getAllPostsFromCategory = categoryId =>
 /**
  * @description Add a new Post
  * @param {Object} post Full Post object as backend service especifications
+ * @return A new Promise with the new added Post
  */
 export const addNewPost = post =>
   fetch(`${api}/posts`, {
@@ -58,6 +62,7 @@ export const addNewPost = post =>
 /**
  * @description Get one Posts data
  * @param {String} post The Post unique identifier
+ * @return A new Promise with the Post fetched by its id
  */
 export const getPost = postId =>
   fetch(`${api}/posts/${postId}`, { headers })
@@ -68,6 +73,7 @@ export const getPost = postId =>
  * @description Place a vote to one Post
  * @param {string} id The Post unique identifier
  * @param {VOTE_OPTIONS} option A constant from Constants.VOTE_OPTIONS
+ * @return A new Promise with the updated Post
  */
 export const placePostVote = ({id, option}) =>
   fetch(`${api}/posts/${id}`, {
@@ -86,6 +92,7 @@ export const placePostVote = ({id, option}) =>
  * @param {string} postId The Post unique identifier
  * @param {string} title The new Post title
  * @param {string} body The new Post body
+ * @return A new Promise with the updated Post
  */
 export const updatePost = ({id, category, title, author, body, deleted = false}) =>
   fetch(`${api}/posts/${id}`, {
@@ -103,6 +110,7 @@ export const updatePost = ({id, category, title, author, body, deleted = false})
  * @description Mark the "deleted" flag field as true for the Post and all ists Comments' objects.
  *        The flag deleted may be updated through {@code updatePost()} function.
  * @param {string} postId The Post unique identifier
+ * @return A new Promise with the updated Post
  */
 export const deletePost = postId =>
   fetch(`${api}/posts/${postId}`, {
@@ -117,6 +125,7 @@ export const deletePost = postId =>
 /**
  * @description Get all Posts from all Categories
  * @param {string} postId The Post unique identifier
+ * @return A new Promise with an array of the Post's Comments
  */
 export const getAllCommentsFromPost = postId =>
   fetch(`${api}/posts/${postId}/comments`, { headers })
@@ -126,6 +135,7 @@ export const getAllCommentsFromPost = postId =>
 /**
  * @description Add a new Comment
  * @param {Object} comment Full Comment object as backend service especifications
+ * @return A new Promise with the new added Comment
  */
 export const addNewComment = comment =>
   fetch(`${api}/comments`, {
@@ -143,6 +153,7 @@ export const addNewComment = comment =>
  * @description Place a vote to one Comment
  * @param {string} id The Comment unique identifier
  * @param {VOTE_OPTIONS} option A constant from Constants.VOTE_OPTIONS
+ * @return A new Promise with the updated Comment
  */
 export const placeCommentVote = ({id, option}) =>
   fetch(`${api}/comments/${id}`, {
@@ -161,6 +172,7 @@ export const placeCommentVote = ({id, option}) =>
  * @param {string} id The Comment unique identifier
  * @param {long} timestamp The Unix Epoch time stamp
  * @param {string} body The new Comment body
+ * @return A new Promise with the updated Comment
  */
 export const updateComment = ({
   id,
@@ -185,6 +197,7 @@ export const updateComment = ({
  * @description Mark the "deleted" flag field as true for the Comment object.
  *        The flag deleted may be updated through {@code updateComment()} function.
  * @param {string} commentId The Post unique identifier
+ * @return A new Promise with the updated Comment
  */
 export const deleteComment = commentId =>
   fetch(`${api}/comments/${commentId}`, {

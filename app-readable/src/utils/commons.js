@@ -73,6 +73,13 @@ export const capitalize = text => {
     .join(' ');
 };
 
+/**
+ * @description Reused Tyler's code to format date and time
+ * from Chirper-app example
+ *
+ * @param {number} timestamp The seconds epoch value representing the date
+ * @return A string with time and date
+ */
 export function formatDate (timestamp) {
   if (isEmpty(timestamp))
     return '';
@@ -81,10 +88,22 @@ export function formatDate (timestamp) {
   return time.substr(0, 5) + time.slice(-2) + ' | ' + d.toLocaleDateString()
 }
 
+/**
+ * @description Reused Tyler's code to generate a Unique Identification
+ * from Chirper-app example.
+ *
+ * @return A string with time and date
+ */
 export function generateUID() {
   return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
 }
 
+/**
+ * @description Return and object that contains content to show on MessageDialog component, with
+ * messages and buttons exclusively to delete a Post or a Comment.
+ *
+ * @return MessageDialog component init prop.
+ */
 export function createDeleteMessage(entityName, handleDeleteYes, handleDeleteNo, toAppendText='') {
   let userMessage = {title: "QUESTION", message: `Do you confirm to permanently delete this ${entityName}${toAppendText}? No recover is available.`};
   let messageButtons = [{ text: 'Yes', handleClick: handleDeleteYes },

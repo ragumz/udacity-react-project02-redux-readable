@@ -142,7 +142,7 @@ class CommentEdit extends Component {
     return (
       <div className="comment">
         <form className="new-form" onSubmit={this.handleSubmit}>
-          <div className="panel-info">
+          <div className="panel-info" style={{margin: 0}}>
             <div className="center">
               <h3 className="side-by-side">{pageTitle}</h3>
                   <Fab color="primary" title="Save Comment" size="small" className="create-fab"
@@ -174,7 +174,9 @@ class CommentEdit extends Component {
               onChange={event => this.handleChangeValue(event)}
             />
             {!flagCreate &&
-              <div className="label-info-timestamp">{commons.formatDate(timestamp)}</div>
+              <div className="text-right" style={{width: '100%'}}>
+                <span className="label-info-timestamp">{commons.formatDate(timestamp)}</span>
+              </div>
             }
             <TextField
               id="body"
