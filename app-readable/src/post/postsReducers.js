@@ -1,14 +1,21 @@
 import { POST_ACTIONS } from './postActions';
 import { VOTE_OPTIONS } from '../utils/constants';
 
+/**
+ * @description Post's reducer implementation to manage all Post thunk actions.
+ * @param {Object} state Current reducer state object
+ * @param {Object} action Current reducer thunk action object
+ */
 export default function posts(state = {}, action) {
   switch (action.type) {
+    //add all backend server loaded Posts into state
     case POST_ACTIONS.RECEIVE:
       return {
         ...state,
         ...action.posts
       };
 
+    //update a Post vote score action into state
     case POST_ACTIONS.VOTE:
       return {
         ...state,
@@ -20,6 +27,7 @@ export default function posts(state = {}, action) {
           }
       };
 
+    //add a new Post object into state
     case POST_ACTIONS.NEW:
       return {
         ...state,
@@ -28,6 +36,7 @@ export default function posts(state = {}, action) {
         }
       };
 
+    //update an existing Post object into state
     case POST_ACTIONS.UPDATE:
       return {
         ...state,
@@ -36,7 +45,7 @@ export default function posts(state = {}, action) {
         }
       };
 
-
+    //delete an existing Post object from state through delete flag field
     case POST_ACTIONS.DELETE:
       return {
         ...state,
@@ -46,6 +55,7 @@ export default function posts(state = {}, action) {
         }
       };
 
+    //update a Post's commentCount field when one of its Comments is deleted
     case POST_ACTIONS.DELETE_COMMENT:
       return {
         ...state,
@@ -55,6 +65,7 @@ export default function posts(state = {}, action) {
         }
       };
 
+    //update a Post's commentCount field when one new Comment is created
     case POST_ACTIONS.ADD_COMMENT:
       return {
         ...state,

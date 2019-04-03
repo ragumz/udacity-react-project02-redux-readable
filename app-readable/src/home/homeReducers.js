@@ -5,6 +5,9 @@ import posts from '../post/postsReducers'
 import common from '../common/commonReducers'
 import { loadingBarReducer } from 'react-redux-loading'
 
+/** 
+ * @description All reducers combined
+ */
 export default combineReducers({
   categories,
   posts,

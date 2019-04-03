@@ -5,6 +5,9 @@ import SortListMenu from '../common/SortListMenu'
 import { ENTITY_NAME } from '../utils/constants'
 import { getSortedEntityId, sortEntityMap } from '../common/commonOperations'
 
+/**
+ * @description Object with global Post sort menu options.
+ */
 export const POST_SORT_MENU = [
   {title: 'Author', fieldName: 'author'},
   {title: 'Comment Count', fieldName: 'commentCount'},
@@ -13,11 +16,14 @@ export const POST_SORT_MENU = [
   {title: 'Vote Score', fieldName: 'voteScore'},
 ]
 
+/**
+ * @description React component to enlist all existing Posts.
+ */
 class PostList extends Component {
 
   render() {
     const { posts, sortingSetup, fixedCategory } = this.props;
-
+    //execute sort method over Post collection from menu user sorting selection
     let sortedPosts = sortEntityMap(posts, sortingSetup)
                         .filter(key => posts[key].deleted !== true);
 
@@ -41,9 +47,9 @@ class PostList extends Component {
 
 function mapStateToProps ({ posts, common },{ postsFilter, fixedCategory=false }) {
   return {
-    fixedCategory,
-    posts: postsFilter ? postsFilter : posts,
-    sortingSetup: common[getSortedEntityId(ENTITY_NAME.POST)]
+    fixedCategory,  //control flag to force a Post's Category
+    posts: postsFilter ? postsFilter : posts, //post data collection
+    sortingSetup: common[getSortedEntityId(ENTITY_NAME.POST)] //menu user sort selection
   }
 }
 

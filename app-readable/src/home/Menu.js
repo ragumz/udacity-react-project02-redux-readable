@@ -61,11 +61,15 @@ class Menu extends Component {
     return currentCategory;
   }
 
+  /**
+   * @description Lifecycle function to create component HTML contents with JSX
+   */
   render () {
     const { common, location } = this.props;
 
+    //get all contextual menu indexes to render respective buttons and links
     const contextMenuKeys = Object.keys(common).filter(key => key.startsWith(constants.MENU_ITEM_CONTEXT_PREFIX));
-
+    //discover current category name from URL params
     const currentCategory = this.extractFixeCategoryName();
 
     return (

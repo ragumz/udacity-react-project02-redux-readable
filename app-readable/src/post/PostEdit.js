@@ -30,18 +30,28 @@ import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 
 /**
- * @description Component to create new Posts.
+ * @description React component to create new Posts.
  */
 class PostEdit extends Component {
+
   state = {
+    /** @description Edited/Viewed Post object */
     editPost: Object.assign({}, constants.EMTPY_POST),
+    /** @description Navigation flag indicating end of component use */
     goBack: false,
+    /** @description Control flag to force one Category to Post */
     categoryRequired: false,
+    /** @description Control flag to manage dialog user interaction */
     showConfirmDialog: false,
+    /** @description Control flag to make readonly all input fields of Posts data */
     readOnly: false,
+    /** @description Control flag to detect if an Post edition can be undone */
     canUndo: false,
   };
 
+  /**
+   * @description Component handle function to update an editing Post field value with input events from user
+   */
   handleChangeValue = event => {
     event.preventDefault();
     const { name, value } = event.target;
@@ -52,6 +62,9 @@ class PostEdit extends Component {
     });
   };
 
+  /**
+   * @description Component handle function to manage Post creation or update
+   */
   handleSubmit = event => {
     event.preventDefault();
     if (commons.isNull(this.props.post)) {
@@ -61,6 +74,9 @@ class PostEdit extends Component {
     }
   };
 
+  /**
+   * @description Component handle function to create a new Post through reducer actions
+   */
   handleClickCreatePost = () => {
     const { editPost } = this.state;
     //force category selection
@@ -71,16 +87,20 @@ class PostEdit extends Component {
       this.setState({ categoryRequired: false });
     }
     const { dispatch, history } = this.props;
-    dispatch(handleAddNewPost(editPost)).then(() => {
-      console.log('history', history);
-      if (!history.location.pathname.includes('/post/view/')) {
-        this.setState({
-          goBack: true
-        }, this.handleGoBack);
-      }
-    });
+    dispatch(handleAddNewPost(editPost))
+      .then(() => {
+        if (!history.location.pathname.includes('/post/view/')) {
+          //if this edition is not from a Post page, just go back to the source
+          this.setState({
+            goBack: true
+          }, this.handleGoBack);
+        }
+      });
   };
 
+  /**
+   * @description Component handle function to update an existing Post through reducer actions
+   */  
   handleClickUpdatePost = () => {
     const { editPost } = this.state;
     const { dispatch } = this.props;
@@ -90,20 +110,29 @@ class PostEdit extends Component {
       });
   };
 
+  /**
+   * @description Component handle function to exit from the current page
+   */  
   handleClickExit = () => {
     this.setState({
       goBack: true
     }, this.handleGoBack);
   }
 
+  /**
+   * @description Component handle function to undo user changes over Post's field input values
+   */    
   handleClickUndo = () => {
     let { post, category } = this.props;
     if (commons.isNull(post)) {
+      //if it is a new Post
       post = Object.assign({}, constants.EMTPY_POST);
     } else {
+      //if it is an existing Post
       post = Object.assign({}, post);
     }
     if (!commons.isNull(category)) {
+      //force category name
       post.category = category.name;
     }
     this.setState({
@@ -112,10 +141,16 @@ class PostEdit extends Component {
     })
   };
 
+  /**
+   * @description Component handle function to show a dialog to the user
+   */   
   handleShowDialog = (event) => {
     this.setState({ showConfirmDialog: true });
   };
 
+  /**
+   * @description Component handle function to process dialog user Yes decision button
+   */   
   handleDialogYesAnswer = (event) => {
     const { dispatch } = this.props;
     const { editPost } = this.state;
@@ -126,12 +161,15 @@ class PostEdit extends Component {
       }, this.handleGoBack));
   };
 
+  /**
+   * @description Component handle function to process dialog user No decision button
+   */   
   handleDialogNoAnswer = (event) => {
     this.setState({ showConfirmDialog: false });
   };
 
   /**
-   * @description Try to discover the right path to return after delete
+   * @description Component handle function to discover the right path to return after an demanding action.
    */
   handleGoBack = () => {
     const { category, history } = this.props;
@@ -144,6 +182,9 @@ class PostEdit extends Component {
     }
   }
 
+  /** 
+   * @description Lifecycle function to initialize component inner state controls 
+   */
   componentDidMount() {
     let { editPost } = this.state;
     const { post, category, dispatch } = this.props;
@@ -156,15 +197,17 @@ class PostEdit extends Component {
     this.setState({ editPost });
   }
 
-  /*componentDidUpdate(prevProps, prevState) {
-    console.log("componentDidUpdate()", prevProps, prevState);
-  }*/
-
+  /** 
+   * @description Lifecycle function to finalize component inner state controls 
+   */
   componentWillUnmount() {
     const { dispatch } = this.props;
     dispatch(deleteContextMenuItem('deletePost'));
   }
 
+  /**
+   * @description Lifecycle function to detect inner state controls changes from props changes
+   */
   componentWillReceiveProps(nextProps) {
     if (nextProps.post && this.props.post
         && (nextProps.post.voteScore !== this.props.post.voteScore
@@ -182,8 +225,12 @@ class PostEdit extends Component {
     }
   }
 
+  /**
+   * @description Lifecycle function to create component HTML contents with JSX
+   */
   render() {
     if (this.state.goBack === true) {
+      //no content can be shown anymore
       return <div />;
     }
 
@@ -191,6 +238,7 @@ class PostEdit extends Component {
     const { editPost, categoryRequired, showConfirmDialog, canUndo } = this.state;
     const { id, timestamp, category, title, body, author, commentCount } = editPost;
 
+    //detect Post input state and title
     let pageTitle = (readOnly ? 'View' : 'Edit').concat(' Post');
     let flagCreate = false;
     if (commons.isNull(this.props.post)) {
@@ -198,10 +246,10 @@ class PostEdit extends Component {
       flagCreate = true;
     }
 
-    //control the max length
+    //control the max length countdown to body character length
     const bodyLeft = 500 - body.length;
 
-    //deletion behavior
+    //Post deletion behavior required to ask user by dialog message
     let dialogSetup = {};
     if (showConfirmDialog) {
       dialogSetup = commons.createDeleteMessage(constants.ENTITY_NAME.POST,  this.handleDialogYesAnswer, this.handleDialogNoAnswer, ' and all its Comments');
@@ -334,17 +382,21 @@ class PostEdit extends Component {
 }
 
 function mapStateToProps({ posts, comments, categories }, { history, location, match, id, post, category, readOnly=false }) {
+  //a Post id was defined
   if (!commons.isEmpty(match.params.id)) {
     id = match.params.id;
   }
+  //detect the input state
   if (!readOnly && location.pathname.includes('/post/view/')) {
     readOnly = true;
   }
+  //extract the Post category
   if (!commons.isEmpty(match.params.category)
       && match.params.category !== '?') {
     category = categories[match.params.category];
   }
   let postComments = null;
+  //load Post's comments if existing Post and Comments
   if (!commons.isEmpty(id) && commons.isNull(post)) {
     //test to prevent refreshing on this page without loading app content
     if (!commons.isEmpty(posts) && posts.hasOwnProperty(id)) {
@@ -353,6 +405,7 @@ function mapStateToProps({ posts, comments, categories }, { history, location, m
       post = Object.freeze(posts[id]);
     }
   }
+  //detect if category can change
   if (commons.isNull(category)
       && !commons.isNull(post)
       && match.params.fixedCategory === "true") {

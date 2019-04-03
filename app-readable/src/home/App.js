@@ -18,12 +18,15 @@ import AppBar from '@material-ui/core/AppBar';
  */
 class App extends Component {
   /**
-   * @description Clear the text message of the modal dialog.
+   * @description Componente handle function to clear the text message of the modal dialog.
    */
   handleClearMessage = () => {
     this.props.dispatch(commonActions.hideMessage());
   };
 
+  /** 
+   * @description Lifecycle function to initialize application state
+   */
   componentDidMount() {
     //setup default sorting behavior
     this.props.dispatch(commonActions.sortedListData(ENTITY_NAME.CATEGORY, 'name', SORT_ORDER.ASCENDING))
@@ -33,6 +36,9 @@ class App extends Component {
     this.props.dispatch(commonOperations.handleInitialData());
   }
 
+  /**
+   * @description Lifecycle function to create component HTML contents with JSX
+   */
   render() {
     const { userMessage } = this.props;
 

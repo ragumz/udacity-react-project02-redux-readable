@@ -1,5 +1,9 @@
 import { arrayToIndexedObject } from '../utils/commons';
 
+/**
+ * @description Freezed object with constant strings 
+ *              representing Post's reducer's actions enumeration.
+ */
 export const POST_ACTIONS = Object.freeze({
   RECEIVE: 'RECEIVE_POSTS',
   VOTE: 'VOTE_POST',
@@ -10,6 +14,10 @@ export const POST_ACTIONS = Object.freeze({
   ADD_COMMENT: 'ADD_POST_COMMENT',
 });
 
+/**
+ * @description Post reducer action to receive an array of Post objects
+ * @param {Array} posts 
+ */
 export function receivePosts(posts) {
   return {
     type: POST_ACTIONS.RECEIVE,
@@ -17,6 +25,11 @@ export function receivePosts(posts) {
   };
 }
 
+/**
+ * @description Post reducer action to change a Post vote score.
+ * @param {Object} voteScore An object with Post's id field and option field
+ *              containing one {@code ../utils/constants/VOTE_OPTIONS} constant.
+ */
 export function postVoteScore({id, option}) {
   return {
     type: POST_ACTIONS.VOTE,
@@ -25,6 +38,10 @@ export function postVoteScore({id, option}) {
   };
 }
 
+/**
+ * @description Post reducer action to create a new Post object
+ * @param {Object} post Complete Post object 
+ */
 export function addNewPost(post) {
   return {
     type: POST_ACTIONS.NEW,
@@ -32,6 +49,10 @@ export function addNewPost(post) {
   }
 }
 
+/**
+ * @description Post reducer action to delete an existing Post object
+ * @param {String} postId Post unique identification key
+ */
 export function deletePost(postId) {
   return {
     type: POST_ACTIONS.DELETE,
@@ -39,6 +60,10 @@ export function deletePost(postId) {
   }
 }
 
+/**
+ * @description Post reducer action to update commentCount field due to Post's comment deletion.
+ * @param {String} postId Post unique identification key
+ */
 export function deletePostComment(postId) {
   return {
     type: POST_ACTIONS.DELETE_COMMENT,
@@ -46,6 +71,10 @@ export function deletePostComment(postId) {
   }
 }
 
+/**
+ * @description Post reducer action to update commentCount field due to Post's comment creation.
+ * @param {String} postId Post unique identification key
+ */
 export function addPostComment(postId) {
   return {
     type: POST_ACTIONS.ADD_COMMENT,
@@ -53,6 +82,10 @@ export function addPostComment(postId) {
   }
 }
 
+/**
+ * @description Post reducer action to update a Post object fields
+ * @param {Object} post Complete post object 
+ */
 export function updatePost(post) {
   return {
     type: POST_ACTIONS.UPDATE,

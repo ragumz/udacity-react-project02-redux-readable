@@ -8,36 +8,58 @@ import EntityButtons from '../common/EntityButtons'
 import MessageDialog from '../common/MessageDialog'
 import { withRouter } from 'react-router-dom'
 
+/**
+ * @description React component to show Post's details.
+ */
 class PostItem extends Component {
 
   state = {
+    /** @description Control flag to manage dialog user interaction */
     showConfirmDialog: false,
   }
 
+  /**
+   * @description Component handle function to navigate to current Post details and Comments
+   */
   handleView = (event) => {
     const { history, fixedCategory } = this.props;
     history.push(`/post/view/${this.props.id}/${fixedCategory}`)
   }
 
+  /**
+   * @description Component handle function to navigate to current Post data edition
+   */
   handleEdit = (event) => {
     const { history, fixedCategory } = this.props;
     history.push(`/post/edit/${this.props.id}/${fixedCategory}`)
   }
 
+  /**
+   * @description Component handle function to show a dialog to the user
+   */   
   handleShowDialog = (event) => {
     this.setState({ showConfirmDialog: true });
   }
 
+  /**
+   * @description Component handle function to process dialog user Yes decision button
+   */   
   handleDialogYesAnswer = (event) => {
     const { dispatch, id } = this.props
     this.setState({ showConfirmDialog: false });
     dispatch(handleDeletePost(id));
   }
 
+  /**
+   * @description Component handle function to process dialog user No decision button
+   */   
   handleDialogNoAnswer = (event) => {
     this.setState({ showConfirmDialog: false });
   }
 
+  /**
+   * @description Lifecycle function to create component HTML contents with JSX
+   */
   render() {
     const { showConfirmDialog } = this.state;
     const { id, post, category, dispatch } = this.props;
@@ -53,7 +75,7 @@ class PostItem extends Component {
       commentCount
     } = post;
 
-    //deletion behavior
+    //Post deletion behavior required to ask user by dialog message
     let dialogSetup = {};
     if (showConfirmDialog) {
       dialogSetup = commons.createDeleteMessage(constants.ENTITY_NAME.POST,  this.handleDialogYesAnswer, this.handleDialogNoAnswer, ' and all its Comments');
@@ -107,6 +129,7 @@ function mapStateToProps({ categories, posts, common }, { id, fixedCategory=fals
   } else {
     post = Object.assign({}, constants.EMTPY_POST);
   }
+  //extract the current Post's Category
   const category = post ? categories[post.category] : null;
   return {
     fixedCategory,
