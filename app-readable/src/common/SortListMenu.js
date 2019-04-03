@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import PropTypes from 'prop-types';
 import { getSortedEntityId } from '../common/commonOperations';
 import { SORT_ORDER } from '../utils/constants';
 import { connect } from 'react-redux';
@@ -12,6 +12,9 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { sortedListData } from '../common/commonActions';
 import { FaSortAlphaUp, FaSortAlphaDown } from 'react-icons/fa';
 
+/**
+ * @description Vote score React Component to simplify user selection of list sorting over an entity fiel.
+ */
 class SortListMenu extends Component {
   /**
    * @description Define props' arguments' types

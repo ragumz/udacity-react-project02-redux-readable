@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import * as commons from '../utils/commons';
 import * as constants from '../utils/constants';
 import {
@@ -33,7 +34,19 @@ import FormHelperText from '@material-ui/core/FormHelperText';
  * @description React component to create new Posts.
  */
 class PostEdit extends Component {
+  /**
+   * @description Define props' arguments' types
+   */
+  static propTypes = {
+    id: PropTypes.string,
+    post: PropTypes.object,
+    category: PropTypes.object,
+    readOnly: PropTypes.bool,
+  };
 
+  /**
+   * @description Initializes component states
+   */
   state = {
     /** @description Edited/Viewed Post object */
     editPost: Object.assign({}, constants.EMTPY_POST),
@@ -100,7 +113,7 @@ class PostEdit extends Component {
 
   /**
    * @description Component handle function to update an existing Post through reducer actions
-   */  
+   */
   handleClickUpdatePost = () => {
     const { editPost } = this.state;
     const { dispatch } = this.props;
@@ -112,7 +125,7 @@ class PostEdit extends Component {
 
   /**
    * @description Component handle function to exit from the current page
-   */  
+   */
   handleClickExit = () => {
     this.setState({
       goBack: true
@@ -121,7 +134,7 @@ class PostEdit extends Component {
 
   /**
    * @description Component handle function to undo user changes over Post's field input values
-   */    
+   */
   handleClickUndo = () => {
     let { post, category } = this.props;
     if (commons.isNull(post)) {
@@ -143,14 +156,14 @@ class PostEdit extends Component {
 
   /**
    * @description Component handle function to show a dialog to the user
-   */   
+   */
   handleShowDialog = (event) => {
     this.setState({ showConfirmDialog: true });
   };
 
   /**
    * @description Component handle function to process dialog user Yes decision button
-   */   
+   */
   handleDialogYesAnswer = (event) => {
     const { dispatch } = this.props;
     const { editPost } = this.state;
@@ -163,7 +176,7 @@ class PostEdit extends Component {
 
   /**
    * @description Component handle function to process dialog user No decision button
-   */   
+   */
   handleDialogNoAnswer = (event) => {
     this.setState({ showConfirmDialog: false });
   };
@@ -182,8 +195,8 @@ class PostEdit extends Component {
     }
   }
 
-  /** 
-   * @description Lifecycle function to initialize component inner state controls 
+  /**
+   * @description Lifecycle function to initialize component inner state controls
    */
   componentDidMount() {
     let { editPost } = this.state;
@@ -197,8 +210,8 @@ class PostEdit extends Component {
     this.setState({ editPost });
   }
 
-  /** 
-   * @description Lifecycle function to finalize component inner state controls 
+  /**
+   * @description Lifecycle function to finalize component inner state controls
    */
   componentWillUnmount() {
     const { dispatch } = this.props;
@@ -381,7 +394,10 @@ class PostEdit extends Component {
   }
 }
 
-function mapStateToProps({ posts, comments, categories }, { history, location, match, id, post, category, readOnly=false }) {
+/**
+ * @description Extract component's props data from Redux state and props args into one object.
+ */
+function mapStateToProps({ posts, comments, categories }, { location, match, id, post, category, readOnly=false }) {
   //a Post id was defined
   if (!commons.isEmpty(match.params.id)) {
     id = match.params.id;

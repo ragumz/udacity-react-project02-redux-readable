@@ -1,9 +1,10 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import PostItem from './PostItem'
-import SortListMenu from '../common/SortListMenu'
-import { ENTITY_NAME } from '../utils/constants'
-import { getSortedEntityId, sortEntityMap } from '../common/commonOperations'
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import PostItem from './PostItem';
+import SortListMenu from '../common/SortListMenu';
+import { ENTITY_NAME } from '../utils/constants';
+import { getSortedEntityId, sortEntityMap } from '../common/commonOperations';
 
 /**
  * @description Object with global Post sort menu options.
@@ -20,7 +21,17 @@ export const POST_SORT_MENU = [
  * @description React component to enlist all existing Posts.
  */
 class PostList extends Component {
+  /**
+   * @description Define props' arguments' types
+   */
+  static propTypes = {
+    postsFilter: PropTypes.object,
+    fixedCategory: PropTypes.bool,
+  };
 
+  /**
+   * @description Lifecycle function to create component HTML contents with JSX
+   */
   render() {
     const { posts, sortingSetup, fixedCategory } = this.props;
     //execute sort method over Post collection from menu user sorting selection
@@ -45,11 +56,17 @@ class PostList extends Component {
   }
 }
 
+/**
+ * @description Extract component's props data from Redux state and props args into one object.
+ */
 function mapStateToProps ({ posts, common },{ postsFilter, fixedCategory=false }) {
   return {
-    fixedCategory,  //control flag to force a Post's Category
-    posts: postsFilter ? postsFilter : posts, //post data collection
-    sortingSetup: common[getSortedEntityId(ENTITY_NAME.POST)] //menu user sort selection
+    //control flag to force a Post's Category
+    fixedCategory,
+    //post data collection
+    posts: postsFilter ? postsFilter : posts,
+    //menu user sort selection
+    sortingSetup: common[getSortedEntityId(ENTITY_NAME.POST)]
   }
 }
 

@@ -24,7 +24,7 @@ class App extends Component {
     this.props.dispatch(commonActions.hideMessage());
   };
 
-  /** 
+  /**
    * @description Lifecycle function to initialize application state
    */
   componentDidMount() {
@@ -72,8 +72,12 @@ class App extends Component {
   }
 }
 
+/**
+ * @description Extract component's props data from Redux state and props args into one object.
+ */
 function mapStateToProps({ common }) {
   return {
+    //global redux user message
     userMessage: common.userMessage
   };
 }

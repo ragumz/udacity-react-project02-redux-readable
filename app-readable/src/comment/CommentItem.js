@@ -10,7 +10,9 @@ import VoteScore from '../common/VoteScore';
 import EntityButtons from '../common/EntityButtons'
 import MessageDialog from '../common/MessageDialog'
 
-
+/**
+ * @description React component to show Comment's details.
+ */
 class CommentItem extends Component {
   /**
    * @description Define props' arguments' types
@@ -20,38 +22,57 @@ class CommentItem extends Component {
   };
 
   state = {
+    /** @description Control flag to manage inline comment editing */
     isEditing: false,
+    /** @description Control flag to manage dialog user interaction */
     showConfirmDialog: false,
   }
 
+  /**
+   * @description Component handle function to manage inline current Comment data edition
+   */
   handleEdit = (event) => {
-//    this.props.history.push(`/comment/edit/${this.props.id}`)
     this.setState({isEditing: true});
   }
 
+  /**
+   * @description Component handle function to end inline current Comment data edition
+   */
   handleFinishEdit = () => {
     this.setState({isEditing: false});
   }
 
+  /**
+   * @description Component handle function to show a dialog to the user
+   */
   handleShowDialog = (event) => {
     this.setState({ showConfirmDialog: true });
   }
 
+  /**
+   * @description Component handle function to process dialog user Yes decision button
+   */
   handleDialogYesAnswer = (event) => {
     const { dispatch, id, post } = this.props
     this.setState({ showConfirmDialog: false });
     dispatch(handleDeleteComment(id, post.id));
   }
 
+  /**
+   * @description Component handle function to process dialog user No decision button
+   */
   handleDialogNoAnswer = (event) => {
     this.setState({ showConfirmDialog: false });
   }
 
+  /**
+   * @description Lifecycle function to create component HTML contents with JSX
+   */
   render() {
     const { isEditing, showConfirmDialog } = this.state;
     const { id, comment, dispatch } = this.props;
     if (isEditing) {
-      //inline comment editing
+      //when inline comment editing, allow user to change Comment data
       return <CommentEdit id={id} handleFinishEdit={this.handleFinishEdit} />
     }
 
@@ -65,7 +86,7 @@ class CommentItem extends Component {
       author,
     } = comment;
 
-    //deletion behavior
+    //Comment deletion behavior required to ask user by dialog message
     let dialogSetup = {};
     if (showConfirmDialog) {
       dialogSetup = commons.createDeleteMessage(constants.ENTITY_NAME.COMMENT,  this.handleDialogYesAnswer, this.handleDialogNoAnswer);
@@ -102,6 +123,9 @@ class CommentItem extends Component {
   }
 }
 
+/**
+ * @description Extract component's props data from Redux state and props args into one object.
+ */
 function mapStateToProps({ posts, comments, common }, { id }) {
   const comment = Object.freeze(comments[id]);
   const post = comment ? posts[comment.parentId] : null;

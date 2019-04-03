@@ -9,7 +9,7 @@ import { showMessage } from '../common/commonActions';
 
 /**
  * @description Exclusive Post function to update a Post object vote score field
- *             on backend server and local redux store.  
+ *             on backend server and local redux store.
  * @param {Object} vote An object with Post's id field and option field
  *              containing one {@code ../utils/constants/VOTE_OPTIONS} constant.
  */
@@ -48,7 +48,7 @@ function revertPostVoteScore(dispatch, vote, error) {
 }
 
 /**
- * @description Exclusive Post function to update a Post object on backend server and on local redux store.  
+ * @description Exclusive Post function to update a Post object on backend server and on local redux store.
  *        It will show a success message to the user. If any error occurs, a message is also shown to user.
  * @param {Object} newPost Complete Post object, except id and timestamp fields that will be replaced here.
  */
@@ -66,8 +66,8 @@ export function handleAddNewPost(newPost) {
 }
 
 /**
- * @description Exclusive Post function to delete a Post object from backend server and local redux store.  
- *        It will also delete all Comment objects from this Post.
+ * @description Exclusive Post function to delete a Post object from backend server and local redux store.
+ *        It will also delete all Comment objects from this Post with the respective Comment.
  *        It will show a success message to the user. If any error occurs, a message is also shown to user.
  * @param {string} postId Post object unique identification
  */
@@ -84,7 +84,7 @@ export function handleDeletePost(postId) {
 }
 
 /**
- * @description Exclusive Post function to update a Post object on backend server and on local redux store.  
+ * @description Exclusive Post function to update a Post object on backend server and on local redux store.
  *        It will show a success message to the user. If any error occurs, a message is also shown to user.
  * @param {string} postId Post object unique identification
  */
@@ -100,7 +100,7 @@ export function handleUpdatePost(post) {
 }
 
 /**
- * @description Exclusive Post function to load all Post's Comments objects from backend server to local redux store.  
+ * @description Exclusive Post function to load all Post's Comments objects from backend server to local redux store.
  *        If any error occurs, a message is shown to user.
  * @param {string} postId Post object unique identification
  */

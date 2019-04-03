@@ -7,20 +7,33 @@ import Fab from '@material-ui/core/Fab';
 import IconAdd from '@material-ui/icons/Add';
 import IconExit from '@material-ui/icons/ExitToApp';
 
+
+/**
+ * @description React component to show Category's details.
+ */
 class CategoryItem extends Component {
 
+  /**
+   * @description Component handle function to navigate to new Post Edit route
+   */
   handleNewPost = (event) => {
     event.preventDefault();
     const { id, history } = this.props;
     history.push(`/post/new/${id}`)
   }
 
+  /**
+   * @description Component handle function to return to main page
+   */
   handleClickExit = () => {
     this.props.history.push('/');
   }
 
+  /**
+   * @description Lifecycle function to create component HTML contents with JSX
+   */
   render() {
-    const { id, category, posts/*, dispatch*/ } = this.props;
+    const { id, category, posts } = this.props;
 
     if (commons.isNull(category)) {
       return <p>Category {id} doesn't exist</p>;
@@ -46,6 +59,9 @@ class CategoryItem extends Component {
   }
 }
 
+/**
+ * @description Extract component's props data from Redux state and props args into one object.
+ */
 function mapStateToProps({ categories, posts, common }, props) {
   let { id } = props.match.params;
   if (!id) {

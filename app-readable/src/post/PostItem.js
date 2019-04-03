@@ -1,17 +1,26 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom'
+import PropTypes from 'prop-types';
 import * as commons from '../utils/commons';
 import * as constants from '../utils/constants';
 import VoteScore from '../common/VoteScore';
 import { handlePostVoteScore, handleDeletePost } from './postOperations'
 import EntityButtons from '../common/EntityButtons'
 import MessageDialog from '../common/MessageDialog'
-import { withRouter } from 'react-router-dom'
+
 
 /**
  * @description React component to show Post's details.
  */
 class PostItem extends Component {
+  /**
+   * @description Define props' arguments' types
+   */
+  static propTypes = {
+    id: PropTypes.string,
+    fixedCategory: PropTypes.bool,
+  };
 
   state = {
     /** @description Control flag to manage dialog user interaction */
@@ -36,14 +45,14 @@ class PostItem extends Component {
 
   /**
    * @description Component handle function to show a dialog to the user
-   */   
+   */
   handleShowDialog = (event) => {
     this.setState({ showConfirmDialog: true });
   }
 
   /**
    * @description Component handle function to process dialog user Yes decision button
-   */   
+   */
   handleDialogYesAnswer = (event) => {
     const { dispatch, id } = this.props
     this.setState({ showConfirmDialog: false });
@@ -52,7 +61,7 @@ class PostItem extends Component {
 
   /**
    * @description Component handle function to process dialog user No decision button
-   */   
+   */
   handleDialogNoAnswer = (event) => {
     this.setState({ showConfirmDialog: false });
   }
@@ -120,6 +129,9 @@ class PostItem extends Component {
   }
 }
 
+/**
+ * @description Extract component's props data from Redux state and props args into one object.
+ */
 function mapStateToProps({ categories, posts, common }, { id, fixedCategory=false }) {
   let post;
   //test to prevent refreshing on this page without loading app content

@@ -124,6 +124,9 @@ class Menu extends Component {
   }
 }
 
+/**
+ * @description Extract component's props data from Redux state and props args into one object.
+ */
 function mapStateToProps({ posts, common }) {
   return {
     posts,

@@ -6,6 +6,12 @@ import * as postActions from '../post/postActions';
 import { showLoading, hideLoading } from 'react-redux-loading';
 import { showMessage } from '../common/commonActions';
 
+/**
+ * @description Exclusive Comment function to update a Comment object vote score field
+ *             on backend server and local redux store.
+ * @param {Object} vote An object with Comment's id field and option field
+ *              containing one {@code ../utils/constants/VOTE_OPTIONS} constant.
+ */
 export function handleCommentVoteScore(vote) {
   return dispatch => {
     dispatch(actions.commentVoteScore(vote));
@@ -23,6 +29,13 @@ export function handleCommentVoteScore(vote) {
   };
 }
 
+/**
+ * @description Inner function to revert Comment vote score imediate update in case of backend errors.
+ * @param {Function} dispatch Middleware thunk action dispatch function
+ * @param {Object} vote An object with Comment's id field and option field
+ *              containing one {@code ../utils/constants/VOTE_OPTIONS} constant.
+ * @param {Object} error Object with backend web service rest error details
+ */
 function revertCommentVoteScore(dispatch, vote, error) {
   vote.option = vote.option === constants.VOTE_OPTIONS.UP
     ? constants.VOTE_OPTIONS.DOWN
@@ -31,21 +44,33 @@ function revertCommentVoteScore(dispatch, vote, error) {
   dispatch(showMessage('ERROR', 'There was an error voting on the comment. Try again.', error));
 }
 
+/**
+ * @description Exclusive Comment function to update a Comment object on backend server and on local redux store.
+ *        It also update the parent Post's commentCount field with the respective Post action.
+ *        It will show a success message to the user. If any error occurs, a message is also shown to user.
+ * @param {Object} newPost Complete Comment object, except id and timestamp fields that will be replaced here.
+ * @param {string} parentId Parent Post object identification value
+ */
 export function handleAddNewComment(newComment, parentId) {
   newComment.id = commons.generateUID();
   newComment.parentId = parentId;
   newComment.timestamp = Date.now();
-  return (dispatch/*, getState*/) => {
+  return (dispatch) => {
     dispatch(showLoading())
     return api.addNewComment(newComment)
       .then((comment) => dispatch(actions.addNewComment(comment)))
       .then(() => dispatch(postActions.addPostComment(parentId)))  //update post's comment count
+      .then(() => dispatch(showMessage('INFORMATION', 'The new Comment was successfully created.')))
       .then(() => dispatch(hideLoading()))
       .catch(error => dispatch(showMessage('ERROR', 'There was an error adding the new comment. Try again.', error)))
   }
 }
 
-
+/**
+ * @description Exclusive Comment function to update a Comment object on backend server and on local redux store.
+ *        It will show a success message to the user. If any error occurs, a message is also shown to user.
+ * @param {string} postId Post object unique identification
+ */
 export function handleUpdateComment(comment) {
   return (dispatch) => {
     dispatch(showLoading())
@@ -57,6 +82,12 @@ export function handleUpdateComment(comment) {
   }
 }
 
+/**
+ * @description Exclusive Comment function to delete a Comment object from backend server and local redux store.
+ *        It also update the parent Post's commentCount field with the respective Post action.
+ *        It will show a success message to the user. If any error occurs, a message is also shown to user.
+ * @param {string} postId Post object unique identification
+ */
 export function handleDeleteComment(commentId, parentId) {
   return (dispatch) => {
     dispatch(showLoading())
@@ -69,6 +100,10 @@ export function handleDeleteComment(commentId, parentId) {
   }
 }
 
+/**
+ * @description Exclusive Comment function to change the deletion mark of all Comments from one Post.
+ * @param {string} parentId Parent Post identification field value
+ */
 export function handleDeletedParent(parentId) {
   return (dispatch, getState) => {
     var promises = [];

@@ -3,12 +3,14 @@ import { VOTE_OPTIONS } from '../utils/constants';
 
 export default function comments(state = {}, action) {
   switch (action.type) {
+    //add all backend server loaded Comments into state
     case COMMENT_ACTIONS.RECEIVE:
       return {
         ...state,
         ...action.comments
       };
 
+    //update a Comment vote score action into state
     case COMMENT_ACTIONS.VOTE:
       return {
         ...state,
@@ -20,6 +22,7 @@ export default function comments(state = {}, action) {
           }
       };
 
+    //delete an existing Comment object from state through delete flag field
     case COMMENT_ACTIONS.DELETE:
       return {
         ...state,
@@ -29,21 +32,24 @@ export default function comments(state = {}, action) {
         }
       }
 
+    //mark an existing Comment object from state when its parent Post is deleted
     case COMMENT_ACTIONS.DELETED_PARENT:
       let comments = {...state};
-      Object.values(comments)
-              .filter(comment => comment.parentId === action.parentId)
-              .forEach(comment => comment.parentDeleted = true);
+      Object.keys(comments)
+              .filter(id => comments[id].parentId === action.parentId)
+              .forEach(id => comments[id].parentDeleted = true);
       return comments;
 
+    //add a new Comment object into state
     case COMMENT_ACTIONS.NEW:
       return {
         ...state,
         [action.comment.id]: {
           ...action.comment
-        } 
+        }
       };
 
+    //update an existing Comment object into state
     case COMMENT_ACTIONS.UPDATE:
       return {
         ...state,

@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { FaTrashAlt, FaRegEdit, FaComments } from 'react-icons/fa';
 import Button from '@material-ui/core/Button';
-import PropTypes from 'prop-types';
 
+/**
+ * @description React component to standardize Post and Comment common action buttons
+ */
 class EntityButtons extends Component {
   /**
    * @description Define props' arguments' types
@@ -14,6 +17,9 @@ class EntityButtons extends Component {
     handleDelete: PropTypes.func
   };
 
+  /**
+   * @description Lifecycle function to create component HTML contents with JSX
+   */
   render() {
     const { entityName, handleView, handleEdit, handleDelete } = this.props;
 

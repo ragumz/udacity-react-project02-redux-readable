@@ -1,22 +1,45 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { TiThumbsUp, TiThumbsDown } from 'react-icons/ti';
 import * as constants from '../utils/constants';
-import * as common from '../utils/commons'
+import * as common from '../utils/commons';
 
+/**
+ * @description Vote score React Component to simplify user changes to Post or Comment.
+ */
 class VoteScore extends Component {
+  /**
+   * @description Define props' arguments' types
+   */
+  static propTypes = {
+    id: PropTypes.string.isRequired,
+    object: PropTypes.object,
+    actionHandle: PropTypes.func.isRequired,
+    dispatch: PropTypes.func.isRequired,
+    disabled: PropTypes.bool,
+  };
+
+  /**
+   * @description Component handle function to dispatch thunk action to update Post or Comment
+   * vote score over redux state and backend server
+   */
   handleVote = (event, option) => {
     event.preventDefault();
     const { dispatch, id, actionHandle } = this.props;
     if (id && actionHandle) {
+      //dispatch props action to make the vote score change on object from its identification
       dispatch(actionHandle({ id, option }));
     }
   };
 
+  /**
+   * @description Lifecycle function to create component HTML contents with JSX
+   */
   render() {
     let { object, disabled } = this.props;
 
     if (common.isNull(object) || !object.hasOwnProperty('id')) {
-      //objeto não existe ainda, quando criado nova entidade
+      //object does not exist yet, when a new entity is created
       object = { id: common.generateUID(), voteScore: 0};
     }
     const { id, voteScore } = object;

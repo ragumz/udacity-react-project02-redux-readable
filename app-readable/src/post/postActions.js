@@ -1,7 +1,7 @@
 import { arrayToIndexedObject } from '../utils/commons';
 
 /**
- * @description Freezed object with constant strings 
+ * @description Freezed object with constant strings
  *              representing Post's reducer's actions enumeration.
  */
 export const POST_ACTIONS = Object.freeze({
@@ -16,7 +16,7 @@ export const POST_ACTIONS = Object.freeze({
 
 /**
  * @description Post reducer action to receive an array of Post objects
- * @param {Array} posts 
+ * @param {Array} posts Array containing all Post objects fetched from backend server
  */
 export function receivePosts(posts) {
   return {
@@ -40,7 +40,7 @@ export function postVoteScore({id, option}) {
 
 /**
  * @description Post reducer action to create a new Post object
- * @param {Object} post Complete Post object 
+ * @param {Object} post Complete Post object
  */
 export function addNewPost(post) {
   return {
@@ -84,7 +84,7 @@ export function addPostComment(postId) {
 
 /**
  * @description Post reducer action to update a Post object fields
- * @param {Object} post Complete post object 
+ * @param {Object} post Complete Post object
  */
 export function updatePost(post) {
   return {

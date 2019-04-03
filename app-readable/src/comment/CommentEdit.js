@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import * as commons from '../utils/commons';
 import * as constants from '../utils/constants';
 import {
@@ -18,15 +19,29 @@ import IconExit from '@material-ui/icons/ExitToApp';
 import Fab from '@material-ui/core/Fab';
 
 class CommentEdit extends Component {
+  /**
+   * @description Define props' arguments' types
+   */
+  static propTypes = {
+    id: PropTypes.string,
+    parentId: PropTypes.string,
+    comment: PropTypes.object,
+    handleFinishEdit: PropTypes.func,
+  };
 
   /**
    * @description Initializes component states
    */
   state = {
+    /** @description Edited/Viewed Comment object */
     editComment: Object.assign({}, constants.EMTPY_COMMENT),
+    /** @description Control flag to manage dialog user interaction */
     showConfirmDialog: false,
   };
 
+  /**
+   * @description Component handle function to update an editing Comment field value with input events from user
+   */
   handleChangeValue = event => {
     const { name, value } = event.target;
     this.setState(currState => {
@@ -35,6 +50,9 @@ class CommentEdit extends Component {
     });
   };
 
+  /**
+   * @description Component handle function to manage Comment creation or update
+   */
   handleSubmit = event => {
     event.preventDefault();
     if (commons.isNull(this.props.comment)) {
@@ -44,6 +62,9 @@ class CommentEdit extends Component {
     }
   };
 
+  /**
+   * @description Component handle function to create a new Comment through reducer actions
+   */
   handleClickCreateComment = () => {
     const { editComment } = this.state;
     const { dispatch, post } = this.props;
@@ -53,6 +74,9 @@ class CommentEdit extends Component {
       });
   };
 
+  /**
+   * @description Component handle function to update an existing Comment through reducer actions
+   */
   handleClickUpdateComment = () => {
     const { editComment } = this.state;
     const { dispatch } = this.props;
@@ -60,10 +84,16 @@ class CommentEdit extends Component {
     this.handleFinishedEdit();
   };
 
+  /**
+   * @description Component handle function to show a dialog to the user
+   */
   handleShowDialog = (event) => {
     this.setState({ showConfirmDialog: true });
   };
 
+  /**
+   * @description Component handle function to process dialog user Yes decision button
+   */
   handleDialogYesAnswer = (event) => {
     const { editComment } = this.state;
     const { dispatch, post } = this.props;
@@ -74,10 +104,16 @@ class CommentEdit extends Component {
       });
   };
 
+  /**
+   * @description Component handle function to process dialog user No decision button
+   */
   handleDialogNoAnswer = (event) => {
     this.setState({ showConfirmDialog: false });
   };
 
+  /**
+   * @description Component handle function when user end a Comment edition, saving it or not.
+   */
   handleFinishedEdit = () => {
     const { handleFinishEdit, history } = this.props;
     if (handleFinishEdit) {
@@ -87,6 +123,9 @@ class CommentEdit extends Component {
     }
   }
 
+  /**
+   * @description Lifecycle function to initialize component inner state controls
+   */
   componentDidMount() {
     let { editComment } = this.state;
     const { comment } = this.props;
@@ -97,6 +136,9 @@ class CommentEdit extends Component {
     this.setState({ editComment });
   }
 
+  /**
+   * @description Lifecycle function to detect inner state controls changes from props changes
+   */
   componentWillReceiveProps(nextProps) {
     if (nextProps.comment && this.props.comment
         && (nextProps.comment.voteScore !== this.props.comment.voteScore
@@ -113,16 +155,21 @@ class CommentEdit extends Component {
     }
   }
 
+  /**
+   * @description Lifecycle function to create component HTML contents with JSX
+   */
   render() {
     const { editComment, showConfirmDialog } = this.state;
     const { id, timestamp, body, author, deleted, parentDeleted } = editComment;
     const { dispatch } = this.props;
 
     if (deleted === true || parentDeleted === true) {
+      //when user delete the Comment or its Post
       this.handleFinishedEdit();
       return <div></div>;
     }
 
+    //detect Comment input state and title
     let pageTitle = 'Edit Comment';
     let flagCreate = false;
     if (commons.isNull(this.props.comment)) {
@@ -130,10 +177,10 @@ class CommentEdit extends Component {
       flagCreate = true;
     }
 
-    //control the max length
+    //control the max length countdown to body character length
     const bodyLeft = 500 - body.length;
 
-    //deletion behavior
+    //Comment deletion behavior required to ask user by dialog message
     let dialogSetup = {};
     if (showConfirmDialog) {
       dialogSetup = commons.createDeleteMessage(constants.ENTITY_NAME.COMMENT,  this.handleDialogYesAnswer, this.handleDialogNoAnswer);
@@ -219,6 +266,9 @@ class CommentEdit extends Component {
 
 }
 
+/**
+ * @description Extract component's props data from Redux state and props args into one object.
+ */
 function mapStateToProps({ posts, comments }, { location, match, id, parentId, comment, handleFinishEdit }) {
   if (location.pathname.includes('/comment/') && !commons.isEmpty(match.params.id)) {
     id = match.params.id;
