@@ -34,11 +34,13 @@ export default function comments(state = {}, action) {
 
     //mark an existing Comment object from state when its parent Post is deleted
     case COMMENT_ACTIONS.DELETED_PARENT:
-      let comments = {...state};
-      Object.keys(comments)
-              .filter(id => comments[id].parentId === action.parentId)
-              .forEach(id => comments[id].parentDeleted = true);
-      return comments;
+      return {
+        ...state,
+        [action.id]: {
+          ...state[action.id],
+          parentDeleted: true
+        }
+      }
 
     //add a new Comment object into state
     case COMMENT_ACTIONS.NEW:

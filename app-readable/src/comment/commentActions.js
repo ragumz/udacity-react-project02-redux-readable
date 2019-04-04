@@ -61,12 +61,12 @@ export function deleteComment(id) {
 
 /**
  * @description Comment reducer action to update parentDelete field due to Post's comment deletion.
- * @param {String} postId Parent Post unique identification key
+ * @param {String} commentId Comment id that had its parent Post deleted
  */
-export function deletedParentComment(parentId) {
+export function deletedParentComment(commentId) {
   return {
     type: COMMENT_ACTIONS.DELETED_PARENT,
-    parentId
+    id: commentId
   };
 }
 

@@ -114,7 +114,7 @@ export function handleDeletedParent(parentId) {
         const updComment = {...comment, parentDeleted: true};
         promises.push(
           api.updateComment(updComment)
-          .then(() => dispatch(actions.deletedParentComment(parentId)))
+          .then(() => dispatch(actions.deletedParentComment(comment.id)))
         )
       });
     if (promises.length > 0) {
