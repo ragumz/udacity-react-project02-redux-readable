@@ -121,7 +121,7 @@ To simplify the development process, Udacity provided a backend server to develo
 The backend API uses a fixed set of categories, posts and comments data.
 It is kept on JavaScript files at `..\api-server\**` path.
 
-To interact with REST web service operations on this backend server the [`restAPI.js`](src\utils\restAPI.js) contains the methods to perform necessary operations on the backend:
+To interact with REST web service operations on this backend server the [`restAPI.js`](https://github.com/ragumz/udacity-react-project02-redux-readable/blob/master/app-readable/src/utils/restAPI.js) contains the methods to perform necessary operations on the backend:
 
 * [`getAllCategories`]
 * [`getAllPosts`]

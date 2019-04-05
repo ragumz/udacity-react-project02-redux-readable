@@ -97,7 +97,7 @@ class PostItem extends Component {
             <div className="panel-info-left">
               <span className="label-category">{category.name}</span>
             </div>
-            <div className="panel-info-right" style={{width: '30%'}}>
+            <div className="panel-info-right" style={{width: '50%'}}>
               <EntityButtons
                 entityName={constants.ENTITY_NAME.POST}
                 handleView={this.handleView}

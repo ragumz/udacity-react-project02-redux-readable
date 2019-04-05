@@ -99,7 +99,8 @@ class CommentItem extends Component {
             <EntityButtons
               entityName={constants.ENTITY_NAME.COMMENT}
               handleEdit={this.handleEdit}
-              handleDelete={this.handleShowDialog} />
+              handleDelete={this.handleShowDialog}
+              maxWidth='100%' />
           </div>
           <span className="text-right" >{author}</span>
           <div className="text-right" style={{width: '100%'}}>

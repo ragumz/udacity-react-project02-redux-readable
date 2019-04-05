@@ -10,6 +10,7 @@ import { getSortedEntityId, sortEntityMap } from '../common/commonOperations';
  * @description Object with global Post sort menu options.
  */
 export const POST_SORT_MENU = [
+  {title: 'Category', fieldName: 'category'},
   {title: 'Author', fieldName: 'author'},
   {title: 'Comment Count', fieldName: 'commentCount'},
   {title: 'Creation Time', fieldName: 'timestamp'},

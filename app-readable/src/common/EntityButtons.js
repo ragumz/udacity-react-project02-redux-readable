@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import * as commons from '../utils/commons';
 import { FaTrashAlt, FaRegEdit, FaComments } from 'react-icons/fa';
 import Button from '@material-ui/core/Button';
 
@@ -14,17 +15,23 @@ class EntityButtons extends Component {
     entityName: PropTypes.string.isRequired,
     handleView: PropTypes.func,
     handleEdit: PropTypes.func,
-    handleDelete: PropTypes.func
+    handleDelete: PropTypes.func,
+    maxWidth: PropTypes.string,
   };
 
   /**
    * @description Lifecycle function to create component HTML contents with JSX
    */
   render() {
-    const { entityName, handleView, handleEdit, handleDelete } = this.props;
+    const { entityName, handleView, handleEdit, handleDelete, maxWidth } = this.props;
+    let width = '200px';
+    if (!commons.isEmpty(maxWidth)) {
+      width = maxWidth;
+    }
+    width = width.concat(' !important');
 
     return (
-      <div style={{width: '200px'}}>
+      <div style={{width: width, display: 'inline'}}>
         {handleView &&
           <Button
             variant="text"
