@@ -32,16 +32,6 @@ export default function comments(state = {}, action) {
         }
       }
 
-    //mark an existing Comment object from state when its parent Post is deleted
-    case COMMENT_ACTIONS.DELETED_PARENT:
-      return {
-        ...state,
-        [action.id]: {
-          ...state[action.id],
-          parentDeleted: true
-        }
-      }
-
     //add a new Comment object into state
     case COMMENT_ACTIONS.NEW:
       return {

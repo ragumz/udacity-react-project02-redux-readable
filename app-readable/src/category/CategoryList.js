@@ -35,7 +35,7 @@ class CategoryList extends Component {
         <div className="category">
           <ul className="category-list">
             {sortedCateg.map((id) => (
-              <Link key={id} to={`/category/${id}`}>
+              <Link key={id} to={`/${id}`}>
                 <span key={id} className="category-name">{categories[id].name}</span>
               </Link>
             ))}

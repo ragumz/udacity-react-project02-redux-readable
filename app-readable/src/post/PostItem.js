@@ -19,7 +19,7 @@ class PostItem extends Component {
    */
   static propTypes = {
     id: PropTypes.string,
-    fixedCategory: PropTypes.bool,
+    flagFixedCategory: PropTypes.bool,
   };
 
   state = {
@@ -31,16 +31,16 @@ class PostItem extends Component {
    * @description Component handle function to navigate to current Post details and Comments
    */
   handleView = (event) => {
-    const { history, fixedCategory } = this.props;
-    history.push(`/post/view/${this.props.id}/${fixedCategory}`)
+    const { id, category, history, flagFixedCategory } = this.props;
+    history.push(`/${category.name}/${id}/view/${flagFixedCategory}`)
   }
 
   /**
    * @description Component handle function to navigate to current Post data edition
    */
   handleEdit = (event) => {
-    const { history, fixedCategory } = this.props;
-    history.push(`/post/edit/${this.props.id}/${fixedCategory}`)
+    const { id, category, history, flagFixedCategory } = this.props;
+    history.push(`/${category.name}/${id}/edit/${flagFixedCategory}`)
   }
 
   /**
@@ -132,7 +132,7 @@ class PostItem extends Component {
 /**
  * @description Extract component's props data from Redux state and props args into one object.
  */
-function mapStateToProps({ categories, posts, common }, { id, fixedCategory=false }) {
+function mapStateToProps({ categories, posts, common }, { id, flagFixedCategory=false }) {
   let post;
   //test to prevent refreshing on this page without loading app content
   if (!commons.isEmpty(posts)
@@ -142,9 +142,9 @@ function mapStateToProps({ categories, posts, common }, { id, fixedCategory=fals
     post = Object.assign({}, constants.EMTPY_POST);
   }
   //extract the current Post's Category
-  const category = post ? categories[post.category] : null;
+  const category = post ? categories[post.category] : {name: constants.CATEGORY_UNSELECTED};
   return {
-    fixedCategory,
+    flagFixedCategory,
     id,
     category,
     post,

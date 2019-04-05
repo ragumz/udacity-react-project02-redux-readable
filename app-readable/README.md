@@ -5,19 +5,6 @@ The project web page contents were built using React, Redux, Thunk, JSX, HTML, M
 This web application allows the user to manage Posts from a limited set of categories and manage its Comments using React-Redux to share its data and state across pages. It is allowed to add, edit or delete Posts and its Comments, also voting to keep each one's score. There is no authorization or authentication process, as the project's requirements stated.
 The data lives only while the `api-server` application is running, stopping or restarting it causes the data reset. Nothing is permanently persisted.
 
-## Building and Deploying
-
-It was developed and manually tested in a NodeJS static server.
-Before entering the web application, first is needed to prepare the backend web services rest server:
-* Enter `..\api-server` directory.
-* Install all dependencies with `npm install`.
-* Run `node server` command.
-
-To start navigating on the Readable web application:
-* Enter on `\app-readable` directory.
-* Install all dependencies with `npm install`.
-* Start the development server with `npm start`.
-
 ## Project Files Structure
 ```bash
 ├── README.md - This file.

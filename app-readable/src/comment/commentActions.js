@@ -10,7 +10,6 @@ export const COMMENT_ACTIONS = Object.freeze({
   NEW: 'NEW_COMMENT',
   UPDATE: 'UPDATE_COMMENT',
   DELETE:  'DELETE_COMMENT',
-  DELETED_PARENT:  'DELETED_PARENT_COMMENT',  //TODO check if use!
 });
 
 /**
@@ -56,17 +55,6 @@ export function deleteComment(id) {
   return {
     type: COMMENT_ACTIONS.DELETE,
     id
-  };
-}
-
-/**
- * @description Comment reducer action to update parentDelete field due to Post's comment deletion.
- * @param {String} commentId Comment id that had its parent Post deleted
- */
-export function deletedParentComment(commentId) {
-  return {
-    type: COMMENT_ACTIONS.DELETED_PARENT,
-    id: commentId
   };
 }
 

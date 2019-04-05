@@ -70,3 +70,8 @@ export const EMTPY_COMMENT = Object.freeze({
  * @description Context menu item name prefix constant
  */
 export const MENU_ITEM_CONTEXT_PREFIX = 'menu_';
+
+/**
+ * @description Text that represents an unselected Category name
+ */
+export const CATEGORY_UNSELECTED = '_unselected_';

@@ -99,30 +99,3 @@ export function handleDeleteComment(commentId, parentId) {
       .catch(error => dispatch(showMessage('ERROR', 'There was an error deleting the comment. Try again.', error)))
   }
 }
-
-/**
- * @description Exclusive Comment function to change the deletion mark of all Comments from one Post.
- * @param {string} parentId Parent Post identification field value
- */
-export function handleDeletedParent(parentId) {
-  return (dispatch, getState) => {
-    var promises = [];
-    const { comments } = getState();
-    Object.values(comments)
-      .filter(comment => comment.parentId === parentId)
-      .forEach(comment => {
-        const updComment = {...comment, parentDeleted: true};
-        promises.push(
-          api.updateComment(updComment)
-          .then(() => dispatch(actions.deletedParentComment(comment.id)))
-        )
-      });
-    if (promises.length > 0) {
-      return Promise.all(promises)
-                    .then(([...result]) => {console.log(Array.toString(result))})
-                    .catch(error => dispatch(showMessage('ERROR', 'There was an error marking one Comment after its Post deletion. Try again.', error)));
-    } else  {
-      return Promise.resolve();
-    }
-  }
-}

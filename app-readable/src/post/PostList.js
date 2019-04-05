@@ -27,14 +27,14 @@ class PostList extends Component {
    */
   static propTypes = {
     postsFilter: PropTypes.object,
-    fixedCategory: PropTypes.bool,
+    flagFixedCategory: PropTypes.bool,
   };
 
   /**
    * @description Lifecycle function to create component HTML contents with JSX
    */
   render() {
-    const { posts, sortingSetup, fixedCategory } = this.props;
+    const { posts, sortingSetup, flagFixedCategory } = this.props;
     //execute sort method over Post collection from menu user sorting selection
     let sortedPosts = sortEntityMap(posts, sortingSetup)
                         .filter(key => posts[key].deleted !== true);
@@ -48,7 +48,7 @@ class PostList extends Component {
         <ul className="unordered-list">
           {sortedPosts.map((id) => (
             <li key={id}>
-              <PostItem id={id} fixedCategory={fixedCategory}/>
+              <PostItem id={id} flagFixedCategory={flagFixedCategory}/>
             </li>
           ))}
         </ul>
@@ -60,10 +60,10 @@ class PostList extends Component {
 /**
  * @description Extract component's props data from Redux state and props args into one object.
  */
-function mapStateToProps ({ posts, common },{ postsFilter, fixedCategory=false }) {
+function mapStateToProps ({ posts, common },{ postsFilter, flagFixedCategory=false }) {
   return {
     //control flag to force a Post's Category
-    fixedCategory,
+    flagFixedCategory,
     //post data collection
     posts: postsFilter ? postsFilter : posts,
     //menu user sort selection

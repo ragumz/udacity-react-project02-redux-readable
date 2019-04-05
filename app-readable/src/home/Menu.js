@@ -41,16 +41,22 @@ class Menu extends Component {
   extractFixeCategoryName = () => {
     const { posts, location } = this.props;
 
-    let currentCategory = '_';
+    let currentCategory = constants.CATEGORY_UNSELECTED;
     //extract category from URL path name because match doest have any params
-    let index = location.pathname.indexOf('/category/');
-    if (index > -1) {
-      return location.pathname.substring(index+10);
+    if (location.pathname.length > 1 && !location.pathname.includes('/post/')) {
+      let startIndex = location.pathname.indexOf('/');
+      let pathCategory = location.pathname.substring(startIndex+1);
+      if (pathCategory.length > 0) {
+        return pathCategory;
+      }
     }
     //extract post's category name from URL path name because match doest have any params
     const postLocation =  location.pathname;
     if (postLocation.endsWith('/true')) {
-      index = postLocation.indexOf('/post/');
+      let index = postLocation.indexOf('/edit/');
+      if (index < 0) {
+        index = postLocation.indexOf('/view/');
+      }
       if (index > -1) {
         const currentPost = postLocation.substring(index+11, postLocation.length-5);
         if (!commons.isNull(currentPost)) {
@@ -85,8 +91,8 @@ class Menu extends Component {
               Home
             </Button>
           </NavLink>
-          { !location.pathname.includes('/post/new/') &&
-            <NavLink to={`/post/new/${currentCategory}`} activeClassName="active">
+          { !location.pathname.includes('/newPost/') &&
+            <NavLink to={`/${currentCategory}/newPost/`} activeClassName="active">
               <Button className="button-menu-context">
                 <IconAdd />
                 New Post

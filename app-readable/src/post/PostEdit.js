@@ -102,7 +102,7 @@ class PostEdit extends Component {
     const { dispatch, history } = this.props;
     dispatch(handleAddNewPost(editPost))
       .then(() => {
-        if (!history.location.pathname.includes('/post/view/')) {
+        if (!history.location.pathname.includes('/view/')) {
           //if this edition is not from a Post page, just go back to the source
           this.setState({
             goBack: true
@@ -187,8 +187,9 @@ class PostEdit extends Component {
   handleGoBack = () => {
     const { category, history } = this.props;
     if (!commons.isNull(category)) {
-      history.push('/category/'.concat(category.name));
-    } else if (history.location.pathname.includes('/post/')) {
+      history.push(`/${category.name}`);
+    } else if (history.location.pathname.includes('/post/')
+                || history.location.pathname.includes('/view/')) {
       history.push('/');
     } else {
       history.goBack();
@@ -247,7 +248,7 @@ class PostEdit extends Component {
       return <div />;
     }
 
-    const { readOnly, fixedCategory, categories, postComments, dispatch } = this.props;
+    const { readOnly, flagFixedCategory, categories, postComments, dispatch } = this.props;
     const { editPost, categoryRequired, showConfirmDialog, canUndo } = this.state;
     const { id, timestamp, category, title, body, author, commentCount } = editPost;
 
@@ -302,7 +303,7 @@ class PostEdit extends Component {
             </InputLabel>
             <Select
               className="selectField"
-              readOnly={fixedCategory || readOnly}
+              readOnly={flagFixedCategory || readOnly}
               value={category}
               onChange={event => this.handleChangeValue(event)}
               required={true}
@@ -399,11 +400,11 @@ class PostEdit extends Component {
  */
 function mapStateToProps({ posts, comments, categories }, { location, match, id, post, category, readOnly=false }) {
   //a Post id was defined
-  if (!commons.isEmpty(match.params.id)) {
-    id = match.params.id;
+  if (!commons.isEmpty(match.params.postId)) {
+    id = match.params.postId;
   }
   //detect the input state
-  if (!readOnly && location.pathname.includes('/post/view/')) {
+  if (!readOnly && location.pathname.includes('/view/')) {
     readOnly = true;
   }
   //extract the Post category
@@ -424,7 +425,7 @@ function mapStateToProps({ posts, comments, categories }, { location, match, id,
   //detect if category can change
   if (commons.isNull(category)
       && !commons.isNull(post)
-      && match.params.fixedCategory === "true") {
+      && match.params.flagFixedCategory === "true") {
     //category cannot be changed
     category = categories[post.category];
   }
@@ -434,7 +435,7 @@ function mapStateToProps({ posts, comments, categories }, { location, match, id,
     category,
     post: post ? post : null,
     postComments,
-    fixedCategory: !commons.isEmpty(category)
+    flagFixedCategory: !commons.isEmpty(category)
   };
 }
 

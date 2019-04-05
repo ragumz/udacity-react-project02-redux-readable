@@ -1,5 +1,4 @@
 import * as actions from './postActions'
-import * as commentOperations from '../comment/commentOperations'
 import * as commentActions from '../comment/commentActions'
 import * as api from '../utils/readableAPI';
 import * as constants from '../utils/constants';
@@ -67,7 +66,6 @@ export function handleAddNewPost(newPost) {
 
 /**
  * @description Exclusive Post function to delete a Post object from backend server and local redux store.
- *        It will also delete all Comment objects from this Post with the respective Comment.
  *        It will show a success message to the user. If any error occurs, a message is also shown to user.
  * @param {string} postId Post object unique identification
  */
@@ -76,7 +74,6 @@ export function handleDeletePost(postId) {
     dispatch(showLoading())
     return api.deletePost(postId)
       .then(post => dispatch(actions.deletePost(postId)))
-      .then(() => dispatch(commentOperations.handleDeletedParent(postId)))
       .then(() => dispatch(hideLoading()))
       .then(() => dispatch(showMessage('INFORMATION', 'The Post was successfully deleted.')))
       .catch(error => dispatch(showMessage('ERROR', 'There was an error deleting the Post. Try again.', error)))

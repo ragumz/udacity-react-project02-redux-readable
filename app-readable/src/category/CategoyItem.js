@@ -7,7 +7,6 @@ import Fab from '@material-ui/core/Fab';
 import IconAdd from '@material-ui/icons/Add';
 import IconExit from '@material-ui/icons/ExitToApp';
 
-
 /**
  * @description React component to show Category's details.
  */
@@ -18,8 +17,8 @@ class CategoryItem extends Component {
    */
   handleNewPost = (event) => {
     event.preventDefault();
-    const { id, history } = this.props;
-    history.push(`/post/new/${id}`)
+    const { name, history } = this.props;
+    history.push(`/${name}/newPost`)
   }
 
   /**
@@ -33,12 +32,11 @@ class CategoryItem extends Component {
    * @description Lifecycle function to create component HTML contents with JSX
    */
   render() {
-    const { id, category, posts } = this.props;
+    const { name, category, posts } = this.props;
 
     if (commons.isNull(category)) {
-      return <p>Category {id} doesn't exist</p>;
+      return <p>Category {name} doesn't exist</p>;
     }
-    const { name } = category;
 
     return (
       <div>
@@ -53,7 +51,7 @@ class CategoryItem extends Component {
             <IconExit />
           </Fab>
         </div>
-        <PostList postsFilter={posts} fixedCategory={true} />
+        <PostList postsFilter={posts} flagFixedCategory={true} />
       </div>
     );
   }
@@ -62,21 +60,18 @@ class CategoryItem extends Component {
 /**
  * @description Extract component's props data from Redux state and props args into one object.
  */
-function mapStateToProps({ categories, posts, common }, props) {
-  let { id } = props.match.params;
-  if (!id) {
-    id = props.id;
-  }
-  const category = categories[id];
+function mapStateToProps({ categories, posts, common }, { match }) {
+  let { category } = match.params;
+  const categoryObj = categories[category];
   const postsFilter = Object.values(posts)
-                        .filter(post => post.category === id)
+                        .filter(post => post.category === category)
                         .reduce((obj, post) => {
                           obj[post.id] = post;
                           return obj;
                         }, {});
   return {
-    id,
-    category,
+    name: category,
+    category: categoryObj,
     posts: postsFilter,
     common
   };
