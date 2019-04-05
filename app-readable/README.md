@@ -1,8 +1,8 @@
 # Readable Project of Rafael Araujo Gumz
 
-This is Readable web application project, developed for the final assessment of Udacity`s React+Redux Nanodegree course.
+This is Readable web application project, developed for the final assessment of Udacity's React+Redux Nanodegree course.
 The project web page contents were built using React, Redux, Thunk, JSX, HTML, MaterialUI, JS and CSS. They are dynamic and use own static CSS and design inspired on previous examples and exercises of this course.
-This web application allows the user to manage Posts from a limited set of categories and manage its Comments using React-Redux to share its data and state across pages. It is allowed to add, edit or delete Posts and its Comments, also voting to keep each one`s score. There is no authorization or authentication process, as the project`s requirements stated.
+This web application allows the user to manage Posts from a limited set of categories and manage its Comments using React-Redux to share its data and state across pages. It is allowed to add, edit or delete Posts and its Comments, also voting to keep each one's score. There is no authorization or authentication process, as the project's requirements stated.
 The data lives only while the `api-server` application is running, stopping or restarting it causes the data reset. Nothing is permanently persisted.
 
 ## Building and Deploying
@@ -85,20 +85,22 @@ The following libraries where added to this project through [npm install --save]
 
 ## Web Application Pages and Navigation
 
-A toolbar was fixed on the top of every page set at `App` React component, containing the web application title and two buttons named `Home` and `New Post`. It may also contain contextual buttons (or menu items) added on each page through commonActions and commonReducers functions processed at `Menu` React component.
+A toolbar was fixed on the top of every page at `App` React component, containing the web application title and two buttons named `Home` and `New Post`. It may also contains contextual buttons (or menu items) added on each page through `commonActions` and `commonReducers` functions processed at `Menu` React component.
 
-The main page (/) presents all Category and Post entities fetched from backend server. Clicking on one Category take the user to its page (/category/[name]), where it presents a list of all its Posts.
+The main page (/) presents all Category and Post object entities fetched from backend server. Clicking on one Category take the user to its page (/category/[name]), where it presents a list of all its Posts.
 Each Post panel contains buttons to view, edit or delete the Post object, also to increment or decrement the Post vote score field.
 
-Clicking on a Post panel upright icon, except delete, the user is sent to the `PostEdit` React component, where he/she can view (/post/view/[postId]/[bool_fixedCategory|empty]) and/or edit (/post/edit/[postId]/[bool_fixedCategory|empty]) almost all selected Post fields values. On this component the user can also see all `CommentItem` React component displaying a Comment entity details on a `CommentList` React component. The Comments of a Post are fetched from backend server only if the user view or edit one Post entity.
-The user is allowed to create or edit a Comment inline, at the top of the `CommentList` elements.
+Clicking on a Post panel upright icon, except the delete, the user is sent to the `PostEdit` React component to view (/post/view/[postId]/[bool_fixedCategory|empty]) and/or edit (/post/edit/[postId]/[bool_fixedCategory|empty]) almost all selected Post fields values. On this component the user can also see all `CommentItem` React component displaying a Comment entity details on a `CommentList` React component. The Comments of a Post are fetched from backend server only if the user view or edit one Post entity.
+The user is allowed to create or edit a Comment inline, at the top of the `CommentList` elements and use the action buttons to save or cancel.
 
-At almost all Category, Post and Comment React components, some action buttons may be contextually shown to create, save or undo entity value editions, delete entity or go back to exit the current page or action. Some of them being shown on the app toolbar.
+At almost all Category, Post and Comment React components, some action buttons may be contextually shown to create, save or undo entity value editions, delete entity or go back to exit the current page or action. Some of them being shown on the app toolbar, other beside the main entity panel title.
 
-When opened the `CategoryItem` React component clicking on a Category entity name link (/category/[categoryId]), the opened page shows all the Category\`s Post entities on each `PostItem` React component enlisted by `PostList` React component. If the user decides to edit a Post from this page, he/she cannot change the category.
+When opened the `CategoryItem` React component clicking on a Category entity name link (/category/[categoryId]), the opened page shows all the Category's Post object entities on each `PostItem` React component enlisted by `PostList` React component. If the user decides to edit a Post from this page the category cannot be changed.
 If the user clicks on the New Post button (/post/new/[categoryName|empty]) at the toolbar or the PostItem HTML panel button, being on the Category page, the new Post will have this parent Category fixed and the user cannot change it. However, if the user create a new Post or edit an existing one outside the `CategoryItem` page, the category may be changed freely.
 
 On any deletion action button, a modal dialog window is opened to ask the user to confirm the decision, because the entity is deleted permanently and may not be recovered.
+
+Every list panel has a button with a `MoreVertIcon` that presents the sort options of the related entity: Category, Post and Comment.
 
 # Caveats
 
@@ -109,6 +111,7 @@ Some caveats that could be improved on future releases:
 * On Post or Comment edit, detect if the values changed before handling backend and redux state data saving.
 * Make list sorting options save by page route.
 * Improve Udacity api-server to manage more fields and operations to better Category, Post and Comment use.
+* Better way to discover the category name on current page URL when on any Post component to block category change.
 * The CSS should be improved.
 
 ## Create React App
