@@ -102,7 +102,7 @@ On any deletion action button, a modal dialog window is opened to ask the user t
 
 Every list panel has a button with a `MoreVertIcon` that presents the sort options of the related entity: Category, Post and Comment.
 
-# Caveats
+## Caveats
 
 Some caveats that could be improved on future releases:
 * All React components of this project were created trying to follow the DO ONE THING principle and all good practices taught during the course, however due to React development unexperience, they may have grown more than expected.
