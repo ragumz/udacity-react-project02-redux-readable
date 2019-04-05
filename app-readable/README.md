@@ -66,6 +66,7 @@ To start navigating on the Readable web application:
     │   └── restAPI.js # API functions to interact with backend server REST web services using Promises
     ├── index.css # Global styles of the app inspired on all course projects and examples.
     └── index.js # App component was nested into ErrorBoundary and BrowserRouter components.
+```
 
 ## Libraries and Dependencies
 
