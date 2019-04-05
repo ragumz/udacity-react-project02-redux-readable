@@ -1,8 +1,8 @@
 # Readable Project of Rafael Araujo Gumz
 
-This is Readable web application project, developed for the final assessment of Udacity's React+Redux Nanodegree course.
-The project web page contents were built with React, Redux, Thunk, HTML, JSX, JS and CSS. They are dynamic and use own static CSS and design inspired on previous examples and exercises of this course.
-This web application allows the user to manage Posts from a limited set of categories and manage its Comments using React-Redux to share its data and state. It is allowed to add, edit or delete Posts and its Comments, also voting to keep each one's score. There is no authorization or authentication process, as the project's requirements stated.
+This is Readable web application project, developed for the final assessment of Udacity`s React+Redux Nanodegree course.
+The project web page contents were built using React, Redux, Thunk, JSX, HTML, MaterialUI, JS and CSS. They are dynamic and use own static CSS and design inspired on previous examples and exercises of this course.
+This web application allows the user to manage Posts from a limited set of categories and manage its Comments using React-Redux to share its data and state across pages. It is allowed to add, edit or delete Posts and its Comments, also voting to keep each one`s score. There is no authorization or authentication process, as the project`s requirements stated.
 The data lives only while the `api-server` application is running, stopping or restarting it causes the data reset. Nothing is permanently persisted.
 
 ## Building and Deploying
@@ -84,19 +84,31 @@ The following libraries where added to this project through [npm install --save]
 
 ## Web Application Pages and Navigation
 
-A toolbar was fixed on the top of every page, containing the web application title and two buttons named `Home` and `New Post`. It may also contain contextual buttons (or menu items) added on each page through commonActions and commonReducers functions for Menu React component render.
+A toolbar was fixed on the top of every page set at `App` React component, containing the web application title and two buttons named `Home` and `New Post`. It may also contain contextual buttons (or menu items) added on each page through commonActions and commonReducers functions processed at `Menu` React component.
 
 The main page (/) presents all Category and Post entities fetched from backend server. Clicking on one Category take the user to its page (/category/[name]), where it presents a list of all its Posts.
 Each Post panel contains buttons to view, edit or delete the Post object, also to increment or decrement the Post vote score field.
 
-Clicking on a Post panel upright icon, except delete, the user is sent to ....
+Clicking on a Post panel upright icon, except delete, the user is sent to the `PostEdit` React component, where he/she can view (/post/view/[postId]/[bool_fixedCategory|empty]) and/or edit (/post/edit/[postId]/[bool_fixedCategory|empty]) almost all selected Post fields values. On this component the user can also see all `CommentItem` React component displaying a Comment entity details on a `CommentList` React component. The Comments of a Post are fetched from backend server only if the user view or edit one Post entity.
+The user is allowed to create or edit a Comment inline, at the top of the `CommentList` elements.
 
-Navigation FAB buttons..
-Confirmation delete dialog..
-Category select...
-Inline comment edit..
+At almost all Category, Post and Comment React components, some action buttons may be contextually shown to create, save or undo entity value editions, delete entity or go back to exit the current page or action. Some of them being shown on the app toolbar.
 
+When opened the `CategoryItem` React component clicking on a Category entity name link (/category/[categoryId]), the opened page shows all the Category\`s Post entities on each `PostItem` React component enlisted by `PostList` React component. If the user decides to edit a Post from this page, he/she cannot change the category.
+If the user clicks on the New Post button (/post/new/[categoryName|empty]) at the toolbar or the PostItem HTML panel button, being on the Category page, the new Post will have this parent Category fixed and the user cannot change it. However, if the user create a new Post or edit an existing one outside the `CategoryItem` page, the category may be changed freely.
 
+On any deletion action button, a modal dialog window is opened to ask the user to confirm the decision, because the entity is deleted permanently and may not be recovered.
+
+# Caveats
+
+Some caveats that could be improved on future releases:
+* All React components of this project were created trying to follow the DO ONE THING principle and all good practices taught during the course, however due to React development unexperience, they may have grown more than expected.
+* The components should be better segregated to Presentational and Container Components, may even use PureComponents.
+* Some common behavior should be placed on a parent component class and inherited.
+* On Post or Comment edit, detect if the values changed before handling backend and redux state data saving.
+* Make list sorting options save by page route.
+* Improve Udacity api-server to manage more fields and operations to better Category, Post and Comment use.
+* The CSS should be improved.
 
 ## Create React App
 
@@ -105,7 +117,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ## Backend Server
 
 To simplify the development process, Udacity provided a backend server to develop against.
-The backend API uses a fixed set of categories, posts and comments data. 
+The backend API uses a fixed set of categories, posts and comments data.
 It is kept on JavaScript files at `..\api-server\**` path.
 
 To interact with REST web service operations on this backend server the [`restAPI.js`](src\utils\restAPI.js) contains the methods to perform necessary operations on the backend:
@@ -130,5 +142,5 @@ To interact with REST web service operations on this backend server the [`restAP
 * Students are encouraged to try developing this exercise by themselves and "NOT TO COPY" the source codes.
 * All the text, comments and documentation was made in English, to practice and foreseeing future Udacity courses. However, some errors may have been left behind due the lack of revision time!
 * The Git commit messages were short and clean.
-* It was reused some code and concepts from my [`React Fundamentals My Reads project`](https://github.com/ragumz/udacity-react-project01-myreads).
+* It was reused some code and concepts from [`React Fundamentals My Reads project`](https://github.com/ragumz/udacity-react-project01-myreads) of my creation.
 * All the source code were produced between 20 and 00:30 hours after a long day of 9 hours of architecture, engineering and programming. Also produded on weekends, when my 1 year old daughter allowed. That is mid-age student life!

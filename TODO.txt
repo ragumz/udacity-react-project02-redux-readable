@@ -1,4 +1,4 @@
-PROJECT READABLE
+PROJECT READABLE PENDING DEVELOPMENT
 
 OK-Set GitHub project
 OK-create-react-app
@@ -6,8 +6,8 @@ OK-create-react-app
 	npm install --save prop-types @material-ui/core @material-ui/icons
 OK-Try REST operations
 OK-Design Views
-	-N/A Create Login Page, keep Auth user
-	-On Home screen show categories on Left and Posts on Right
+	N/A-Create Login Page, keep Auth user
+	OK-On Home screen show categories on Top and Posts on Bottom
 OK-Create folders
 	app
 	post
@@ -18,21 +18,21 @@ OK-Create Actions with Object.freeze({CONSTANT: value})
 OK-Create Thunk
 OK-Create Reducers
 OK-Create Middleware
-OK-Problema em commit Git de /utils/constants com C maiúsculo
+OK-Problem on Git commit from /utils/constants with uppercase C letter
 
--Implement Views
+OK-Implement Views
 	OK-Post View
 	OK-Category View
 	OK-Home View
 	OK-Category View
 	OK-Post Filters
-	-New Post View
+	OK-New Post View
 		OK-Create Form fields to input data and validations
-		-Make category selection readonly if from Category view
-		-Check Category* InputLabel layout problem
-		-Check <Enter> key event error on Body TextField
-		-Better buttons layout
-		-New Post menu from Category View pass category as props
+		OK-Make category selection readonly if from Category view
+		OK-Check Category* InputLabel layout problem
+		OK-Check <Enter> key event error on Body TextField = caused by LastPass Chrome Plugin
+		OK-Better buttons layout
+		OK-New Post menu from Category View pass category as props
 	OK-Vote Actions
 		OK-Set invisible vote buttons when disabled
 	OK-Delete Post
@@ -43,14 +43,14 @@ OK-Problema em commit Git de /utils/constants com C maiúsculo
 	OK-Edit Comment View
 	OK-Unit test exit/back navigation ove Edit and Delete user interaction on PostEdit 
 	OK-Drawer or contextual menu
-	-CSS general review
+	OK-CSS general review
 		OK-Fab margin space
 		-Left and Right align divs/components
 
--Add documentation and comments to source code
+OK-Add documentation and comments to source code
+
+OK-Update README
 
 -Generate more api-radable fixed data
-
--Update README
 
 -Submit to evaluation
