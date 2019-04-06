@@ -1,9 +1,10 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch,  Route } from 'react-router-dom';
 import LoadingBar from 'react-redux-loading';
 import * as commonActions from '../common/commonActions';
 import * as commonOperations from '../common/commonOperations';
+import NoRouteFound from '../common/NoRouteFound';
 import CategoryItem from '../category/CategoyItem';
 import MessageDialog from '../common/MessageDialog';
 import PostEdit from '../post/PostEdit';
@@ -51,11 +52,14 @@ class App extends Component {
           <div className="container">
             {this.props.loading === true ? null : (
               <div>
-                <Route path="/" exact component={Home} />
-                <Route path='/:category' exact component={CategoryItem} />
-                <Route path='/:category/newPost/' exact component={PostEdit} />
-                <Route path='/:category/:postId/edit/:flagFixedCategory' exact component={PostEdit} />
-                <Route path='/:category/:postId/view/:flagFixedCategory' exact component={PostEdit} />
+                <Switch>
+                  <Route path="/" exact component={Home} />
+                  <Route path='/:category' exact component={CategoryItem} />
+                  <Route path='/:category/newPost/' exact component={PostEdit} />
+                  <Route path='/:category/:postId/edit/:flagFixedCategory' exact component={PostEdit} />
+                  <Route path='/:category/:postId/view/:flagFixedCategory' exact component={PostEdit} />
+                  <Route component={NoRouteFound} />
+                </Switch>
               </div>
             )}
           </div>

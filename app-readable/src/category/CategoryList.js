@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom'
@@ -16,34 +16,36 @@ export const CATEGORY_SORT_MENU = [
 /**
  * @description React component to enlist all existing Categories.
  */
-class CategoryList extends Component {
+const CategoryList = ({categories, sortingSetup}) => {
+
+  /**
+   * @description Apply sorting setup options to the Categories' object collection
+   */
+  const getSortedCategories = () => {
+    //execute sort method over Category collection from menu user sorting selection
+    return sortEntityMap(categories, sortingSetup);
+  }
 
   /**
    * @description Lifecycle function to create component HTML contents with JSX
    */
-  render() {
-    const { categories, sortingSetup } = this.props;
-    //execute sort method over Category collection from menu user sorting selection
-    let sortedCateg = sortEntityMap(categories, sortingSetup);
-
-    return (
-      <div>
-        <div className="center">
-          <h3 className="side-by-side">CATEGORIES</h3>
-          <SortListMenu entityName={ENTITY_NAME.CATEGORY} sortMenuOptions={CATEGORY_SORT_MENU}  />
-        </div>
-        <div className="category">
-          <ul className="category-list">
-            {sortedCateg.map((id) => (
-              <Link key={id} to={`/${id}`}>
-                <span key={id} className="category-name">{categories[id].name}</span>
-              </Link>
-            ))}
-          </ul>
-        </div>
+  return (
+    <div>
+      <div className="center">
+        <h3 className="side-by-side">CATEGORIES</h3>
+        <SortListMenu entityName={ENTITY_NAME.CATEGORY} sortMenuOptions={CATEGORY_SORT_MENU}  />
       </div>
-    )
-  }
+      <div className="category">
+        <ul className="category-list">
+          {getSortedCategories().map((id) => (
+            <Link key={id} to={`/${id}`}>
+              <span key={id} className="category-name">{categories[id].name}</span>
+            </Link>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
 }
 
 /**

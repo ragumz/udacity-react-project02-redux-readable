@@ -45,12 +45,19 @@ OK-Implement Views
 	OK-Drawer or contextual menu
 	OK-CSS general review
 		OK-Fab margin space
-		-Left and Right align divs/components
-
+		OK-Left and Right align divs/components
+	OK-Convert Class Components to Functional Componets where applied
+	OK-Review route paths
+	-GoBack and Undo go to readonly on PostEdit.js when viewing 
+	-Set AppBar as sticking and remove overflow from main div css on App.js
+	-Use MaterialUI Cards to layout Posts and Comments
+		-Add link to Post's Category
+		-Add link to Post's Content except buttons (use div/etc)
+	-Test list sorting menu
 OK-Add documentation and comments to source code
 
 OK-Update README
 
--Generate more api-radable fixed data
+OK-Generate more api-radable fixed data
 
 -Submit to evaluation

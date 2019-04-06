@@ -1,5 +1,6 @@
 import { POST_ACTIONS } from './postActions';
 import { VOTE_OPTIONS } from '../utils/constants';
+import { arrayToIndexedObject } from '../utils/commons';
 
 /**
  * @description Post's reducer implementation to manage all Post thunk actions.
@@ -47,13 +48,7 @@ export default function posts(state = {}, action) {
 
     //delete an existing Post object from state through delete flag field
     case POST_ACTIONS.DELETE:
-      return {
-        ...state,
-        [action.postId]: {
-          ...state[action.postId],
-          deleted: true
-        }
-      };
+      return arrayToIndexedObject(Object.values(state).filter(post => post.id !== action.postId));
 
     //update a Post's commentCount field when one of its Comments is deleted
     case POST_ACTIONS.DELETE_COMMENT:

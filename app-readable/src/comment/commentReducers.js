@@ -1,5 +1,6 @@
 import { COMMENT_ACTIONS } from './commentActions';
 import { VOTE_OPTIONS } from '../utils/constants';
+import { arrayToIndexedObject } from '../utils/commons';
 
 export default function comments(state = {}, action) {
   switch (action.type) {
@@ -24,13 +25,7 @@ export default function comments(state = {}, action) {
 
     //delete an existing Comment object from state through delete flag field
     case COMMENT_ACTIONS.DELETE:
-      return {
-        ...state,
-        [action.id]: {
-          ...state[action.id],
-          deleted: true
-        }
-      }
+      return arrayToIndexedObject(Object.values(state).filter(comment => comment.id !== action.id));
 
     //add a new Comment object into state
     case COMMENT_ACTIONS.NEW:

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import PostItem from './PostItem';
@@ -21,40 +21,34 @@ export const POST_SORT_MENU = [
 /**
  * @description React component to enlist all existing Posts.
  */
-class PostList extends Component {
+const PostList = ({posts, sortingSetup, flagFixedCategory}) => {
+
   /**
-   * @description Define props' arguments' types
+   * @description Apply sorting setup options to the Posts' object collection
    */
-  static propTypes = {
-    postsFilter: PropTypes.object,
-    flagFixedCategory: PropTypes.bool,
-  };
+  const getSortedPosts = () => {
+    //execute sort method over Post collection from menu user sorting selection
+    return sortEntityMap(posts, sortingSetup).filter(key => posts[key].deleted !== true);
+  }
 
   /**
    * @description Lifecycle function to create component HTML contents with JSX
    */
-  render() {
-    const { posts, sortingSetup, flagFixedCategory } = this.props;
-    //execute sort method over Post collection from menu user sorting selection
-    let sortedPosts = sortEntityMap(posts, sortingSetup)
-                        .filter(key => posts[key].deleted !== true);
-
-    return (
-      <div>
-        <div className="center">
-          <h3 className="side-by-side">POSTS</h3>
-          <SortListMenu entityName={ENTITY_NAME.POST} sortMenuOptions={POST_SORT_MENU}  />
-        </div>
-        <ul className="unordered-list">
-          {sortedPosts.map((id) => (
-            <li key={id}>
-              <PostItem id={id} flagFixedCategory={flagFixedCategory}/>
-            </li>
-          ))}
-        </ul>
+  return (
+    <div>
+      <div className="center">
+        <h3 className="side-by-side">POSTS</h3>
+        <SortListMenu entityName={ENTITY_NAME.POST} sortMenuOptions={POST_SORT_MENU}  />
       </div>
-    )
-  }
+      <ul className="unordered-list">
+        {getSortedPosts().map((id) => (
+          <li key={id}>
+            <PostItem id={id} flagFixedCategory={flagFixedCategory}/>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 }
 
 /**
@@ -70,5 +64,13 @@ function mapStateToProps ({ posts, common },{ postsFilter, flagFixedCategory=fal
     sortingSetup: common[getSortedEntityId(ENTITY_NAME.POST)]
   }
 }
+
+/**
+ * @description Define props' arguments' types
+ */
+PostList.propTypes = {
+  postsFilter: PropTypes.object,
+  flagFixedCategory: PropTypes.bool,
+};
 
 export default connect(mapStateToProps)(PostList)

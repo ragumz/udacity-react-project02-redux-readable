@@ -26,6 +26,7 @@ import IconDelete from '@material-ui/icons/Delete';
 import IconSave from '@material-ui/icons/Save';
 import IconUndo from '@material-ui/icons/Undo';
 import IconExit from '@material-ui/icons/ExitToApp';
+import IconEdit from '@material-ui/icons/Edit';
 import Fab from '@material-ui/core/Fab';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
@@ -58,6 +59,8 @@ class PostEdit extends Component {
     showConfirmDialog: false,
     /** @description Control flag to make readonly all input fields of Posts data */
     readOnly: false,
+
+    isEditing: false, //TODO: use this flag to navigate and avoid props will change to modify readOnly state
     /** @description Control flag to detect if an Post edition can be undone */
     canUndo: false,
   };
@@ -197,18 +200,27 @@ class PostEdit extends Component {
   }
 
   /**
+   * @description When viewing Post's details make it to edit the current object
+   */
+  handleEdit = () => {
+    this.setState({ readOnly: false }, () => {
+      //this.titleInput.focus();
+    });
+  }
+
+  /**
    * @description Lifecycle function to initialize component inner state controls
    */
   componentDidMount() {
     let { editPost } = this.state;
-    const { post, category, dispatch } = this.props;
+    const { post, category, dispatch, readOnly } = this.props;
     if (!commons.isNull(post)) {
       dispatch(addContextMenuItem({id: 'deletePost', name: 'Delete Post', handleClick: this.handleShowDialog, iconIndex: 'delete'}));
       editPost = Object.assign({}, post);
     } else if (commons.isEmpty(editPost.category) && !commons.isEmpty(category)) {
       editPost.category = category.name;
     }
-    this.setState({ editPost });
+    this.setState({ editPost, readOnly });
   }
 
   /**
@@ -248,8 +260,8 @@ class PostEdit extends Component {
       return <div />;
     }
 
-    const { readOnly, flagFixedCategory, categories, postComments, dispatch } = this.props;
-    const { editPost, categoryRequired, showConfirmDialog, canUndo } = this.state;
+    const { flagFixedCategory, categories, postComments, dispatch } = this.props;
+    const { editPost, readOnly, categoryRequired, showConfirmDialog, canUndo } = this.state;
     const { id, timestamp, category, title, body, author, commentCount } = editPost;
 
     //detect Post input state and title
@@ -278,6 +290,12 @@ class PostEdit extends Component {
                 <Fab color="primary" size="small" title="Save Post" className="create-fab"
                   type="submit" onSubmit={this.handleSubmit}>
                   <IconSave />
+                </Fab>
+            )}
+            {readOnly && (
+                <Fab color="primary" size="small" title="Edit Post" className="create-fab"
+                  type="button" onClick={this.handleEdit}>
+                  <IconEdit />
                 </Fab>
             )}
             {!flagCreate && (
@@ -318,6 +336,7 @@ class PostEdit extends Component {
           </FormControl>
           <TextField
             id="title"
+            ref={(titleInput) => { this.titleInput = titleInput; }}
             name="title"
             label="Title"
             className="inputField"

@@ -7,7 +7,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Typography from '@material-ui/core/Typography';
 import PropTypes from "prop-types";
-import * as common from '../utils/commons';
+import * as commons from '../utils/commons';
 
 /**
  * @description An utility class to display modal dialogs with messages and buttons.
@@ -56,13 +56,25 @@ class MessageDialog extends Component {
   };
 
   /**
+   * @description Lifecycle function to initialize component inner state controls
+   */
+  componentDidMount() {
+    const { userMessage } = this.props;
+    if (!commons.isNull(userMessage)
+      && userMessage.hasOwnProperty('message')
+      && !commons.isEmpty(userMessage.message)) {
+      this.handleOpen();
+    }
+  }
+
+  /**
    * @description React callback invoked when new props are to be received
    *
    * @param {object} nextProps The new props that will replace this.props
    */
   componentWillReceiveProps(nextProps) {
     //shows the dialog if there is any message text.
-    if (!common.isEmpty(nextProps.userMessage)
+    if (!commons.isEmpty(nextProps.userMessage)
         && nextProps.userMessage !== this.props.userMessage) {
       this.handleOpen();
     }
@@ -72,16 +84,12 @@ class MessageDialog extends Component {
    * @description Creates the component UI
    */
   render() {
-    if (common.isNull(this.props.userMessage)) {
+    if (commons.isNull(this.props.userMessage)) {
       return <div></div>;
     }
 
     const { buttons } = this.props;
     const { title, message, error } = this.props.userMessage;
-
-    if (this.state.open && error) {
-      console.error(message, error);
-    }
 
     return (
       <div>
