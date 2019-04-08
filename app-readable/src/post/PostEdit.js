@@ -225,6 +225,13 @@ class PostEdit extends Component {
    * @description Lifecycle function to finalize component inner state controls
    */
   componentWillUnmount() {
+    //update full component state
+    this.setState({
+      editPost: Object.assign({}, constants.EMTPY_POST),
+      canUndo: false,
+      readOnly: false,
+      categoryRequired: false,
+    });
     const { dispatch } = this.props;
     dispatch(deleteContextMenuItem('deletePost'));
   }
@@ -236,7 +243,10 @@ class PostEdit extends Component {
     if (commons.isNull(nextProps.post)) {
       //when no post found, consider a new Post creation
       let { category } = nextProps;
-      let post = Object.assign({}, constants.EMTPY_POST, {category: category.name})
+      let post = Object.assign({}, constants.EMTPY_POST)
+      if (!commons.isNull(category)) {
+        post['category'] = category.name;
+      }
       this.setState({
         editPost: post,
         canUndo: false,
@@ -460,13 +470,16 @@ function mapStateToProps({ posts, comments, categories }, { location, match, id,
       post = Object.freeze(posts[id]);
     }
   }
-  const flagFixedCategory = match.params.flagFixedCategory === "true" ? true : false;
+  let flagFixedCategory = match.params.flagFixedCategory === "true" ? true : false;
   //detect if category can change
   if (commons.isNull(category)
       && !commons.isNull(post)
       && flagFixedCategory === true) {
     //category cannot be changed
     category = categories[post.category];
+  }
+  if (commons.isNull(category)) {
+    flagFixedCategory = false;
   }
   return {
     readOnly,
