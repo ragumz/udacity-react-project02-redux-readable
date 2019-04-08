@@ -9,6 +9,11 @@ import CommentEdit from "./CommentEdit"
 import VoteScore from '../common/VoteScore';
 import EntityButtons from '../common/EntityButtons'
 import MessageDialog from '../common/MessageDialog'
+import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
+import Typography from '@material-ui/core/Typography';
+import CardContent from '@material-ui/core/CardContent';
+import CardActions from '@material-ui/core/CardActions';
 
 /**
  * @description React component to show Comment's details.
@@ -93,29 +98,35 @@ class CommentItem extends Component {
     }
 
     return (
-      <div className="comment">
-        <div className="panel-info">
-          <div className="panel-info-right" style={{width: '100% !important'}}>
-            <EntityButtons
-              entityName={constants.ENTITY_NAME.COMMENT}
-              handleEdit={this.handleEdit}
-              handleDelete={this.handleShowDialog}
-              maxWidth='100%' />
-          </div>
-          <span className="text-right" >{author}</span>
-          <div className="text-right" style={{width: '100%'}}>
-            <span className="label-info-timestamp">{commons.formatDate(timestamp)}</span>
-          </div>
-          <span className="panel-info-body">{body}</span>
-          <VoteScore
-            key={id}
-            id={id}
-            object={comment}
-            entityName={constants.VOTE_OBJECT.COMMENT}
-            dispatch={dispatch}
-            actionHandle={handleCommentVoteScore}
+      <div className="new-form">
+        <Card className="comment" raised>
+          <CardHeader
+            action={
+              <EntityButtons
+                entityName={constants.ENTITY_NAME.COMMENT}
+                handleEdit={this.handleEdit}
+                handleDelete={this.handleShowDialog}
+                maxWidth='100%' />
+            }
+            title={<span className="label-info-timestamp">{author}</span>}
+            subheader={<span className="label-info-timestamp" style={{width: '100%', textAlign: 'right'}}>{commons.formatDate(timestamp)}</span>}
           />
-        </div>
+          <CardContent>
+            <Typography component="p" className="panel-info-body">
+              {body}
+            </Typography>
+          </CardContent>
+          <CardActions style={{display: 'flex'}} disableActionSpacing>
+            <VoteScore
+              key={id}
+              id={id}
+              object={comment}
+              entityName={constants.VOTE_OBJECT.COMMENT}
+              dispatch={dispatch}
+              actionHandle={handleCommentVoteScore}
+            />
+          </CardActions>
+        </Card>
         <MessageDialog
             userMessage={dialogSetup.userMessage}
             buttons={dialogSetup.messageButtons}/>

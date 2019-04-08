@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom'
+import { NavLink, withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types';
 import * as commons from '../utils/commons';
 import * as constants from '../utils/constants';
@@ -8,7 +8,12 @@ import VoteScore from '../common/VoteScore';
 import { handlePostVoteScore, handleDeletePost } from './postOperations'
 import EntityButtons from '../common/EntityButtons'
 import MessageDialog from '../common/MessageDialog'
-
+import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
+import Avatar from '@material-ui/core/Avatar';
+import Typography from '@material-ui/core/Typography';
+import CardContent from '@material-ui/core/CardContent';
+import CardActions from '@material-ui/core/CardActions';
 
 /**
  * @description React component to show Post's details.
@@ -30,9 +35,9 @@ class PostItem extends Component {
   /**
    * @description Component handle function to navigate to current Post details and Comments
    */
-  handleView = (event) => {
-    const { id, category, history, flagFixedCategory } = this.props;
-    history.push(`/${category.name}/${id}/view/${flagFixedCategory}`)
+  getPostViewLink = () => {
+    const { id, category, flagFixedCategory } = this.props;
+    return `/${category.name}/${id}/view/${flagFixedCategory}`;
   }
 
   /**
@@ -84,6 +89,11 @@ class PostItem extends Component {
       commentCount
     } = post;
 
+    const avatarId = category.name.substring(0,1).toUpperCase();
+    const avatarColor = commons.stringToHslColor(category.name, 75, 80);
+    const viewPostLink = this.getPostViewLink();
+    const viewCategLink = `/${category.name}`;
+
     //Post deletion behavior required to ask user by dialog message
     let dialogSetup = {};
     if (showConfirmDialog) {
@@ -91,39 +101,51 @@ class PostItem extends Component {
     }
 
     return (
-      <div className="post">
-        <div className="panel-info">
-          <div>
-            <div className="panel-info-left">
-              <span className="label-category">{category.name}</span>
-            </div>
-            <div className="panel-info-right" style={{width: '50%'}}>
+      <div>
+        <Card className="post" raised>
+          <CardHeader
+            avatar={
+              <NavLink to={viewCategLink} exact >
+                <Avatar aria-label="CardAvatar" style={{backgroundColor: avatarColor}}>
+                  {avatarId}
+                </Avatar>
+              </NavLink>
+            }
+            action={
               <EntityButtons
                 entityName={constants.ENTITY_NAME.POST}
                 handleView={this.handleView}
                 handleEdit={this.handleEdit}
                 handleDelete={this.handleShowDialog}/>
-            </div>
-          </div>
-          <span className="panel-info-title">{title}</span>
-          <span className="text-right" >{author}</span>
-          <div className="text-right" style={{width: '100%'}}>
-            <span className="label-info-timestamp">{commons.formatDate(timestamp)}</span>
-          </div>
-          <span className="panel-info-body">{body}</span>
-          <div>
+            }
+            title={<NavLink to={viewPostLink} exact className="panel-info-title" >
+                    {title}
+                  </NavLink>}
+            subheader={<div>
+                        <NavLink to={viewCategLink} exact className="panel-info-categ" >
+                          {category.name}
+                        </NavLink>
+                        {` | ${commons.formatDate(timestamp)} | ${author}`}
+                      </div> }
+          />
+          <CardContent>
+            <Typography component="p" className="panel-info-body">
+              {body}
+            </Typography>
+          </CardContent>
+          <CardActions style={{display: 'flex'}} disableActionSpacing>
             <VoteScore
               id={id}
               object={post}
               entityName={constants.VOTE_OBJECT.POST}
               dispatch={dispatch}
               actionHandle={handlePostVoteScore}/>
-            <span className="panel-info-right" style={{marginTop: "3px", textAlign: "right"}}><i>Comments {commentCount}</i></span>
-          </div>
-        </div>
+            <span className="panel-info-right" style={{marginTop: "3px", textAlign: "right", width: '60%'}}><i>Comments {commentCount}</i></span>
+          </CardActions>
+        </Card>
         <MessageDialog
-            userMessage={dialogSetup.userMessage}
-            buttons={dialogSetup.messageButtons}/>
+              userMessage={dialogSetup.userMessage}
+              buttons={dialogSetup.messageButtons}/>
       </div>
     );
   }

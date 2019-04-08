@@ -17,6 +17,7 @@ import IconDelete from '@material-ui/icons/Delete';
 import IconSave from '@material-ui/icons/Save';
 import IconExit from '@material-ui/icons/ExitToApp';
 import Fab from '@material-ui/core/Fab';
+import Card from '@material-ui/core/Card';
 
 class CommentEdit extends Component {
   /**
@@ -170,10 +171,10 @@ class CommentEdit extends Component {
     }
 
     //detect Comment input state and title
-    let pageTitle = 'Edit Comment';
+    let pageTitle = 'EDIT COMMENT';
     let flagCreate = false;
     if (commons.isNull(this.props.comment)) {
-      pageTitle = 'Create a new Comment';
+      pageTitle = 'CREATE NEW COMMENT';
       flagCreate = true;
     }
 
@@ -187,7 +188,7 @@ class CommentEdit extends Component {
     }
 
     return (
-      <div className="comment">
+      <div>
         <form className="new-form" onSubmit={this.handleSubmit}>
           <div className="panel-info" style={{margin: 0}}>
             <div className="center">
@@ -207,53 +208,55 @@ class CommentEdit extends Component {
                     <IconExit />
                   </Fab>
             </div>
-            <TextField
-              id="author"
-              name="author"
-              label="Author"
-              className="inputField"
-              variant="standard"
-              margin="normal"
-              fullWidth={true}
-              maxLength={200}
-              value={author}
-              required={true}
-              onChange={event => this.handleChangeValue(event)}
-            />
-            {!flagCreate &&
-              <div className="text-right" style={{width: '100%'}}>
-                <span className="label-info-timestamp">{commons.formatDate(timestamp)}</span>
-              </div>
-            }
-            <TextField
-              id="body"
-              name="body"
-              label="Body"
-              className="textarea"
-              variant="standard"
-              margin="normal"
-              fullWidth={true}
-              maxLength={500}
-              rows={2}
-              rowsMax={4}
-              value={body}
-              type="input"
-              multiline={true}
-              required={true}
-              onChange={event => this.handleChangeValue(event)}
-            />
-            {bodyLeft <= 100 && <div className="textarea-length">{bodyLeft}</div>}
-            {!flagCreate &&
-              <div>
-                <VoteScore
-                  id={id}
-                  object={editComment}
-                  entityName={constants.VOTE_OBJECT.COMMENT}
-                  dispatch={dispatch}
-                  actionHandle={handleCommentVoteScore}
-                />
-              </div>
-            }
+            <Card className="comment" raised>
+              <TextField
+                id="author"
+                name="author"
+                label="Author"
+                className="inputField"
+                variant="standard"
+                margin="normal"
+                fullWidth={true}
+                maxLength={200}
+                value={author}
+                required={true}
+                onChange={event => this.handleChangeValue(event)}
+              />
+              {!flagCreate &&
+                <div className="text-right" style={{width: '100%'}}>
+                  <span className="label-info-timestamp">{commons.formatDate(timestamp)}</span>
+                </div>
+              }
+              <TextField
+                id="body"
+                name="body"
+                label="Body"
+                className="textarea"
+                variant="standard"
+                margin="normal"
+                fullWidth={true}
+                maxLength={500}
+                rows={2}
+                rowsMax={4}
+                value={body}
+                type="input"
+                multiline={true}
+                required={true}
+                onChange={event => this.handleChangeValue(event)}
+              />
+              {bodyLeft <= 100 && <div className="textarea-length">{bodyLeft}</div>}
+              {!flagCreate &&
+                <div>
+                  <VoteScore
+                    id={id}
+                    object={editComment}
+                    entityName={constants.VOTE_OBJECT.COMMENT}
+                    dispatch={dispatch}
+                    actionHandle={handleCommentVoteScore}
+                  />
+                </div>
+              }
+            </Card>
           </div>
         </form>
         <MessageDialog

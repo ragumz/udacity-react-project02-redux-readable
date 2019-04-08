@@ -41,7 +41,7 @@ const VoteScore = ({object, disabled, dispatch, id, actionHandle}) => {
    * @description Lifecycle function to create component HTML contents with JSX
    */
   return (
-      <div className="panel-info-left">
+      <div className="panel-info-left" style={{width: '40%'}}>
         <div className="view-icons">
           <span>Vote Score {currObject.voteScore}</span>
           <button

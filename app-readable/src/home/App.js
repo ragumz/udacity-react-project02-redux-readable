@@ -45,7 +45,7 @@ class App extends Component {
     return (
       <Router>
         <Fragment>
-          <AppBar position="static">
+          <AppBar position="sticky">
             <Menu />
           </AppBar>
           <LoadingBar />
@@ -55,9 +55,10 @@ class App extends Component {
                 <Switch>
                   <Route path="/" exact component={Home} />
                   <Route path='/:category' exact component={CategoryItem} />
-                  <Route path='/:category/newPost/' exact component={PostEdit} />
-                  <Route path='/:category/:postId/edit/:flagFixedCategory' exact component={PostEdit} />
-                  <Route path='/:category/:postId/view/:flagFixedCategory' exact component={PostEdit} />
+                  <Route path='/:category/newPost/:flagFixedCategory' exact component={PostEdit} />
+                  <Route path='/:category/:post_id/edit/:flagFixedCategory' exact component={PostEdit} />
+                  <Route path='/:category/:post_id/view/:flagFixedCategory' exact component={PostEdit} />
+                  <Route path='/:category/:post_id' component={PostEdit} />
                   <Route component={NoRouteFound} />
                 </Switch>
               </div>

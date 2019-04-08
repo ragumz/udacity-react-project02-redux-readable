@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import SortListMenu from '../common/SortListMenu'
 import { ENTITY_NAME } from '../utils/constants'
 import { getSortedEntityId, sortEntityMap } from '../common/commonOperations'
+import Card from '@material-ui/core/Card';
 
 /**
  * @description Object with global Category sort menu options.
@@ -32,10 +33,10 @@ const CategoryList = ({categories, sortingSetup}) => {
   return (
     <div>
       <div className="center">
-        <h3 className="side-by-side">CATEGORIES</h3>
+        <h3 className="side-by-side">CATEGORIES ({Object.keys(categories).length})</h3>
         <SortListMenu entityName={ENTITY_NAME.CATEGORY} sortMenuOptions={CATEGORY_SORT_MENU}  />
       </div>
-      <div className="category">
+      <Card className="category" raised>
         <ul className="category-list">
           {getSortedCategories().map((id) => (
             <Link key={id} to={`/${id}`}>
@@ -43,7 +44,7 @@ const CategoryList = ({categories, sortingSetup}) => {
             </Link>
           ))}
         </ul>
-      </div>
+      </Card>
     </div>
   );
 }

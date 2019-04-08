@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom'
+import * as commons from '../utils/commons';
 import PostList from '../post/PostList'
 import Fab from '@material-ui/core/Fab';
 import IconAdd from '@material-ui/icons/Add';
@@ -9,14 +10,14 @@ import IconExit from '@material-ui/icons/ExitToApp';
 /**
  * @description React component to show Category's details.
  */
-const CategoryItem = ({name, posts, history}) => {
+const CategoryItem = ({name, category, posts, history}) => {
 
   /**
    * @description Component handle function to navigate to new Post Edit route
    */
   const handleNewPost = (event) => {
     event.preventDefault();
-    history.push(`/${name}/newPost`)
+    history.push(`/${name}/newPost/true`)
   }
 
   /**
@@ -31,18 +32,25 @@ const CategoryItem = ({name, posts, history}) => {
    */
   return (
     <div>
-      <div className="center">
-        <h2 className="side-by-side">Category {name} Posts</h2>
-        <Fab color="primary" title="Add New Post" size="small" className="create-fab"
-          onClick={handleNewPost}>
-            <IconAdd />
-        </Fab>
-        <Fab color="secondary" title="Go Back" size="small" className="create-fab"
-          type="button" onClick={handleClickExit}>
-          <IconExit />
-        </Fab>
+      {!commons.isNull(category) &&
+      <div>
+        <div className="center">
+          <h2 className="side-by-side">{name.toUpperCase()} CATEGORY</h2>
+          <Fab color="primary" title="Add New Post" size="small" className="create-fab"
+            onClick={handleNewPost}>
+              <IconAdd />
+          </Fab>
+          <Fab color="secondary" title="Go Back" size="small" className="create-fab"
+            type="button" onClick={handleClickExit}>
+            <IconExit />
+          </Fab>
+        </div>
+        <PostList postsFilter={posts} flagFixedCategory={true} />
       </div>
-      <PostList postsFilter={posts} flagFixedCategory={true} />
+      }
+      {commons.isNull(category) &&
+      <h2 className="center">Category {name} does not exist.</h2>
+      }
     </div>
   );
 }

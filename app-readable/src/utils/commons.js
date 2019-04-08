@@ -83,9 +83,9 @@ export const capitalize = text => {
 export function formatDate (timestamp) {
   if (isEmpty(timestamp))
     return '';
-  const d = new Date(timestamp)
-  const time = d.toLocaleTimeString('en-US')
-  return time.substr(0, 5) + time.slice(-2) + ' | ' + d.toLocaleDateString()
+  const d = new Date(timestamp);
+  const time = d.toLocaleTimeString('en-US');
+  return `${d.toLocaleDateString('en-US')} ${time.substr(0, 5)}${time.slice(-2).toLowerCase()}`;
 }
 
 /**
@@ -109,4 +109,22 @@ export function createDeleteMessage(entityName, handleDeleteYes, handleDeleteNo,
   let messageButtons = [{ text: 'Yes', handleClick: handleDeleteYes },
                         { text: 'No',  handleClick: handleDeleteNo }];
   return { userMessage, messageButtons};
+}
+
+/**
+ * @description Generate an avatar background color based on its id text.
+ * Source: https://medium.com/@pppped/compute-an-arbitrary-color-for-user-avatar-starting-from-his-username-with-javascript-cd0675943b66
+ *
+ * @param {*} str text to get the hue parameter of the returned color
+ * @param {*} s a number between 0 and 100
+ * @param {*} l  a number between 0 and 100
+ */
+export function stringToHslColor(str, s, l) {
+  var hash = 0;
+  for (var i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  }
+
+  var h = hash % 360;
+  return 'hsl('+h+', '+s+'%, '+l+'%)';
 }

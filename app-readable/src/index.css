@@ -60,7 +60,6 @@ li {
   width: 100%;
   max-width: 600px;
   padding: 10px;
-  display: flex;
   margin: 0 auto;
   border: 1px solid #737ee6;
   border-radius: 3px;
@@ -75,8 +74,12 @@ li {
 
 .panel-info-title {
   font-weight: bold;
-  margin-top: 3px;
-  margin-right: 5px;
+  text-decoration: underline;
+}
+
+.panel-info-categ {
+  font-style: italic;
+  color: #5b5b5b;
 }
 
 .panel-info-body {
@@ -184,7 +187,6 @@ li {
   width: 100%;
   max-width: 600px;
   padding: 10px;
-  display: flex;
   margin: 0 auto;
   border: 1px solid #2cbe07;
   border-radius: 3px;
@@ -235,6 +237,7 @@ li {
 .selectField {
   padding: 3px;
   font-size: 15px;
+  width: 100% !important;
 }
 
 .textarea {
@@ -304,3 +307,4 @@ li {
   text-align: right !important;
   width: 100% !important;
 }
+

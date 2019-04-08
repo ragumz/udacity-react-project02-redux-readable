@@ -37,7 +37,7 @@ const PostList = ({posts, sortingSetup, flagFixedCategory}) => {
   return (
     <div>
       <div className="center">
-        <h3 className="side-by-side">POSTS</h3>
+        <h3 className="side-by-side">POSTS ({Object.keys(posts).length})</h3>
         <SortListMenu entityName={ENTITY_NAME.POST} sortMenuOptions={POST_SORT_MENU}  />
       </div>
       <ul className="unordered-list">

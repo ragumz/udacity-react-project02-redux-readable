@@ -98,7 +98,7 @@ class CommentList extends Component {
     return (
       <div>
         <div className="center">
-          <h3 className="side-by-side">The Post's Comments</h3>
+          <h3 className="side-by-side">COMMENTS ({Object.keys(comments).length})</h3>
           <SortListMenu entityName={ENTITY_NAME.COMMENT} sortMenuOptions={COMMENT_SORT_MENU} />
           <Fab color="primary" title="Add New Comment" size="small" className="create-fab"
             onClick={this.handleNewComment}>
@@ -106,7 +106,7 @@ class CommentList extends Component {
           </Fab>
         </div>
 
-        <ul className="dashboard-list">
+        <ul>
           { isCreating &&
             <li key={"newComment"}>
               <CommentEdit parentId={parentPost.id} handleFinishEdit={this.handleFinishEdit} />

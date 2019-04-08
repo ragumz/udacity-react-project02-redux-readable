@@ -14,6 +14,7 @@ import {
   addContextMenuItem,
   deleteContextMenuItem
 } from '../common/commonActions';
+import Card from '@material-ui/core/Card';
 import VoteScore from '../common/VoteScore';
 import MessageDialog from '../common/MessageDialog'
 import CommentList from '../comment/CommentList'
@@ -59,8 +60,6 @@ class PostEdit extends Component {
     showConfirmDialog: false,
     /** @description Control flag to make readonly all input fields of Posts data */
     readOnly: false,
-
-    isEditing: false, //TODO: use this flag to navigate and avoid props will change to modify readOnly state
     /** @description Control flag to detect if an Post edition can be undone */
     canUndo: false,
   };
@@ -188,14 +187,13 @@ class PostEdit extends Component {
    * @description Component handle function to discover the right path to return after an demanding action.
    */
   handleGoBack = () => {
-    const { category, history } = this.props;
-    if (!commons.isNull(category)) {
+    const { category, flagFixedCategory, history } = this.props;
+    if (flagFixedCategory === true && !commons.isNull(category)) {
+      //return to category page
       history.push(`/${category.name}`);
-    } else if (history.location.pathname.includes('/post/')
-                || history.location.pathname.includes('/view/')) {
-      history.push('/');
     } else {
-      history.goBack();
+      //return to home page to avoid edit confusion
+      history.push('/');
     }
   }
 
@@ -235,19 +233,39 @@ class PostEdit extends Component {
    * @description Lifecycle function to detect inner state controls changes from props changes
    */
   componentWillReceiveProps(nextProps) {
+    if (commons.isNull(nextProps.post)) {
+      //when no post found, consider a new Post creation
+      let { category } = nextProps;
+      let post = Object.assign({}, constants.EMTPY_POST, {category: category.name})
+      this.setState({
+        editPost: post,
+        canUndo: false,
+        readOnly: false,
+        categoryRequired: false,
+      });
+      return;
+    }
     if (nextProps.post && this.props.post
         && (nextProps.post.voteScore !== this.props.post.voteScore
             || nextProps.post.commentCount !== this.props.post.commentCount)) {
-      const { post, readOnly } = nextProps;
-      //se foi salvo
+      //update post state
+      const { post } = nextProps;
+      //when post is sucessfully saved add delete context option
       this.props.dispatch(addContextMenuItem({id: 'deletePost', name: 'Delete Post', handleClick: this.handleShowDialog, iconIndex: 'delete'}));
       //update voteScore from redux state
       this.setState(currState => {
         currState['editPost']['voteScore'] = post.voteScore;
         currState['editPost']['commentCount'] = post.commentCount;
-        currState['readOnly'] = readOnly;
         return currState;
       })
+    } else {
+      //update full component state
+      this.setState({
+        editPost: Object.assign({}, nextProps.post),
+        canUndo: false,
+        readOnly: nextProps.readOnly,
+        categoryRequired: false,
+      });
     }
   }
 
@@ -265,10 +283,10 @@ class PostEdit extends Component {
     const { id, timestamp, category, title, body, author, commentCount } = editPost;
 
     //detect Post input state and title
-    let pageTitle = (readOnly ? 'View' : 'Edit').concat(' Post');
+    let pageTitle = (readOnly ? 'VIEW' : 'EDIT').concat(' POST');
     let flagCreate = false;
     if (commons.isNull(this.props.post)) {
-      pageTitle = 'Create a new Post';
+      pageTitle = 'CREATE NEW POST';
       flagCreate = true;
     }
 
@@ -282,7 +300,7 @@ class PostEdit extends Component {
     }
 
     return (
-      <div>
+      <div className="post-panel">
         <form className="new-form" onSubmit={this.handleSubmit}>
           <div className="center">
             <h3 className="side-by-side">{pageTitle}</h3>
@@ -315,12 +333,12 @@ class PostEdit extends Component {
               <IconExit />
             </Fab>
           </div>
-          <FormControl error={categoryRequired}>
+          <Card className="post" raised>
+          <FormControl error={categoryRequired} className="selectField">
             <InputLabel htmlFor="categories" className="inputField">
               Category*
             </InputLabel>
             <Select
-              className="selectField"
               readOnly={flagFixedCategory || readOnly}
               value={category}
               onChange={event => this.handleChangeValue(event)}
@@ -399,6 +417,7 @@ class PostEdit extends Component {
               <span className="panel-info-right" style={{marginTop: "3px", textAlign: "right"}}><i>Comments {commentCount}</i></span>
             </div>
           }
+          </Card>
         </form>
         {(!flagCreate && !commons.isEmpty(id)) &&
           <div>
@@ -419,8 +438,8 @@ class PostEdit extends Component {
  */
 function mapStateToProps({ posts, comments, categories }, { location, match, id, post, category, readOnly=false }) {
   //a Post id was defined
-  if (!commons.isEmpty(match.params.postId)) {
-    id = match.params.postId;
+  if (!commons.isEmpty(match.params.post_id)) {
+    id = match.params.post_id;
   }
   //detect the input state
   if (!readOnly && location.pathname.includes('/view/')) {
@@ -441,10 +460,11 @@ function mapStateToProps({ posts, comments, categories }, { location, match, id,
       post = Object.freeze(posts[id]);
     }
   }
+  const flagFixedCategory = match.params.flagFixedCategory === "true" ? true : false;
   //detect if category can change
   if (commons.isNull(category)
       && !commons.isNull(post)
-      && match.params.flagFixedCategory === "true") {
+      && flagFixedCategory === true) {
     //category cannot be changed
     category = categories[post.category];
   }
@@ -454,7 +474,7 @@ function mapStateToProps({ posts, comments, categories }, { location, match, id,
     category,
     post: post ? post : null,
     postComments,
-    flagFixedCategory: !commons.isEmpty(category)
+    flagFixedCategory
   };
 }
 
