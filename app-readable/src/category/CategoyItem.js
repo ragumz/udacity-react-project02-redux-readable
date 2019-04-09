@@ -42,7 +42,7 @@ const CategoryItem = ({name, category, posts, history}) => {
             onClick={handleNewPost}>
               <IconAdd />
           </Fab>
-          <Fab color="secondary" title="Go Back to Home" size="small" className="create-fab"
+          <Fab color="secondary" title="Go to Home" size="small" className="create-fab"
             type="button" onClick={handleClickExit}>
             <IconExit />
           </Fab>

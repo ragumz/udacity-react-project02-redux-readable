@@ -305,7 +305,7 @@ class PostEdit extends Component {
       pageTitle = 'CREATE NEW POST';
       flagCreate = true;
     }
-    const backTitle = commons.isNull(this.props.category) ? 'Go Back to Home' : 'Go Back to Category';
+    const backTitle = commons.isNull(this.props.category) ? 'Go to Home' : 'Go to Category';
 
     //control the max length countdown to body character length
     const bodyLeft = 500 - body.length;
