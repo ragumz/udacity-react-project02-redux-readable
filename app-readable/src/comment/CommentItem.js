@@ -37,7 +37,12 @@ class CommentItem extends Component {
    * @description Component handle function to manage inline current Comment data edition
    */
   handleEdit = (event) => {
-    this.setState({isEditing: true});
+    if (commons.isNull(event.target.localName)
+        || (!event.target.localName.includes('button')
+          && !event.target.localName.includes('svg')
+          && !event.target.localName.includes('path'))) {
+      this.setState({isEditing: true});
+    }
   }
 
   /**
@@ -99,20 +104,26 @@ class CommentItem extends Component {
 
     return (
       <div className="new-form">
-        <Card className="comment" raised>
+        <Card key="commentCard" className="comment" raised onClick={this.handleEdit}>
           <CardHeader
             action={
               <EntityButtons
                 entityName={constants.ENTITY_NAME.COMMENT}
-                handleEdit={this.handleEdit}
                 handleDelete={this.handleShowDialog}
                 maxWidth='100%' />
             }
-            title={<span className="label-info-timestamp">{author}</span>}
-            subheader={<span className="label-info-timestamp" style={{width: '100%', textAlign: 'right'}}>{commons.formatDate(timestamp)}</span>}
+            title={<span className="label-info-timestamp"
+                    onClick={this.handleEdit}>
+                      {author}
+                    </span>}
+            subheader={<span className="label-info-timestamp"
+                      style={{width: '100%', textAlign: 'right'}}
+                      onClick={this.handleEdit}>
+                        {commons.formatDate(timestamp)}
+                      </span>}
           />
           <CardContent>
-            <Typography component="p" className="panel-info-body">
+            <Typography component="p" className="panel-info-body" onClick={this.handleEdit}>
               {body}
             </Typography>
           </CardContent>

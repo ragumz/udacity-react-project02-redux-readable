@@ -128,3 +128,13 @@ export function stringToHslColor(str, s, l) {
   var h = hash % 360;
   return 'hsl('+h+', '+s+'%, '+l+'%)';
 }
+
+/**
+ * @description Count number of occurrences on a string
+ * @param {string} str Text to find the occurences
+ * @param {string} strToFind Text to count on str
+ */
+export function countStringOccurrences(str, strToFind) {
+  const found = str.match(new RegExp(strToFind, "g")) || [];
+  return found.lenght;
+}

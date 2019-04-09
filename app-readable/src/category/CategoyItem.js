@@ -2,7 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom'
 import * as commons from '../utils/commons';
-import PostList from '../post/PostList'
+import * as constants from '../utils/constants';
+import NoRouteFound from '../common/NoRouteFound';
+import PostList from '../post/PostList';
 import Fab from '@material-ui/core/Fab';
 import IconAdd from '@material-ui/icons/Add';
 import IconExit from '@material-ui/icons/ExitToApp';
@@ -17,7 +19,7 @@ const CategoryItem = ({name, category, posts, history}) => {
    */
   const handleNewPost = (event) => {
     event.preventDefault();
-    history.push(`/${name}/newPost/true`)
+    history.push(`/${name}/${constants.NEW_POST_PATH}`)
   }
 
   /**
@@ -40,16 +42,16 @@ const CategoryItem = ({name, category, posts, history}) => {
             onClick={handleNewPost}>
               <IconAdd />
           </Fab>
-          <Fab color="secondary" title="Go Back" size="small" className="create-fab"
+          <Fab color="secondary" title="Go Back to Home" size="small" className="create-fab"
             type="button" onClick={handleClickExit}>
             <IconExit />
           </Fab>
         </div>
-        <PostList postsFilter={posts} flagFixedCategory={true} />
+        <PostList postsFilter={posts} />
       </div>
       }
       {commons.isNull(category) &&
-      <h2 className="center">Category {name} does not exist.</h2>
+        <NoRouteFound />
       }
     </div>
   );
@@ -60,13 +62,18 @@ const CategoryItem = ({name, category, posts, history}) => {
  */
 function mapStateToProps({ categories, posts, common }, { match }) {
   let { category } = match.params;
-  const categoryObj = categories[category];
-  const postsFilter = Object.values(posts)
-                        .filter(post => post.category === category)
-                        .reduce((obj, post) => {
-                          obj[post.id] = post;
-                          return obj;
-                        }, {});
+  let postsFilter = null, categoryObj = null;
+  if (!commons.isEmpty(category)) {
+    categoryObj = categories[category];
+    if (!commons.isNull(categoryObj)) {
+      postsFilter = Object.values(posts)
+                          .filter(post => post.category === category)
+                          .reduce((obj, post) => {
+                            obj[post.id] = post;
+                            return obj;
+                          }, {});
+    }
+  }
   return {
     name: category,
     category: categoryObj,

@@ -22,7 +22,7 @@ a {
   overflow-y: auto;
   overflow-x: auto;
   width: 100%;
-  height: calc(100vh - 100px);
+  height: calc(100vh - 65px);
 }
 
 .center {
@@ -31,7 +31,7 @@ a {
 }
 
 .active {
-  font-weight: bold;
+  font-weight: bold !important;
 }
 
 .nav ul {
@@ -190,6 +190,10 @@ li {
   margin: 0 auto;
   border: 1px solid #2cbe07;
   border-radius: 3px;
+}
+.comment:hover {
+  border: 2px solid #2cbe07;
+  cursor: pointer;
 }
 
 .comment-name {

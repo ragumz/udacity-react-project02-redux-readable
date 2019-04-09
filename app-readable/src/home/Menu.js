@@ -7,7 +7,6 @@ import * as constants from '../utils/constants';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import IconHome from '@material-ui/icons/Home';
 import IconAdd from '@material-ui/icons/Add';
 import IconDelete from '@material-ui/icons/Delete';
 import IconHelp from '@material-ui/icons/LiveHelp';
@@ -41,29 +40,21 @@ class Menu extends Component {
   extractNewPostPath = () => {
     const { location } = this.props;
 
-    let currentCategory = constants.CATEGORY_UNSELECTED;
+    let currentCategory = constants.UNSELECTED_CATEGORY_PATH;
     const currLocation =  location.pathname;
-    let flagFixedCategory = 'false';
     //extract category from URL path name because match doest have any params
     if (currLocation.length > 1) {
-      let startIndex;
-      if (!currLocation.includes('/view/')
-          && !currLocation.includes('/edit/')
-          && !currLocation.includes('/newPost/')) {
-        startIndex = currLocation.indexOf('/');
-        if (startIndex > -1) {
-          currentCategory = currLocation.substring(startIndex+1);
+      const startIndex = currLocation.indexOf('/')+1;
+        if (startIndex > 0) {
+          const endIndex = currLocation.indexOf('/', startIndex);
+          if (endIndex > -1) {
+            currentCategory = currLocation.substring(startIndex, endIndex);
+          } else {
+            currentCategory = currLocation.substring(startIndex);
+          }
         }
-        flagFixedCategory = 'true';
-      } else {
-        startIndex = currLocation.indexOf('/', 1);
-        if (startIndex > -1) {
-          currentCategory = currLocation.substring(1, startIndex);
-        }
-        flagFixedCategory = currLocation.includes('/true') ? 'true' : 'false';
-      }
     }
-    return `/${currentCategory}/newPost/${flagFixedCategory}`;
+    return `/${currentCategory}/${constants.NEW_POST_PATH}`;
   }
 
   /**
@@ -80,17 +71,13 @@ class Menu extends Component {
     return (
       <div>
         <Toolbar>
-          <Typography className="appbar-title" variant="h6" color="inherit">
-            Posts and Comments
-          </Typography>
-          <div className="divider" />
           <NavLink to="/" exact activeClassName="active">
-            <Button className="button-menu-context">
-              <IconHome />
-              Home
-            </Button>
+            <Typography className="appbar-title" variant="h6" style={{color: 'white'}}>
+              Posts and Comments
+            </Typography>
           </NavLink>
-          { !location.pathname.includes('/newPost/') &&
+          <div className="divider" />
+          { !location.pathname.includes(`/${constants.NEW_POST_PATH}`) &&
             <NavLink to={`${newPostPath}`} exact activeClassName="active">
               <Button className="button-menu-context">
                 <IconAdd />
@@ -98,7 +85,6 @@ class Menu extends Component {
               </Button>
             </NavLink>
           }
-
           { contextMenuKeys.length > 0 &&
             contextMenuKeys.map(key => {
               const menuItem = common[key];

@@ -14,6 +14,7 @@ import {
   addContextMenuItem,
   deleteContextMenuItem
 } from '../common/commonActions';
+import NoRouteFound from '../common/NoRouteFound';
 import Card from '@material-ui/core/Card';
 import VoteScore from '../common/VoteScore';
 import MessageDialog from '../common/MessageDialog'
@@ -64,6 +65,11 @@ class PostEdit extends Component {
     canUndo: false,
   };
 
+  isNewPost = () => {
+    const { postId, post } = this.props;
+    return postId === constants.NEW_POST_PATH || commons.isEmpty(postId) || commons.isNull(post);
+  }
+
   /**
    * @description Component handle function to update an editing Post field value with input events from user
    */
@@ -82,7 +88,7 @@ class PostEdit extends Component {
    */
   handleSubmit = event => {
     event.preventDefault();
-    if (commons.isNull(this.props.post)) {
+    if (this.isNewPost()) {
       this.handleClickCreatePost();
     } else {
       this.handleClickUpdatePost();
@@ -101,15 +107,13 @@ class PostEdit extends Component {
     } else {
       this.setState({ categoryRequired: false });
     }
-    const { dispatch, history } = this.props;
+    const { dispatch } = this.props;
     dispatch(handleAddNewPost(editPost))
       .then(() => {
-        if (!history.location.pathname.includes('/view/')) {
-          //if this edition is not from a Post page, just go back to the source
-          this.setState({
-            goBack: true
-          }, this.handleGoBack);
-        }
+        //if this edition is not from a Post page, just go back to the source
+        this.setState({
+          goBack: true
+        }, this.handleGoBack);
       });
   };
 
@@ -139,7 +143,7 @@ class PostEdit extends Component {
    */
   handleClickUndo = () => {
     let { post, category } = this.props;
-    if (commons.isNull(post)) {
+    if (this.isNewPost()) {
       //if it is a new Post
       post = Object.assign({}, constants.EMTPY_POST);
     } else {
@@ -187,13 +191,15 @@ class PostEdit extends Component {
    * @description Component handle function to discover the right path to return after an demanding action.
    */
   handleGoBack = () => {
-    const { category, flagFixedCategory, history } = this.props;
-    if (flagFixedCategory === true && !commons.isNull(category)) {
-      //return to category page
+    const { history, category } = this.props;
+    const { editPost } = this.state;
+    //return to home page to avoid edit confusion
+    if (commons.isNull(category)) {
+      history.push('/');
+    } else if (commons.isNull(editPost) || commons.isNull(editPost.category) ) {
       history.push(`/${category.name}`);
     } else {
-      //return to home page to avoid edit confusion
-      history.push('/');
+      history.push(`/${editPost.category}`);
     }
   }
 
@@ -210,15 +216,16 @@ class PostEdit extends Component {
    * @description Lifecycle function to initialize component inner state controls
    */
   componentDidMount() {
-    let { editPost } = this.state;
+    const { editPost } = this.state;
+    let newEditPost = Object.assign({}, editPost);
     const { post, category, dispatch, readOnly } = this.props;
-    if (!commons.isNull(post)) {
+    if (!this.isNewPost()) {
       dispatch(addContextMenuItem({id: 'deletePost', name: 'Delete Post', handleClick: this.handleShowDialog, iconIndex: 'delete'}));
-      editPost = Object.assign({}, post);
-    } else if (commons.isEmpty(editPost.category) && !commons.isEmpty(category)) {
-      editPost.category = category.name;
+      newEditPost = Object.assign({}, post);
+    } else if (commons.isEmpty(newEditPost.category) && !commons.isEmpty(category)) {
+      newEditPost.category = category.name;
     }
-    this.setState({ editPost, readOnly });
+    this.setState({ editPost: newEditPost, readOnly });
   }
 
   /**
@@ -240,22 +247,17 @@ class PostEdit extends Component {
    * @description Lifecycle function to detect inner state controls changes from props changes
    */
   componentWillReceiveProps(nextProps) {
-    if (commons.isNull(nextProps.post)) {
-      //when no post found, consider a new Post creation
-      let { category } = nextProps;
-      let post = Object.assign({}, constants.EMTPY_POST)
-      if (!commons.isNull(category)) {
-        post['category'] = category.name;
-      }
+    if (nextProps.postId !== constants.EMTPY_POST && commons.isNull(nextProps.post)) {
       this.setState({
-        editPost: post,
+        editPost: null,
         canUndo: false,
         readOnly: false,
         categoryRequired: false,
       });
       return;
     }
-    if (nextProps.post && this.props.post
+    if (nextProps.postId !== constants.NEW_POST_PATH
+        && nextProps.post && this.props.post
         && (nextProps.post.voteScore !== this.props.post.voteScore
             || nextProps.post.commentCount !== this.props.post.commentCount)) {
       //update post state
@@ -288,17 +290,22 @@ class PostEdit extends Component {
       return <div />;
     }
 
-    const { flagFixedCategory, categories, postComments, dispatch } = this.props;
+    const { postId, post, categories, postComments, dispatch } = this.props;
+    if (!commons.isEmpty(postId) && commons.isNull(post)) {
+      return <NoRouteFound />;
+    }
+
     const { editPost, readOnly, categoryRequired, showConfirmDialog, canUndo } = this.state;
     const { id, timestamp, category, title, body, author, commentCount } = editPost;
 
     //detect Post input state and title
     let pageTitle = (readOnly ? 'VIEW' : 'EDIT').concat(' POST');
     let flagCreate = false;
-    if (commons.isNull(this.props.post)) {
+    if (this.isNewPost()) {
       pageTitle = 'CREATE NEW POST';
       flagCreate = true;
     }
+    const backTitle = commons.isNull(this.props.category) ? 'Go Back to Home' : 'Go Back to Category';
 
     //control the max length countdown to body character length
     const bodyLeft = 500 - body.length;
@@ -338,7 +345,7 @@ class PostEdit extends Component {
                   <IconUndo />
                 </Fab>
             )}
-            <Fab color="secondary" title="Go Back" size="small" className="create-fab"
+            <Fab color="secondary" title={backTitle} size="small" className="create-fab"
               type="button" onClick={this.handleClickExit}>
               <IconExit />
             </Fab>
@@ -349,7 +356,7 @@ class PostEdit extends Component {
               Category*
             </InputLabel>
             <Select
-              readOnly={flagFixedCategory || readOnly}
+              readOnly={readOnly}
               value={category}
               onChange={event => this.handleChangeValue(event)}
               required={true}
@@ -446,18 +453,14 @@ class PostEdit extends Component {
 /**
  * @description Extract component's props data from Redux state and props args into one object.
  */
-function mapStateToProps({ posts, comments, categories }, { location, match, id, post, category, readOnly=false }) {
+function mapStateToProps({ posts, comments, categories }, { match, id, post, category, readOnly=false }) {
   //a Post id was defined
   if (!commons.isEmpty(match.params.post_id)) {
     id = match.params.post_id;
   }
-  //detect the input state
-  if (!readOnly && location.pathname.includes('/view/')) {
-    readOnly = true;
-  }
   //extract the Post category
   if (!commons.isEmpty(match.params.category)
-      && match.params.category !== '?') {
+      && match.params.category !== constants.UNSELECTED_CATEGORY_PATH) {
     category = categories[match.params.category];
   }
   let postComments = null;
@@ -468,26 +471,25 @@ function mapStateToProps({ posts, comments, categories }, { location, match, id,
       postComments = commons.arrayToIndexedObject(Object.values(comments).filter(comment => comment.parentId === id));
       //freezing the object to avoid its change
       post = Object.freeze(posts[id]);
+    } else if (constants.NEW_POST_PATH === id) {
+      const categName = category ? category.name : '';
+      post = Object.assign({}, constants.EMTPY_POST, {category: categName});
     }
   }
-  let flagFixedCategory = match.params.flagFixedCategory === "true" ? true : false;
   //detect if category can change
   if (commons.isNull(category)
       && !commons.isNull(post)
-      && flagFixedCategory === true) {
+      && !commons.isEmpty(post.category)) {
     //category cannot be changed
     category = categories[post.category];
   }
-  if (commons.isNull(category)) {
-    flagFixedCategory = false;
-  }
   return {
+    postId: id,
     readOnly,
     categories,
     category,
     post: post ? post : null,
     postComments,
-    flagFixedCategory
   };
 }
 

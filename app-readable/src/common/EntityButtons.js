@@ -43,7 +43,7 @@ const EntityButtons = ({ entityName, handleView, handleEdit, handleDelete, maxWi
           <FaRegEdit />
         </Button>
       }
-      { handleDelete &&
+      {handleDelete &&
         <Button
           variant="text"
           mini={true}

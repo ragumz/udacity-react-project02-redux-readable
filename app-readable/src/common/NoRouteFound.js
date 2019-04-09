@@ -6,6 +6,7 @@ import React from 'react'
 const NoRouteFound = () => {
 
   return <div className="center">
+          <h2>ERROR HTTP 404</h2>
           <h3>This URL path does not exist or the record you are trying to access was already deleted.</h3>
         </div>;
 

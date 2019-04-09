@@ -74,4 +74,9 @@ export const MENU_ITEM_CONTEXT_PREFIX = 'menu_';
 /**
  * @description Text that represents an unselected Category name
  */
-export const CATEGORY_UNSELECTED = '_unselected_';
+export const UNSELECTED_CATEGORY_PATH = '_unselected_';
+
+/**
+ * @description Text that represents a new Post ID
+ */
+export const NEW_POST_PATH = '_newPost_';

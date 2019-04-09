@@ -24,7 +24,6 @@ class PostItem extends Component {
    */
   static propTypes = {
     id: PropTypes.string,
-    flagFixedCategory: PropTypes.bool,
   };
 
   state = {
@@ -33,19 +32,19 @@ class PostItem extends Component {
   }
 
   /**
-   * @description Component handle function to navigate to current Post details and Comments
+   * @description Function to get current Post Edit page
    */
-  getPostViewLink = () => {
-    const { id, category, flagFixedCategory } = this.props;
-    return `/${category.name}/${id}/view/${flagFixedCategory}`;
+  getPostEditLink = () => {
+    const { id, category } = this.props;
+    return `/${category.name}/${id}`;
   }
 
   /**
    * @description Component handle function to navigate to current Post data edition
    */
   handleEdit = (event) => {
-    const { id, category, history, flagFixedCategory } = this.props;
-    history.push(`/${category.name}/${id}/edit/${flagFixedCategory}`)
+    const { id, category, history } = this.props;
+    history.push(`/${category.name}/${id}`)
   }
 
   /**
@@ -91,7 +90,7 @@ class PostItem extends Component {
 
     const avatarId = category.name.substring(0,1).toUpperCase();
     const avatarColor = commons.stringToHslColor(category.name, 75, 80);
-    const viewPostLink = this.getPostViewLink();
+    const editPostLink = this.getPostEditLink();
     const viewCategLink = `/${category.name}`;
 
     //Post deletion behavior required to ask user by dialog message
@@ -102,7 +101,7 @@ class PostItem extends Component {
 
     return (
       <div>
-        <Card className="post" raised>
+        <Card className="post" raised >
           <CardHeader
             avatar={
               <NavLink to={viewCategLink} exact >
@@ -114,11 +113,9 @@ class PostItem extends Component {
             action={
               <EntityButtons
                 entityName={constants.ENTITY_NAME.POST}
-                handleView={this.handleView}
-                handleEdit={this.handleEdit}
                 handleDelete={this.handleShowDialog}/>
             }
-            title={<NavLink to={viewPostLink} exact className="panel-info-title" >
+            title={<NavLink to={editPostLink} exact className="panel-info-title" >
                     {title}
                   </NavLink>}
             subheader={<div>
@@ -154,7 +151,7 @@ class PostItem extends Component {
 /**
  * @description Extract component's props data from Redux state and props args into one object.
  */
-function mapStateToProps({ categories, posts, common }, { id, flagFixedCategory=false }) {
+function mapStateToProps({ categories, posts, common }, { id }) {
   let post;
   //test to prevent refreshing on this page without loading app content
   if (!commons.isEmpty(posts)
@@ -164,9 +161,8 @@ function mapStateToProps({ categories, posts, common }, { id, flagFixedCategory=
     post = Object.assign({}, constants.EMTPY_POST);
   }
   //extract the current Post's Category
-  const category = post ? categories[post.category] : {name: constants.CATEGORY_UNSELECTED};
+  const category = post ? categories[post.category] : {name: constants.UNSELECTED_CATEGORY_PATH};
   return {
-    flagFixedCategory,
     id,
     category,
     post,
