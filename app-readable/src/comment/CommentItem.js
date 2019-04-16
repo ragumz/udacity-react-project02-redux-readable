@@ -80,7 +80,7 @@ class CommentItem extends Component {
    */
   render() {
     const { isEditing, showConfirmDialog } = this.state;
-    const { id, comment, dispatch } = this.props;
+    const { id, comment } = this.props;
     if (isEditing) {
       //when inline comment editing, allow user to change Comment data
       return <CommentEdit id={id} handleFinishEdit={this.handleFinishEdit} />
@@ -133,7 +133,6 @@ class CommentItem extends Component {
               id={id}
               object={comment}
               entityName={constants.VOTE_OBJECT.COMMENT}
-              dispatch={dispatch}
               actionHandle={handleCommentVoteScore}
             />
           </CardActions>

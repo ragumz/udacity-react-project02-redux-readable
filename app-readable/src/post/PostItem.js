@@ -75,7 +75,7 @@ class PostItem extends Component {
    */
   render() {
     const { showConfirmDialog } = this.state;
-    const { id, post, category, dispatch } = this.props;
+    const { id, post, category } = this.props;
 
     if (commons.isNull(post)) {
       return <p>Post with {id} does not exist</p>;
@@ -135,7 +135,6 @@ class PostItem extends Component {
               id={id}
               object={post}
               entityName={constants.VOTE_OBJECT.POST}
-              dispatch={dispatch}
               actionHandle={handlePostVoteScore}/>
             <span className="panel-info-right" style={{marginTop: "3px", textAlign: "right", width: '60%'}}><i>Comments {commentCount}</i></span>
           </CardActions>

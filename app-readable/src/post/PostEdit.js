@@ -290,7 +290,7 @@ class PostEdit extends Component {
       return <div />;
     }
 
-    const { postId, post, categories, postComments, dispatch } = this.props;
+    const { postId, post, categories, postComments } = this.props;
     if (!commons.isEmpty(postId) && commons.isNull(post)) {
       return <NoRouteFound />;
     }
@@ -428,7 +428,6 @@ class PostEdit extends Component {
                 id={id}
                 object={editPost}
                 entityName={constants.VOTE_OBJECT.POST}
-                dispatch={dispatch}
                 actionHandle={handlePostVoteScore}
               />
               <span className="panel-info-right" style={{marginTop: "3px", textAlign: "right"}}><i>Comments {commentCount}</i></span>

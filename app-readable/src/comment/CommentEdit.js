@@ -162,7 +162,6 @@ class CommentEdit extends Component {
   render() {
     const { editComment, showConfirmDialog } = this.state;
     const { id, timestamp, body, author, deleted, parentDeleted } = editComment;
-    const { dispatch } = this.props;
 
     if (deleted === true || parentDeleted === true) {
       //when user delete the Comment or its Post
@@ -251,7 +250,6 @@ class CommentEdit extends Component {
                     id={id}
                     object={editComment}
                     entityName={constants.VOTE_OBJECT.COMMENT}
-                    dispatch={dispatch}
                     actionHandle={handleCommentVoteScore}
                   />
                 </div>

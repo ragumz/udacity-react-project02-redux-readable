@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { TiThumbsUp, TiThumbsDown } from 'react-icons/ti';
 import * as constants from '../utils/constants';
@@ -7,7 +8,7 @@ import * as common from '../utils/commons';
 /**
  * @description Vote score React Component to simplify user changes to Post or Comment.
  */
-const VoteScore = ({object, disabled, dispatch, id, actionHandle}) => {
+const VoteScore = ({object, disabled, id, actionHandle, dispatch}) => {
 
   /**
    * @description Component handle function to dispatch thunk action to update Post or Comment
@@ -78,4 +79,10 @@ VoteScore.propTypes = {
   disabled: PropTypes.bool,
 };
 
-export default VoteScore
+function mapStateToProps(state, { object, disabled, id, actionHandle }) {
+  return {
+    object, disabled, id, actionHandle
+  };
+}
+
+export default connect(mapStateToProps)(VoteScore);
